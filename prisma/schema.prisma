@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Plant {
+  id              String         @id @default(uuid())
+  taxonomicName   String         @db.VarChar(255)
+  commonName      String         @db.VarChar(255)
+  genus           Genus          @relation(fields: [genusId], references: [id])
+  genusId         String         @db.VarChar(255)
+  plantCategory   PlantCategory? @relation(fields: [plantCategoryId], references: [id])
+  plantCategoryId String?        @db.VarChar(255)
+  coldHardiness   Int
+  soils           Soil[]
+  lifeCycle       LifeCycle
+  sunExposures    SunExposure[]
+  waterNeed       WaterNeed
+  description     String
+  pests           Pest[]
+  diseases        Disease[]
+  imageUrl        String         @db.VarChar(255)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  published       Boolean        @default(false)
+}
+
+model Family {
+  id      String  @id @default(uuid())
+  label   String  @db.VarChar(255)
+  genuses Genus[]
+}
+
+model Genus {
+  id       String  @id @default(uuid())
+  label    String  @db.VarChar(255)
+  family   Family  @relation(fields: [familyId], references: [id])
+  familyId String
+  plants   Plant[]
+}
+
+model PlantCategory {
+  id     String  @id @default(uuid())
+  label  String  @db.VarChar(255)
+  plants Plant[]
+}
+
+model Pest {
+  id        String   @id @default(uuid())
+  label     String   @db.VarChar(255)
+  plants    Plant[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+}
+
+model Disease {
+  id        String   @id @default(uuid())
+  label     String   @db.VarChar(255)
+  plants    Plant[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+}
+
+enum Soil {
+  SANDY
+  LOAMY
+  CLAY
+  HUMUS
+}
+
+enum LifeCycle {
+  ANNUAL
+  BISANNUAL
+  PERENNIAL
+}
+
+enum SunExposure {
+  SHADE
+  PARTIAL_SHADE
+  FULL_SUN
+}
+
+enum WaterNeed {
+  LOW
+  MODERATE
+  HIGH
+}

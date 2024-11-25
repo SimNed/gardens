@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Header from "./components/Header";
 
 export const metadata: Metadata = {
   title: "Gardens",
@@ -13,7 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
-      <body className="antialiased">{children}</body>
+      <body className={`flex flex-col min-h-screen antialiased`}>
+        <Header />
+        <main className="flex flex-col flex-1">{children}</main>
+      </body>
     </html>
   );
 }

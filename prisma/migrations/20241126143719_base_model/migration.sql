@@ -10,6 +10,12 @@ CREATE TYPE "SunExposure" AS ENUM ('SHADE', 'PARTIAL_SHADE', 'FULL_SUN');
 -- CreateEnum
 CREATE TYPE "WaterNeed" AS ENUM ('LOW', 'MODERATE', 'HIGH');
 
+-- CreateEnum
+CREATE TYPE "Melliferous" AS ENUM ('LOW', 'MODERATE', 'HIGH');
+
+-- CreateEnum
+CREATE TYPE "Month" AS ENUM ('JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER');
+
 -- CreateTable
 CREATE TABLE "Plant" (
     "id" TEXT NOT NULL,
@@ -20,9 +26,13 @@ CREATE TABLE "Plant" (
     "coldHardiness" INTEGER NOT NULL,
     "soils" "Soil"[],
     "lifeCycle" "LifeCycle" NOT NULL,
-    "sunExposures" "SunExposure"[],
+    "origin" VARCHAR(255) NOT NULL,
+    "sunExposure" "SunExposure" NOT NULL,
     "waterNeed" "WaterNeed" NOT NULL,
+    "melliferous" "Melliferous" NOT NULL,
     "description" TEXT NOT NULL,
+    "cultureMonths" "Month"[],
+    "harvestMonths" "Month"[],
     "imageUrl" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -89,6 +99,27 @@ CREATE TABLE "_DiseaseToPlant" (
     "A" TEXT NOT NULL,
     "B" TEXT NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Plant_taxonomicName_key" ON "Plant"("taxonomicName");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Plant_commonName_key" ON "Plant"("commonName");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Family_label_key" ON "Family"("label");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Genus_label_key" ON "Genus"("label");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "PlantCategory_label_key" ON "PlantCategory"("label");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Pest_label_key" ON "Pest"("label");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Disease_label_key" ON "Disease"("label");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_PestToPlant_AB_unique" ON "_PestToPlant"("A", "B");

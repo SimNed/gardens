@@ -9,8 +9,8 @@ datasource db {
 
 model Plant {
   id              String         @id @default(uuid())
-  taxonomicName   String         @db.VarChar(255)
-  commonName      String         @db.VarChar(255)
+  taxonomicName   String         @unique @db.VarChar(255)
+  commonName      String         @unique @db.VarChar(255)
   genus           Genus          @relation(fields: [genusId], references: [id])
   genusId         String         @db.VarChar(255)
   plantCategory   PlantCategory? @relation(fields: [plantCategoryId], references: [id])
@@ -18,9 +18,13 @@ model Plant {
   coldHardiness   Int
   soils           Soil[]
   lifeCycle       LifeCycle
-  sunExposures    SunExposure[]
+  origin          String         @db.VarChar(255)
+  sunExposure     SunExposure
   waterNeed       WaterNeed
+  melliferous     Melliferous
   description     String
+  cultureMonths   Month[]
+  harvestMonths   Month[]
   pests           Pest[]
   diseases        Disease[]
   imageUrl        String         @db.VarChar(255)
@@ -31,13 +35,13 @@ model Plant {
 
 model Family {
   id      String  @id @default(uuid())
-  label   String  @db.VarChar(255)
+  label   String  @unique @db.VarChar(255)
   genuses Genus[]
 }
 
 model Genus {
   id       String  @id @default(uuid())
-  label    String  @db.VarChar(255)
+  label    String  @unique @db.VarChar(255)
   family   Family  @relation(fields: [familyId], references: [id])
   familyId String
   plants   Plant[]
@@ -45,13 +49,13 @@ model Genus {
 
 model PlantCategory {
   id     String  @id @default(uuid())
-  label  String  @db.VarChar(255)
+  label  String  @unique @db.VarChar(255)
   plants Plant[]
 }
 
 model Pest {
   id        String   @id @default(uuid())
-  label     String   @db.VarChar(255)
+  label     String   @unique @db.VarChar(255)
   plants    Plant[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -60,7 +64,7 @@ model Pest {
 
 model Disease {
   id        String   @id @default(uuid())
-  label     String   @db.VarChar(255)
+  label     String   @unique @db.VarChar(255)
   plants    Plant[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -90,4 +94,25 @@ enum WaterNeed {
   LOW
   MODERATE
   HIGH
+}
+
+enum Melliferous {
+  LOW
+  MODERATE
+  HIGH
+}
+
+enum Month {
+  JANUARY
+  FEBRUARY
+  MARCH
+  APRIL
+  MAY
+  JUNE
+  JULY
+  AUGUST
+  SEPTEMBER
+  OCTOBER
+  NOVEMBER
+  DECEMBER
 }

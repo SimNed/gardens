@@ -10,6 +10,18 @@ export async function GET(
   try {
     const result = await prisma.plant.findUnique({
       where: { id },
+      include: {
+        genus: {
+          select: {
+            label: true,
+            family: {
+              select: {
+                label: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!result) {

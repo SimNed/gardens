@@ -3,6 +3,7 @@
 import { fetcher } from "@/lib/fetcher";
 import { useParams } from "next/navigation";
 import useSWR from "swr";
+import PlantArticleHeader from "./components/PlantArticle/PlantArticleHeader";
 
 export default function PlantPage() {
   const params = useParams();
@@ -14,10 +15,5 @@ export default function PlantPage() {
   if (isLoading) return <div>Chargement...</div>;
   if (error) return <div>Erreur de chargement</div>;
 
-  return (
-    <div>
-      <h1>{data.commonName}</h1>
-      <p>tfhfhg</p>
-    </div>
-  );
+  return <PlantArticleHeader plant={data} />;
 }

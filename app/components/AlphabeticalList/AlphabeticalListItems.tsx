@@ -2,32 +2,28 @@
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { cn } from "@/lib/utils";
 
 interface AlphabeticalListItemsProps {
-  className?: string;
   list: { id: string; label: string }[];
   onClick: (id: string) => void;
+  isLoading?: boolean;
 }
 
 const AlphabeticalListItems = ({
-  className,
   list,
   onClick,
 }: AlphabeticalListItemsProps) => {
   return (
-    <div className={className}>
+    <div className="flex-1 max-h-full h-full overflow-hidden">
       <ScrollArea className="w-full h-full">
-        <ul>
+        <ul className="">
           {list.map((e) => (
-            <li key={e.id} onClick={() => onClick(e.id)}>
-              <p
-                className={cn("py-4", {
-                  "italic text-sm": e.label.length > 1,
-                })}
-              >
-                {e.label}
-              </p>
+            <li
+              key={e.id}
+              onClick={() => onClick(e.id)}
+              className="hover:bg-slate-200 hover:cursor-pointer px-2"
+            >
+              <p className="py-4 italic text-sm">{e.label}</p>
               <Separator />
             </li>
           ))}

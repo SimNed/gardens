@@ -1,3 +1,3 @@
-export default function Encyclopedia() {
-  return <p>Plant details</p>;
+export default function EncyclopediaPage() {
+  return <p>TODO ENCYCLOPEDIE ACCUEIL</p>;
 }

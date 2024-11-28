@@ -1,4 +1,3 @@
-// app/encyclopedia/layout.tsx
 "use client";
 
 import Section from "../components/Section";

@@ -14,7 +14,7 @@ const Section = ({
   return (
     <section
       className={cn(
-        "max-w-5xl min-h-[calc(100vh-4rem)]",
+        "w-2/4 min-h-[calc(100vh-4rem)] flex justify-center",
         { "h-[calc(100vh-4rem)]": isFullHeight },
         className
       )}

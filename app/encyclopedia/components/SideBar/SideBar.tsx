@@ -109,7 +109,7 @@ const SideBar = () => {
         <div className="flex items-center">
           <Separator />
         </div>
-        <div className="flex max-h-full gap-6 overflow-hidden">
+        <div className="flex h-full max-h-full gap-6 overflow-hidden">
           <AlphabeticalListIndex
             activeIndex={indexLetter}
             handleIndexLetterSelection={(l) => handleIndexLetterSelection(l)}

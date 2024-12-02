@@ -11,48 +11,49 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
+const navigationData = [
+  {
+    label: <Leaf />,
+    url: "/",
+  },
+  {
+    label: "encyclopédie",
+    url: "/encyclopedia",
+  },
+  {
+    label: "recherche",
+    url: "/search",
+  },
+  {
+    label: "assistant",
+    url: "/assistant",
+  },
+  {
+    label: "flore",
+    url: "/flore",
+  },
+  {
+    label: "quizz",
+    url: "/quizz",
+  },
+];
+
 export default function Header() {
   return (
     <header className="flex justify-center space-x-20 p-4 sticky top-0 w-full h-16">
       <NavigationMenu>
         <NavigationMenuList>
-          <NavigationMenuItem>
-            <Link href="/" className={cn(navigationMenuTriggerStyle())}>
-              <Leaf />
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="/encyclopedia" legacyBehavior passHref>
-              <NavigationMenuLink className={cn(navigationMenuTriggerStyle())}>
-                encyclopédie
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="/search" legacyBehavior passHref>
-              <NavigationMenuLink className={cn(navigationMenuTriggerStyle())}>
-                recherche
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="/assistant" legacyBehavior passHref>
-              <NavigationMenuLink className={cn(navigationMenuTriggerStyle())}>
-                assistant
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <Link href="/flore" legacyBehavior passHref>
-              <NavigationMenuLink className={cn(navigationMenuTriggerStyle())}>
-                flore
-              </NavigationMenuLink>
-            </Link>
-          </NavigationMenuItem>
+          {navigationData.map((d) => (
+            <NavigationMenuItem key={d.label}>
+              <Link href={d.url} legacyBehavior passHref>
+                <NavigationMenuLink
+                  className={cn(navigationMenuTriggerStyle())}
+                >
+                  {d.label}
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+          ))}
         </NavigationMenuList>
       </NavigationMenu>
 

@@ -109,20 +109,23 @@ const SideBar = () => {
         <div className="flex items-center">
           <Separator />
         </div>
-        <div className="flex h-full max-h-full gap-6 overflow-hidden">
-          <AlphabeticalListIndex
-            activeIndex={indexLetter}
-            handleIndexLetterSelection={(l) => handleIndexLetterSelection(l)}
-            className="grid grid-cols-26  p-2 justify-center border-r border-zinc-200 [&>li:last-child]:border-none"
-          />
-          {!isLoading ? (
-            <AlphabeticalListItems
-              onClick={(id: string) => handleItemSelection(id)}
-              list={filterData(data, filter)}
+        <div className="flex flex-col h-full max-h-full gap-6 overflow-hidden">
+          {/* TODO: CLEAR FILTERS BUTTON */}
+          <div className="flex h-full max-h-full gap-6 overflow-hidden">
+            <AlphabeticalListIndex
+              activeIndex={indexLetter}
+              handleIndexLetterSelection={(l) => handleIndexLetterSelection(l)}
+              className="grid grid-cols-26  p-2 justify-center border-r border-zinc-200 [&>li:last-child]:border-none"
             />
-          ) : (
-            <Loader />
-          )}
+            {!isLoading ? (
+              <AlphabeticalListItems
+                onClick={(id: string) => handleItemSelection(id)}
+                list={filterData(data, filter)}
+              />
+            ) : (
+              <Loader />
+            )}
+          </div>
         </div>
       </div>
     </SWRConfig>

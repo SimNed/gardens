@@ -8,7 +8,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils/style";
 import { Button } from "@/components/ui/button";
 
 const navigationData = [
@@ -40,11 +40,11 @@ const navigationData = [
 
 export default function Header() {
   return (
-    <header className="flex justify-center space-x-20 p-4 sticky top-0 w-full h-16">
+    <header className="flex justify-center space-x-20 p-4 sticky top-0 w-full h-16 z-50 bg-white">
       <NavigationMenu>
         <NavigationMenuList>
           {navigationData.map((d) => (
-            <NavigationMenuItem key={d.label}>
+            <NavigationMenuItem key={d.url}>
               <Link href={d.url} legacyBehavior passHref>
                 <NavigationMenuLink
                   className={cn(navigationMenuTriggerStyle())}

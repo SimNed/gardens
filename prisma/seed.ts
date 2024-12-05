@@ -6,7 +6,7 @@ import {
   Melliferous,
   Month,
 } from "@prisma/client";
-import prisma from "../lib/db";
+import prisma from "../lib/prisma/db";
 
 async function main() {
   console.log("Seeding database with predefined data...");

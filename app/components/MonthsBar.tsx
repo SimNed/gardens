@@ -1,5 +1,5 @@
-import { MONTH_INDEXES } from "@/lib/consts";
-import { cn } from "@/lib/utils";
+import { MONTH_INDEXES } from "@/lib/consts/month";
+import { cn } from "@/lib/utils/style";
 
 interface MonthsBarProps {
   months: number[];

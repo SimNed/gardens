@@ -10,6 +10,19 @@ export async function GET(
   try {
     const result = await prisma.genus.findUnique({
       where: { id },
+      include: {
+        family: {
+          select: {
+            label: true,
+          },
+        },
+        plants: {
+          select: {
+            id: true,
+            commonName: true,
+          },
+        },
+      },
     });
 
     if (!result) {

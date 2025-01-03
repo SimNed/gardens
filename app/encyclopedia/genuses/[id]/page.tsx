@@ -1,22 +1,48 @@
-"use client";
+import Section from "@/app/components/Section";
+import EncyclopediaArticleBreadCrumb from "../../components/EncyclopediaArticleBreadCrumb";
+import Link from "next/link";
+import { getGenusDetailed } from "@/app/actions/genuses";
+import { notFound } from "next/navigation";
 
-import { fetcher } from "@/lib/fetcher";
-import { useParams } from "next/navigation";
-import useSWR from "swr";
+export default async function GenusPage(props: {
+  params: Promise<{ id: string }>;
+}) {
+  const params = await props.params;
+  const genus = await getGenusDetailed(params.id);
 
-export default function GenusPage() {
-  const params = useParams();
-  const { data, error, isLoading } = useSWR(
-    `/api/genuses/${params.id}`,
-    fetcher
-  );
+  if (!genus) {
+    notFound();
+  }
 
-  if (isLoading) return <div>Chargement...</div>;
-  if (error) return <div>Erreur de chargement</div>;
+  const prevSteps = [
+    {
+      label: genus.family.label,
+      url: `${process.env.NEXT_PUBLIC_DOMAIN_URL}/encyclopedia/families/${genus.family.id}`,
+    },
+  ];
 
   return (
-    <div>
-      <h1>{data.label}</h1>
-    </div>
+    <>
+      <EncyclopediaArticleBreadCrumb
+        prevSteps={prevSteps}
+        currentStepLabel={genus.label}
+      />
+      <Section className="" variant="lg">
+        <h1 className="text-5xl font-semibold mb-2">{genus.label}</h1>
+        <p>{genus.description}</p>
+        <ul>
+          {genus.plants.map((plant) => (
+            <li key={plant.id}>
+              <Link
+                href={`/encyclopedia/plants/${plant.id}`}
+                className="underline"
+              >
+                {plant.commonName}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </>
   );
 }

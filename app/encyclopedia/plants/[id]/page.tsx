@@ -1,20 +1,12 @@
-"use client";
-
-import { fetcher } from "@/lib/fetcher";
-import { useParams } from "next/navigation";
-import useSWR from "swr";
-import PlantArticleHeader from "./components/PlantArticle/PlantArticleHeader";
 import Loader from "@/app/components/Loader";
+import PlantArticle from "./components/PlantArticle";
+import { getPlantDetailed } from "@/app/actions/plants";
 
-export default function PlantPage() {
-  const params = useParams();
+export default async function PlantPage(props: {
+  params: Promise<{ id: string }>;
+}) {
+  const params = await props.params;
+  const plant = await getPlantDetailed(params.id);
 
-  const { data, error, isLoading } = useSWR(
-    `/api/plants/${params.id}`,
-    fetcher
-  );
-
-  if (error) return <div>Erreur de chargement</div>;
-
-  return !isLoading ? <PlantArticleHeader plant={data} /> : <Loader />;
+  return plant ? <PlantArticle plant={plant} /> : <Loader />;
 }

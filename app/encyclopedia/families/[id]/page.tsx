@@ -1,22 +1,38 @@
-"use client";
+import Link from "next/link";
+import EncyclopediaArticleBreadCrumb from "../../components/EncyclopediaArticleBreadCrumb";
+import Section from "@/app/components/Section";
+import { notFound } from "next/navigation";
+import { getFamilyDetailed } from "@/app/actions/families";
 
-import { fetcher } from "@/lib/fetcher";
-import { useParams } from "next/navigation";
-import useSWR from "swr";
+export default async function FamilyPage(props: {
+  params: Promise<{ id: string }>;
+}) {
+  const params = await props.params;
+  const family = await getFamilyDetailed(params.id);
 
-export default function FamilyPage() {
-  const params = useParams();
-  const { data, error, isLoading } = useSWR(
-    `/api/families/${params.id}`,
-    fetcher
-  );
-
-  if (isLoading) return <div>Chargement...</div>;
-  if (error) return <div>Erreur de chargement</div>;
+  if (!family) {
+    notFound();
+  }
 
   return (
-    <div>
-      <h1>{data.label}</h1>
-    </div>
+    <>
+      <EncyclopediaArticleBreadCrumb currentStepLabel={family.label} />
+      <Section className="" variant="lg">
+        <h1 className="text-5xl font-semibold mb-2">{family.label}</h1>
+        <p>{family.description}</p>
+        <ul>
+          {family.genuses.map((genus) => (
+            <li key={genus.id}>
+              <Link
+                href={`/encyclopedia/genuses/${genus.id}`}
+                className="underline"
+              >
+                {genus.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    </>
   );
 }

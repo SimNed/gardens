@@ -1,10 +1,11 @@
-import { Badge } from "@/components/ui/badge";
-import { FiltersProps } from "@/types/filters/filter";
+import { Badge } from "@/app/components/shadcn-ui/badge";
+import { SearchFormProps } from "@/types/filter";
+
 import { X } from "lucide-react";
 
 interface FiltersBadgeGroupProps {
-  badges: { key: keyof FiltersProps; category: string; label: string }[];
-  onDelete: (key: keyof FiltersProps) => void;
+  badges: { key: keyof SearchFormProps; category: string; label: string }[];
+  onDelete: (key: keyof SearchFormProps) => void;
 }
 
 const FiltersBadgeGroup = ({ badges, onDelete }: FiltersBadgeGroupProps) => {
@@ -16,7 +17,7 @@ const FiltersBadgeGroup = ({ badges, onDelete }: FiltersBadgeGroupProps) => {
           variant="outline"
           className="w-fit text-xs font-normal flex gap-2 cursor-default"
         >
-          {badge.category.toLowerCase()}: {badge.label.toLowerCase()}
+          {badge.category.toLowerCase()}: {badge.label}
           <X
             className="w-3 h-3 hover:cursor-pointer"
             onClick={() => onDelete(badge.key)}

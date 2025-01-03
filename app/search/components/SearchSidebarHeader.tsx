@@ -3,14 +3,14 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-} from "@/components/ui/sidebar";
+} from "@/app/components/shadcn-ui/sidebar";
 import { Search, RefreshCcw } from "lucide-react";
 
 interface FiltersHeaderProps {
   resetFilters: () => void;
 }
 
-const FiltersHeader = ({ resetFilters }: FiltersHeaderProps) => {
+const SearchSidebarHeader = ({ resetFilters }: FiltersHeaderProps) => {
   return (
     <SidebarHeader className="p-4">
       <SidebarMenu>
@@ -32,4 +32,4 @@ const FiltersHeader = ({ resetFilters }: FiltersHeaderProps) => {
   );
 };
 
-export default FiltersHeader;
+export default SearchSidebarHeader;

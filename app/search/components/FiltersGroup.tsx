@@ -4,8 +4,11 @@ import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { SidebarGroup, SidebarGroupLabel } from "@/components/ui/sidebar";
+} from "@/app/components/shadcn-ui/collapsible";
+import {
+  SidebarGroup,
+  SidebarGroupLabel,
+} from "@/app/components/shadcn-ui/sidebar";
 
 import { ChevronDown } from "lucide-react";
 import { PropsWithChildren } from "react";
@@ -20,7 +23,7 @@ const FiltersGroup = ({
 }: PropsWithChildren<FiltersGroupProps>) => {
   return (
     <>
-      <Collapsible defaultOpen className="group/collapsible">
+      <Collapsible className="group/collapsible">
         <SidebarGroup>
           <SidebarGroupLabel asChild>
             <CollapsibleTrigger>

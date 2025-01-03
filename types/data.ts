@@ -1,8 +1,8 @@
 export type KeyValueType = {
-  id: string;
-  label: string;
+  key: string;
+  value: string;
 };
 
-export type DataType = KeyValueType & {
+export type KeyValueWithRelationType = KeyValueType & {
   relation?: KeyValueType;
 };

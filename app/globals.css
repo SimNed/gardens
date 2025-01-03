@@ -20,22 +20,33 @@ body {
   font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Poppins", Arial, Helvetica, sans-serif;
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
 
+@layer components {
+  /* Ajoute ici la classe section-label */
+  .app-label {
+    @apply text-lg font-semibold text-gray-800;
+  }
+}
+
 @layer base {
+  h1 {
+    font-family: "Poppins", Arial, Helvetica, sans-serif;
+  }
+  h1 {
+    @apply py-4;
+  }
+  h1,
+  h2 {
+    @apply font-bold;
+  }
+  p {
+    @apply py-4;
+  }
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;

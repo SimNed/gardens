@@ -5,20 +5,21 @@ import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
 import { PanelLeft } from "lucide-react";
 
-import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils/style";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
-import { Sheet, SheetContent } from "@/components/ui/sheet";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/app/components/shadcn-ui/button";
+import { Input } from "@/app/components/shadcn-ui/input";
+import { Separator } from "@/app/components/shadcn-ui/separator";
+import { Sheet, SheetContent } from "@/app/components/shadcn-ui/sheet";
+import { Skeleton } from "@/app/components/shadcn-ui/skeleton";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import ComboBox from "@/app/components/ComboBox";
+} from "@/app/components/shadcn-ui/tooltip";
+
+import { useIsMobile } from "@/lib/hooks/use-mobile";
+import ComboBoxInput from "@/app/components/inputs/ComboBoxInput";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -385,10 +386,10 @@ SidebarFooter.displayName = "SidebarFooter";
 
 const SidebarCombobox = React.forwardRef<
   React.ElementRef<typeof Button>,
-  React.ComponentProps<typeof ComboBox>
+  React.ComponentProps<typeof ComboBoxInput>
 >(({ className, ...props }, ref) => {
   return (
-    <ComboBox
+    <ComboBoxInput
       ref={ref}
       data-sidebar="combobox"
       className={cn(

@@ -26,6 +26,7 @@ CREATE TABLE "Plant" (
     "coldHardiness" INTEGER NOT NULL,
     "soils" "Soil"[],
     "lifeCycle" "LifeCycle" NOT NULL,
+    "cultureLifeCycle" "LifeCycle",
     "origin" VARCHAR(255) NOT NULL,
     "sunExposure" "SunExposure" NOT NULL,
     "waterNeed" "WaterNeed" NOT NULL,
@@ -45,6 +46,7 @@ CREATE TABLE "Plant" (
 CREATE TABLE "Family" (
     "id" TEXT NOT NULL,
     "label" VARCHAR(255) NOT NULL,
+    "description" TEXT,
 
     CONSTRAINT "Family_pkey" PRIMARY KEY ("id")
 );
@@ -53,6 +55,7 @@ CREATE TABLE "Family" (
 CREATE TABLE "Genus" (
     "id" TEXT NOT NULL,
     "label" VARCHAR(255) NOT NULL,
+    "description" TEXT,
     "familyId" TEXT NOT NULL,
 
     CONSTRAINT "Genus_pkey" PRIMARY KEY ("id")
@@ -70,6 +73,7 @@ CREATE TABLE "PlantCategory" (
 CREATE TABLE "Pest" (
     "id" TEXT NOT NULL,
     "label" VARCHAR(255) NOT NULL,
+    "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "published" BOOLEAN NOT NULL DEFAULT false,
@@ -81,6 +85,7 @@ CREATE TABLE "Pest" (
 CREATE TABLE "Disease" (
     "id" TEXT NOT NULL,
     "label" VARCHAR(255) NOT NULL,
+    "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "published" BOOLEAN NOT NULL DEFAULT false,

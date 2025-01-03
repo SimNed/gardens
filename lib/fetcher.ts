@@ -1,1 +1,3 @@
-export const fetcher = (...args) => fetch(...args).then((res) => res.json());
+export const fetcher = async (url: string) => {
+  return await fetch(url).then((response) => response.json());
+};

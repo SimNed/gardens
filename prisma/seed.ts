@@ -15,41 +15,64 @@ async function main() {
     prisma.family.create({
       data: {
         label: "Amaryllidaceae",
+        description:
+          "Les Amaryllidaceae sont une famille de plantes herbacées, souvent caractérisées par des feuilles en forme de ruban ou lancéolées, et des fleurs généralement en ombelles, souvent avec un périanthe en forme de tube. Elles possèdent des bulbilles ou des bulbes souterrains comme mode de reproduction végétative.",
       },
     }),
     prisma.family.create({
       data: {
         label: "Apiaceae",
+        description:
+          "Les Apiaceae, aussi appelées ombellifères, se distinguent par leurs inflorescences en ombelles et des feuilles souvent découpées ou pennatiséquées. Les plantes de cette famille présentent souvent des tiges creuses et des fruits appelés schizocarpes.",
       },
     }),
     prisma.family.create({
       data: {
         label: "Brassicaceae",
+        description:
+          "Les Brassicaceae, ou crucifères, sont caractérisées par des fleurs à quatre pétales disposés en croix et des fruits généralement en siliques. Les feuilles sont souvent alternes et peuvent être simples ou lobées. Elles ont une forte tendance à produire des glucosinolates.",
+      },
+    }),
+    prisma.family.create({
+      data: {
+        label: "Chenopodiaceae",
+        description:
+          "Les Chenopodiaceae sont des plantes souvent herbacées, avec des feuilles simples, alternes, parfois charnues. Leur fruit est souvent un akène, et certaines espèces possèdent des adaptations pour croître dans des sols salins (halophytes).",
       },
     }),
     prisma.family.create({
       data: {
         label: "Cucurbitaceae",
+        description:
+          "Les Cucurbitaceae sont des plantes généralement rampantes ou grimpantes, souvent avec des tiges creuses. Elles possèdent des feuilles larges et palmatilobées, et des fleurs unisexuées, généralement actinomorphes. Le fruit est souvent un fruit charnu, comme une baie ou une capsule.",
       },
     }),
     prisma.family.create({
       data: {
         label: "Fabaceae",
+        description:
+          "Les Fabaceae, ou légumineuses, sont caractérisées par des feuilles alternes, souvent composées et stipulées. Les fleurs présentent généralement une symétrie bilatérale et un dispositif particulier de pollinisation. Leur fruit est une gousse, et elles ont la capacité de fixer l'azote grâce à une symbiose avec des bactéries rhizobium.",
       },
     }),
     prisma.family.create({
       data: {
         label: "Lamiaceae",
+        description:
+          "Les Lamiaceae sont des plantes souvent aromatiques avec des tiges carrées et des feuilles opposées, souvent dentées ou crénelées. Les fleurs sont bilatérales, en verticilles ou en épis, et souvent accompagnées de glandes sécrétrices d'huiles essentielles.",
       },
     }),
     prisma.family.create({
       data: {
         label: "Rosaceae",
+        description:
+          "Les Rosaceae se caractérisent par des feuilles généralement alternes, souvent simples ou composées, avec des stipules. Les fleurs possèdent cinq pétales et sont souvent assemblées en inflorescences. Le fruit peut être un drupe, un akène ou une pomme, selon le genre.",
       },
     }),
     prisma.family.create({
       data: {
         label: "Solanaceae",
+        description:
+          "Les Solanaceae sont des plantes généralement herbacées, avec des feuilles alternes et souvent rugueuses. Les fleurs sont actinomorphes, généralement avec cinq pétales soudés, et produisent des fruits variés, tels que des baies ou des capsules. Certaines espèces contiennent des alcaloïdes.",
       },
     }),
   ]);
@@ -59,104 +82,137 @@ async function main() {
       data: {
         label: "Allium",
         familyId: families[0].id, // Amaryllidaceae
+        description:
+          "Le genre Allium inclut des plantes bulbeuses comme l'ail, l'oignon et le poireau. Elles sont caractérisées par des feuilles basales souvent longues et fines, et des fleurs en ombelles, généralement à six tépales. Les bulbes sont un mode de reproduction végétative commun.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Daucus",
         familyId: families[1].id, // Apiaceae
+        description:
+          "Le genre Daucus, dont l'espèce la plus connue est la carotte, présente des feuilles finement divisées et une inflorescence en ombelle. Les fleurs sont généralement petites et blanches, et les fruits sont des schizocarpes contenant plusieurs graines.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Coriandrum",
         familyId: families[1].id, // Apiaceae
+        description:
+          "Coriandrum, dont l'espèce type est le coriandre, se distingue par des feuilles aromatiques finement découpées et des fleurs en petites ombelles. Les fruits sont des schizocarpes et contiennent des huiles essentielles caractéristiques.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Spinacia",
-        familyId: families[1].id, // Apiaceae
+        familyId: families[3].id, // Chenopodiaceae
+        description:
+          "Spinacia, comprenant l'espèce populaire de l'épinard, se caractérise par des feuilles larges, souvent comestibles, et une inflorescence en épi. Le fruit est une petite noix, généralement entourée d'une membrane externe.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Petroselinum",
         familyId: families[1].id, // Apiaceae
+        description:
+          "Petroselinum, dont le persil fait partie, se caractérise par des feuilles composées et finement divisées, et des fleurs petites en ombelles. Les fruits sont des schizocarpes contenant plusieurs graines.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Cucumis",
-        familyId: families[2].id, // Cucurbitaceae
+        familyId: families[4].id, // Cucurbitaceae
+        description:
+          "Le genre Cucumis inclut des plantes comme le concombre et le melon. Les plantes de ce genre possèdent des tiges rampantes ou grimpantes, des feuilles larges et souvent lobées, et des fruits charnus, souvent sous forme de baies.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Brassica",
-        familyId: families[3].id, // Brassicaceae
+        familyId: families[2].id, // Brassicaceae
+        description:
+          "Le genre Brassica comprend des plantes comme le chou, le brocoli et la moutarde. Elles se caractérisent par des feuilles alternes souvent lobées et des fleurs disposées en croix. Les fruits sont des siliques contenant des graines.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Phaseolus",
-        familyId: families[4].id, // Fabaceae
+        familyId: families[5].id, // Fabaceae
+        description:
+          "Phaseolus comprend des légumineuses comme le haricot et le pois chiche. Les plantes de ce genre ont des feuilles alternes composées, des fleurs bilatérales souvent de couleur vive, et produisent des gousses contenant plusieurs graines.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Ocimum",
-        familyId: families[5].id, // Lamiaceae
+        familyId: families[6].id, // Lamiaceae
+        description:
+          "Ocimum, qui inclut le basilic, se caractérise par des feuilles opposées, souvent aromatiques, et des tiges carrées typiques des Lamiaceae. Les fleurs sont bilatérales et souvent regroupées en épis ou en verticilles.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Mentha",
-        familyId: families[5].id, // Lamiaceae
+        familyId: families[6].id, // Lamiaceae
+        description:
+          "Le genre Mentha comprend des plantes comme la menthe. Elles possèdent des feuilles opposées, souvent dentées et aromatiques. Les fleurs sont généralement regroupées en épis et sont de couleur violette ou blanche.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Solanum",
-        familyId: families[6].id, // Solanaceae
+        familyId: families[8].id, // Solanaceae
+        description:
+          "Solanum, qui inclut la pomme de terre et la tomate, se caractérise par des feuilles alternes, souvent rugueuses, et des fleurs généralement actinomorphes avec cinq pétales soudés. Le fruit est souvent une baie, comme dans le cas de la tomate.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Capsicum",
-        familyId: families[6].id, // Solanaceae
+        familyId: families[8].id, // Solanaceae
+        description:
+          "Le genre Capsicum regroupe les piments et poivrons. Les plantes ont des feuilles simples et alternes, des fleurs bilatérales, et produisent des fruits charnus de différentes couleurs et tailles. Ces fruits sont souvent consommés frais ou séchés.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Prunus",
         familyId: families[7].id, // Rosaceae
+        description:
+          "Prunus, comprenant des arbres comme les cerisiers et pruniers, se caractérise par des feuilles alternes, souvent ovales et dentées, et des fleurs généralement en grappes. Le fruit est une drupe, comme la cerise ou la prune.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Fragaria",
         familyId: families[7].id, // Rosaceae
+        description:
+          "Fragaria comprend des plantes comme la fraise. Elles possèdent des feuilles trifoliées, et les fleurs sont généralement blanches avec cinq pétales. Le fruit est un réceptacle charnu, contenant de nombreuses petites graines à sa surface.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Pyrus",
         familyId: families[7].id, // Rosaceae
+        description:
+          "Pyrus regroupe des arbres fruitiers comme les poiriers. Ces plantes ont des feuilles simples et alternes, souvent dentées, et des fleurs blanches ou roses en ombelles. Le fruit est une pomme de type poire, caractéristique de ce genre.",
       },
     }),
     prisma.genus.create({
       data: {
         label: "Malus",
         familyId: families[7].id, // Rosaceae
+        description:
+          "Le genre Malus comprend des arbres comme le pommier. Les plantes de ce genre possèdent des feuilles alternes, simples et dentées, et des fleurs blanches ou roses. Le fruit est une pomme, généralement de forme ronde.",
       },
     }),
   ]);
 
   const plantCategories = await Promise.all([
-    prisma.plantCategory.create({ data: { label: "Légumes" } }),
-    prisma.plantCategory.create({ data: { label: "Fruits" } }),
-    prisma.plantCategory.create({ data: { label: "Herbes" } }),
+    prisma.plantCategory.create({ data: { label: "Plantes potagères" } }),
+    prisma.plantCategory.create({ data: { label: "Arbres frutiers" } }),
+    prisma.plantCategory.create({ data: { label: "Herbes aromatiques" } }),
+    prisma.plantCategory.create({ data: { label: "Adventices" } }),
   ]);
 
   const pests = await Promise.all([
@@ -164,12 +220,16 @@ async function main() {
       data: {
         label: "Puceron",
         published: true,
+        description:
+          "Les pucerons sont des insectes suceurs de sève qui se trouvent principalement sur les jeunes pousses et les feuilles tendres des plantes. Ils possèdent un corps mou et sont souvent de couleur verte, noire ou rouge. Leur présence peut entraîner un jaunissement des feuilles et une déformation des pousses. Ils sont également responsables de la transmission de diverses maladies virales.",
       },
     }),
     prisma.pest.create({
       data: {
         label: "Acarien",
         published: true,
+        description:
+          "Les acariens sont des arthropodes minuscules, souvent invisibles à l'œil nu, qui se nourrissent des cellules végétales en piquant les feuilles et tiges des plantes. Leur présence se traduit par des taches jaunes ou argentées sur les feuilles, des toiles fines, et parfois une déformation des tissus. Ils peuvent causer un stress important aux plantes, en réduisant leur photosynthèse et en les rendant plus vulnérables aux maladies.",
       },
     }),
   ]);
@@ -179,27 +239,31 @@ async function main() {
       data: {
         label: "Oïdium",
         published: true,
+        description:
+          "L'oïdium est une maladie fongique qui affecte de nombreuses plantes, en particulier les légumes et les plantes ornementales. Elle se manifeste par la formation d'un feutrage blanc, poudreux sur les feuilles, tiges et parfois les fleurs. Cette maladie peut entraîner un ralentissement de la croissance de la plante, une déformation des feuilles et une réduction de la photosynthèse.",
       },
     }),
     prisma.disease.create({
       data: {
         label: "Rouille",
         published: true,
+        description:
+          "La rouille est une maladie fongique causée par des champignons du genre Puccinia. Elle se reconnaît par des taches orange, jaunes ou brunes sur les feuilles, qui finissent par se déchirer et se dessécher. Les spores fongiques se propagent par le vent et peuvent infecter de nouvelles plantes, réduisant leur capacité à produire des nutriments et affaiblissant leur résistance aux autres maladies.",
       },
     }),
   ]);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const plants = await Promise.all([
+  await Promise.all([
     prisma.plant.create({
       data: {
         taxonomicName: "Allium sativum",
         commonName: "Ail",
         genusId: genuses[0].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 4,
-        soils: ["LOAMY", "SANDY"],
+        coldHardiness: -15,
+        soils: [Soil.LOAMY, Soil.SANDY],
         lifeCycle: LifeCycle.PERENNIAL,
+        cultureLifeCycle: LifeCycle.ANNUAL,
         origin: "Europe et Asie",
         sunExposure: SunExposure.FULL_SUN,
         waterNeed: WaterNeed.LOW,
@@ -221,8 +285,8 @@ async function main() {
         commonName: "Ciboulette",
         genusId: genuses[0].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 3,
-        soils: ["LOAMY", "SANDY"],
+        coldHardiness: -15,
+        soils: [Soil.LOAMY, Soil.HUMUS],
         lifeCycle: LifeCycle.PERENNIAL,
         origin: "Europe, Asie",
         sunExposure: SunExposure.PARTIAL_SHADE,
@@ -245,9 +309,9 @@ async function main() {
         commonName: "Carotte",
         genusId: genuses[1].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 5,
-        soils: ["LOAMY", "SANDY"],
-        lifeCycle: LifeCycle.BISANNUAL,
+        coldHardiness: -10,
+        soils: [Soil.LOAMY, Soil.SANDY],
+        lifeCycle: LifeCycle.ANNUAL,
         origin: "Asie, Europe",
         sunExposure: SunExposure.FULL_SUN,
         waterNeed: WaterNeed.MODERATE,
@@ -268,9 +332,9 @@ async function main() {
         taxonomicName: "Coriandrum sativum",
         commonName: "Coriandre",
         genusId: genuses[2].id,
-        plantCategoryId: plantCategories[0].id,
-        coldHardiness: 6,
-        soils: ["LOAMY", "SANDY"],
+        plantCategoryId: plantCategories[2].id,
+        coldHardiness: 0,
+        soils: [Soil.LOAMY, Soil.HUMUS],
         lifeCycle: LifeCycle.ANNUAL,
         origin: "Europe, Asie",
         sunExposure: SunExposure.FULL_SUN,
@@ -293,8 +357,8 @@ async function main() {
         commonName: "Épinard",
         genusId: genuses[3].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 4,
-        soils: ["LOAMY", "CLAY"],
+        coldHardiness: -10,
+        soils: [Soil.LOAMY, Soil.HUMUS],
         lifeCycle: LifeCycle.ANNUAL,
         origin: "Asie, Europe",
         sunExposure: SunExposure.PARTIAL_SHADE,
@@ -316,10 +380,11 @@ async function main() {
         taxonomicName: "Petroselinum crispum",
         commonName: "Persil",
         genusId: genuses[4].id,
-        plantCategoryId: plantCategories[0].id,
-        coldHardiness: 6,
-        soils: ["LOAMY", "SANDY"],
-        lifeCycle: LifeCycle.ANNUAL,
+        plantCategoryId: plantCategories[2].id,
+        coldHardiness: -8,
+        soils: [Soil.HUMUS, Soil.LOAMY],
+        lifeCycle: LifeCycle.PERENNIAL,
+        cultureLifeCycle: LifeCycle.BISANNUAL,
         origin: "Europe, Asie",
         sunExposure: SunExposure.PARTIAL_SHADE,
         waterNeed: WaterNeed.MODERATE,
@@ -341,8 +406,8 @@ async function main() {
         commonName: "Concombre",
         genusId: genuses[5].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 6,
-        soils: ["LOAMY", "SANDY"],
+        coldHardiness: 0,
+        soils: [Soil.LOAMY, Soil.SANDY],
         lifeCycle: LifeCycle.ANNUAL,
         origin: "Asie",
         sunExposure: SunExposure.FULL_SUN,
@@ -366,7 +431,7 @@ async function main() {
         genusId: genuses[5].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: 5,
-        soils: ["LOAMY", "SANDY"],
+        soils: [Soil.LOAMY, Soil.SANDY],
         lifeCycle: LifeCycle.ANNUAL,
         origin: "Afrique, Asie",
         sunExposure: SunExposure.FULL_SUN,
@@ -389,8 +454,8 @@ async function main() {
         commonName: "Chou romanesco",
         genusId: genuses[6].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 4,
-        soils: ["LOAMY", "CLAY"],
+        coldHardiness: -8,
+        soils: [Soil.LOAMY, Soil.HUMUS],
         lifeCycle: LifeCycle.ANNUAL,
         origin: "Europe",
         sunExposure: SunExposure.FULL_SUN,
@@ -413,8 +478,8 @@ async function main() {
         commonName: "Haricot vert",
         genusId: genuses[7].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 5,
-        soils: ["LOAMY", "SANDY"],
+        coldHardiness: 0,
+        soils: [Soil.LOAMY, Soil.SANDY],
         lifeCycle: LifeCycle.ANNUAL,
         origin: "Amérique",
         sunExposure: SunExposure.FULL_SUN,
@@ -435,11 +500,12 @@ async function main() {
       data: {
         taxonomicName: "Solanum tuberosum",
         commonName: "Pomme de terre",
-        genusId: genuses[8].id,
+        genusId: genuses[10].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 3,
-        soils: ["LOAMY", "CLAY"],
-        lifeCycle: LifeCycle.ANNUAL,
+        coldHardiness: -5,
+        soils: [Soil.LOAMY, Soil.SANDY],
+        lifeCycle: LifeCycle.PERENNIAL,
+        cultureLifeCycle: LifeCycle.ANNUAL,
         origin: "Amérique du Sud",
         sunExposure: SunExposure.FULL_SUN,
         waterNeed: WaterNeed.HIGH,
@@ -459,11 +525,12 @@ async function main() {
       data: {
         taxonomicName: "Solanum lycopersicum",
         commonName: "Tomate",
-        genusId: genuses[8].id,
+        genusId: genuses[10].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 4,
-        soils: ["LOAMY", "SANDY"],
-        lifeCycle: LifeCycle.ANNUAL,
+        coldHardiness: 0,
+        soils: [Soil.LOAMY, Soil.HUMUS],
+        lifeCycle: LifeCycle.PERENNIAL,
+        cultureLifeCycle: LifeCycle.ANNUAL,
         origin: "Amérique du Sud",
         sunExposure: SunExposure.FULL_SUN,
         waterNeed: WaterNeed.HIGH,
@@ -483,10 +550,10 @@ async function main() {
       data: {
         taxonomicName: "Capsicum annuum",
         commonName: "Poivron",
-        genusId: genuses[9].id,
+        genusId: genuses[11].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 3,
-        soils: ["LOAMY", "SANDY"],
+        coldHardiness: 0,
+        soils: [Soil.LOAMY, Soil.HUMUS],
         lifeCycle: LifeCycle.ANNUAL,
         origin: "Amérique centrale",
         sunExposure: SunExposure.FULL_SUN,
@@ -507,10 +574,10 @@ async function main() {
       data: {
         taxonomicName: "Prunus armeniaca",
         commonName: "Abricot",
-        genusId: genuses[10].id,
-        plantCategoryId: plantCategories[0].id,
-        coldHardiness: 5,
-        soils: ["LOAMY", "SANDY"],
+        genusId: genuses[12].id,
+        plantCategoryId: plantCategories[1].id,
+        coldHardiness: -15,
+        soils: [Soil.LOAMY, Soil.SANDY],
         lifeCycle: LifeCycle.PERENNIAL,
         origin: "Asie centrale",
         sunExposure: SunExposure.FULL_SUN,
@@ -531,10 +598,10 @@ async function main() {
       data: {
         taxonomicName: "Prunus domestica",
         commonName: "Prune",
-        genusId: genuses[10].id,
-        plantCategoryId: plantCategories[0].id,
-        coldHardiness: 5,
-        soils: ["LOAMY", "SANDY"],
+        genusId: genuses[12].id,
+        plantCategoryId: plantCategories[1].id,
+        coldHardiness: -20,
+        soils: [Soil.LOAMY, Soil.SANDY],
         lifeCycle: LifeCycle.PERENNIAL,
         origin: "Europe et Asie",
         sunExposure: SunExposure.FULL_SUN,
@@ -555,10 +622,10 @@ async function main() {
       data: {
         taxonomicName: "Fragaria × ananassa",
         commonName: "Fraise",
-        genusId: genuses[11].id,
+        genusId: genuses[13].id,
         plantCategoryId: plantCategories[0].id,
-        coldHardiness: 4,
-        soils: ["LOAMY", "SANDY"],
+        coldHardiness: 0,
+        soils: [Soil.LOAMY, Soil.HUMUS],
         lifeCycle: LifeCycle.PERENNIAL,
         origin: "Amérique du Nord",
         sunExposure: SunExposure.FULL_SUN,
@@ -579,10 +646,10 @@ async function main() {
       data: {
         taxonomicName: "Pyrus communis",
         commonName: "Poire",
-        genusId: genuses[12].id,
-        plantCategoryId: plantCategories[0].id,
-        coldHardiness: 4,
-        soils: ["LOAMY", "SANDY"],
+        genusId: genuses[14].id,
+        plantCategoryId: plantCategories[1].id,
+        coldHardiness: -20,
+        soils: [Soil.LOAMY, Soil.SANDY],
         lifeCycle: LifeCycle.PERENNIAL,
         origin: "Europe et Asie",
         sunExposure: SunExposure.FULL_SUN,
@@ -603,10 +670,10 @@ async function main() {
       data: {
         taxonomicName: "Malus domestica",
         commonName: "Pomme",
-        genusId: genuses[13].id,
-        plantCategoryId: plantCategories[0].id,
-        coldHardiness: 4,
-        soils: ["LOAMY", "SANDY"],
+        genusId: genuses[15].id,
+        plantCategoryId: plantCategories[1].id,
+        coldHardiness: -25,
+        soils: [Soil.LOAMY, Soil.SANDY],
         lifeCycle: LifeCycle.PERENNIAL,
         origin: "Europe et Asie",
         sunExposure: SunExposure.FULL_SUN,
@@ -622,13 +689,14 @@ async function main() {
         published: true,
       },
     }),
+
     prisma.plant.create({
       data: {
         taxonomicName: "Ocimum basilicum",
         commonName: "Basilic",
-        genusId: genuses[14].id,
-        plantCategoryId: plantCategories[0].id,
-        coldHardiness: 2,
+        genusId: genuses[8].id,
+        plantCategoryId: plantCategories[2].id,
+        coldHardiness: 0,
         soils: [Soil.LOAMY, Soil.SANDY],
         lifeCycle: LifeCycle.ANNUAL,
         origin: "Méditerranée",
@@ -649,9 +717,9 @@ async function main() {
       data: {
         taxonomicName: "Mentha spicata",
         commonName: "Menthe",
-        genusId: genuses[15].id,
-        plantCategoryId: plantCategories[0].id,
-        coldHardiness: 3,
+        genusId: genuses[9].id,
+        plantCategoryId: plantCategories[2].id,
+        coldHardiness: -10,
         soils: [Soil.LOAMY, Soil.SANDY],
         lifeCycle: LifeCycle.PERENNIAL,
         origin: "Europe, Asie",

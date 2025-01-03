@@ -15,11 +15,11 @@ const PlantArticle = ({ plant }: PlantArticleProps) => {
   const prevSteps = [
     {
       label: plant.genus.family.label,
-      url: `${process.env.NEXT_PUBLIC_DOMAIN_URL}/encyclopedia/families/${plant.genus.family.id}`,
+      url: `/encyclopedia/families/${plant.genus.family.id}`,
     },
     {
       label: plant.genus.label,
-      url: `${process.env.NEXT_PUBLIC_DOMAIN_URL}/encyclopedia/genuses/${plant.genus.id}`,
+      url: `/encyclopedia/genuses/${plant.genus.id}`,
     },
   ];
 

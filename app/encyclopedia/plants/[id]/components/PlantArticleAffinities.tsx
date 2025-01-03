@@ -15,14 +15,14 @@ const PlantArticleAffinities = ({ plant }: PlantArticleAffinitiesProps) => {
           <h2 className="font-normal">Parasites</h2>
         </div>
         <ul className="p-2 my-2">
-          {plant.pests.map((disease) => (
-            <li key={disease.id}>
+          {plant.pests.map((pest) => (
+            <li key={pest.id}>
               {
                 <Link
                   className="underline text-sm"
-                  href={`${process.env.NEXT_PUBLIC_DOMAIN_URL}/encyclopedia/diseases/${disease.id}`}
+                  href={`/encyclopedia/pests/${pest.id}`}
                 >
-                  {disease.label}
+                  {pest.label}
                 </Link>
               }
             </li>
@@ -40,7 +40,7 @@ const PlantArticleAffinities = ({ plant }: PlantArticleAffinitiesProps) => {
               {
                 <Link
                   className="underline text-sm"
-                  href={`${process.env.NEXT_PUBLIC_DOMAIN_URL}/encyclopedia/diseases/${disease.id}`}
+                  href={`/encyclopedia/diseases/${disease.id}`}
                 >
                   {disease.label}
                 </Link>

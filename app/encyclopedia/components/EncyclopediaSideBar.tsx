@@ -47,7 +47,7 @@ const EncyclopediaSideBar = ({ data, ...props }: SidebarProps) => {
   ) {
     const sortedData = sortInsensitivelyKeyValueArray(data[type]);
 
-    return sortedData.filter((data: KeyValueType) => {
+    return sortedData.filter((data: KeyValueType<string>) => {
       return normalizeString(data.value)
         .toLowerCase()
         .startsWith(normalizeString(filter).toLowerCase());
@@ -84,9 +84,7 @@ const EncyclopediaSideBar = ({ data, ...props }: SidebarProps) => {
             <SidebarMenuItem key={d.value} className="p-1">
               <SidebarMenuButton
                 onClick={() =>
-                  router.push(
-                    `${process.env.NEXT_PUBLIC_DOMAIN_URL}/encyclopedia/${datasetType}/${d.key}`
-                  )
+                  router.push(`/encyclopedia/${datasetType}/${d.key}`)
                 }
               >
                 {d.value}

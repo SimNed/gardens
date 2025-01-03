@@ -10,23 +10,23 @@ import {
 } from "@/app/components/shadcn-ui/select";
 import { KeyValueType } from "@/types/data";
 
-interface SelectProps {
-  options: KeyValueType[];
+interface SelectProps<T> {
+  options: KeyValueType<T>[];
   selectValue: string;
   label?: string;
   placeholder?: string;
   optionsLabel?: string;
-  onValueChange: (data: KeyValueType) => void;
+  onValueChange: (data: KeyValueType<T>) => void;
 }
 
-const SelectInput = ({
+const SelectInput = <T,>({
   options,
   selectValue,
   label,
   placeholder = "sélection",
   optionsLabel,
   onValueChange,
-}: SelectProps) => {
+}: SelectProps<T>) => {
   return (
     <div className="p-2">
       {label && <Label>{label}</Label>}
@@ -45,7 +45,7 @@ const SelectInput = ({
             <SelectGroup>
               {optionsLabel && <SelectLabel>{optionsLabel}</SelectLabel>}
               {options.map((option) => (
-                <SelectItem key={option.key} value={option.value}>
+                <SelectItem key={option.key} value={option.value as string}>
                   {option.key}
                 </SelectItem>
               ))}

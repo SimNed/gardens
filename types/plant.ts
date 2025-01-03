@@ -10,3 +10,14 @@ export type PlantWithTaxonomyType = Plant & {
     };
   };
 };
+
+export type PlantDetailedType = PlantWithTaxonomyType & {
+  diseases: {
+    id: string;
+    label: string;
+  }[];
+  pests: {
+    id: string;
+    label: string;
+  }[];
+};

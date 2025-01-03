@@ -1,30 +1,44 @@
-import { MONTH_INDEXES } from "@/lib/consts/month";
+import { getShortenedMonths } from "@/lib/utils/month";
 import { cn } from "@/lib/utils/style";
+import { MonthVariantType } from "@/types/variant";
+
+const defaultVariant = {
+  label: "",
+  color: "text-black",
+};
+
+const cultureVariant = {
+  label: "culture",
+  color: "text-green-600",
+};
+
+const harvestVariant = {
+  label: "récolte",
+  color: "text-orange-600",
+};
 
 interface MonthsBarProps {
   months: number[];
-  variant?: "default" | "culture" | "harvest";
+  variant?: MonthVariantType;
 }
 
 const MonthsBar = ({ months, variant = "default" }: MonthsBarProps) => {
-  const variantData = {
+  let variantData = {
     label: "",
     color: "",
   };
 
   switch (variant) {
     case "culture":
-      variantData.label = "culture";
-      variantData.color = "text-green-600";
+      variantData = cultureVariant;
       break;
 
     case "harvest":
-      variantData.label = "récolte";
-      variantData.color = "text-orange-600";
+      variantData = harvestVariant;
       break;
 
     default:
-      variantData.color = "text-black";
+      variantData = defaultVariant;
       break;
   }
 
@@ -32,11 +46,11 @@ const MonthsBar = ({ months, variant = "default" }: MonthsBarProps) => {
 
   return (
     <div className="grid grid-cols-3">
-      {variant !== "default" && (
-        <p className="col-span-1">{variantData.label}</p>
+      {variantData.label && (
+        <p className="col-span-1 p-0">{variantData.label}</p>
       )}
       <ul className="col-span-2 flex justify-between text-black">
-        {MONTH_INDEXES.map((m, index) => (
+        {getShortenedMonths().map((m, index) => (
           <li
             key={index}
             className={

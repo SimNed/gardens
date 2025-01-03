@@ -17,7 +17,7 @@ export default async function GenusPage(props: {
   const prevSteps = [
     {
       label: genus.family.label,
-      url: `${process.env.NEXT_PUBLIC_DOMAIN_URL}/encyclopedia/families/${genus.family.id}`,
+      url: `/encyclopedia/families/${genus.family.id}`,
     },
   ];
 

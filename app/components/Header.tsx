@@ -6,10 +6,9 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+} from "@/app/components/shadcn-ui/navigation-menu";
 import Link from "next/link";
 import { cn } from "@/lib/utils/style";
-import { Button } from "@/components/ui/button";
 
 const navigationData = [
   {
@@ -23,14 +22,6 @@ const navigationData = [
   {
     label: "recherche",
     url: "/search",
-  },
-  {
-    label: "assistant",
-    url: "/assistant",
-  },
-  {
-    label: "flore",
-    url: "/flore",
   },
   {
     label: "quizz",
@@ -57,7 +48,7 @@ export default function Header() {
         </NavigationMenuList>
       </NavigationMenu>
 
-      <NavigationMenu>
+      {/* <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
             <Button>Sign up</Button>
@@ -67,7 +58,7 @@ export default function Header() {
             <Button variant="ghost">Log in</Button>
           </NavigationMenuItem>
         </NavigationMenuList>
-      </NavigationMenu>
+      </NavigationMenu> */}
     </header>
   );
 }

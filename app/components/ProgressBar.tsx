@@ -1,6 +1,6 @@
 "use client";
 
-import { Progress } from "@/components/ui/progress";
+import { Progress } from "@/app/components/shadcn-ui/progress";
 import { useEffect, useRef, useState } from "react";
 
 interface ProgressBarInterface {

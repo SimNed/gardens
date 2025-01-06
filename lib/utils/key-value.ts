@@ -1,8 +1,8 @@
 import { KeyValueType } from "@/types/data";
 import { normalizeString } from "./string";
 
-export function sortInsensitivelyKeyValueArray(
-  data: KeyValueType[],
+export function sortInsensitivelyKeyValueStringArray(
+  data: KeyValueType<string>[],
   language: string = "fr"
 ) {
   return data.sort((a, b) =>

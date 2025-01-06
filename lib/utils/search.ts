@@ -1,4 +1,4 @@
-import { SearchFormType, SearchRequestType } from "@/types/filter";
+import { SearchFormType, SearchRequestType } from "@/types/search";
 
 export function convertFormToRequest(
   filterForm: SearchFormType

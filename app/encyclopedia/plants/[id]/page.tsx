@@ -1,12 +1,24 @@
-import Loader from "@/app/components/Loader";
 import PlantArticle from "./components/PlantArticle";
-import { getPlantDetailed } from "@/app/actions/plants";
+import { Suspense } from "react";
+import { notFound } from "next/navigation";
+import { getPlant } from "@/lib/api/plants";
+import { PlantArticleSkeleton } from "./components/PlantArticleSkeleton";
+import { unstable_noStore } from "next/cache";
 
 export default async function PlantPage(props: {
   params: Promise<{ id: string }>;
 }) {
-  const params = await props.params;
-  const plant = await getPlantDetailed(params.id);
+  unstable_noStore();
 
-  return plant ? <PlantArticle plant={plant} /> : <Loader />;
+  const params = await props.params;
+  const plant = await getPlant(params.id);
+
+  if (!plant) notFound();
+
+  return (
+    <Suspense fallback={<PlantArticleSkeleton />}>
+      <PlantArticle plant={plant} />
+    </Suspense>
+    // <PlantArticleSkeleton />
+  );
 }

@@ -2,20 +2,21 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/app/components/shadcn-ui/sidebar";
-import { getEncyclopediaListedData } from "../actions/encyclopedia";
 
-import EncyclopediaSideBar from "./components/EncyclopediaSideBar";
+import { Suspense } from "react";
+import EncyclopediaSideBarDataFetcher from "./components/EncyclopediaSideBarDataFetcher";
+import SideBarSkeleton from "./components/SideBarSkeleton";
 
 export default async function EncyclopediaLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const data = await getEncyclopediaListedData();
-
   return (
     <SidebarProvider>
-      <EncyclopediaSideBar data={data} />
+      <Suspense fallback={<SideBarSkeleton />}>
+        <EncyclopediaSideBarDataFetcher />
+      </Suspense>
 
       <SidebarInset className="flex items-center">{children}</SidebarInset>
     </SidebarProvider>

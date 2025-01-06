@@ -1,14 +1,15 @@
 import Section from "@/app/components/Section";
 import EncyclopediaArticleBreadCrumb from "../../components/EncyclopediaArticleBreadCrumb";
 import Link from "next/link";
-import { getGenusDetailed } from "@/app/actions/genuses";
 import { notFound } from "next/navigation";
+import { getGenus } from "@/lib/api/genuses";
+import { GenusType } from "@/types/genus";
 
 export default async function GenusPage(props: {
   params: Promise<{ id: string }>;
 }) {
   const params = await props.params;
-  const genus = await getGenusDetailed(params.id);
+  const genus: GenusType = await getGenus(params.id);
 
   if (!genus) {
     notFound();

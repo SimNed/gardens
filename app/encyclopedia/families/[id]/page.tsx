@@ -2,13 +2,14 @@ import Link from "next/link";
 import EncyclopediaArticleBreadCrumb from "../../components/EncyclopediaArticleBreadCrumb";
 import Section from "@/app/components/Section";
 import { notFound } from "next/navigation";
-import { getFamilyDetailed } from "@/app/actions/families";
+import { getFamily } from "@/lib/api/family";
+import { FamilyType } from "@/types/family";
 
 export default async function FamilyPage(props: {
   params: Promise<{ id: string }>;
 }) {
   const params = await props.params;
-  const family = await getFamilyDetailed(params.id);
+  const family: FamilyType = await getFamily(params.id);
 
   if (!family) {
     notFound();

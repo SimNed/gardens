@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma/db";
-import { SearchFormOptionProps } from "@/types/filter";
+import { SearchFormOptionProps } from "@/types/search";
 
 import { LifeCycle, Melliferous, SunExposure, WaterNeed } from "@prisma/client";
 
@@ -58,8 +58,10 @@ export async function getSearchFormOptions(): Promise<SearchFormOptionProps> {
       genus: genuses.map((g) => {
         return {
           key: g.label,
-          value: g.id,
-          relation: { key: g.family.label, value: g.family.id },
+          value: {
+            value: g.id,
+            relation: { key: g.family.label, value: g.family.id },
+          },
         };
       }),
 
@@ -88,8 +90,11 @@ export async function getSearchFormOptions(): Promise<SearchFormOptionProps> {
         { key: "Haut", value: Melliferous.HIGH },
       ],
       coldHardiness: {
-        min: coldHardinessRange._min.coldHardiness ?? -9,
-        max: coldHardinessRange._max.coldHardiness ?? 9,
+        key: "label",
+        value: {
+          min: coldHardinessRange._min.coldHardiness ?? -9,
+          max: coldHardinessRange._max.coldHardiness ?? 9,
+        },
       },
     };
   } catch (error) {

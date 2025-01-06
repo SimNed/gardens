@@ -1,15 +1,16 @@
+// app/api/plants/[id]/route.ts
 import prisma from "@/lib/prisma/db";
 import { NextResponse } from "next/server";
 
 export async function GET(
-  req: Request,
+  request: Request,
   { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
-
   try {
-    const result = await prisma.plant.findUnique({
-      where: { id },
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 ms = 1 seconde
+
+    const plant = await prisma.plant.findUnique({
+      where: { id: params.id },
       include: {
         genus: {
           select: {
@@ -23,7 +24,13 @@ export async function GET(
             },
           },
         },
-        plantCategory: {
+        diseases: {
+          select: {
+            id: true,
+            label: true,
+          },
+        },
+        pests: {
           select: {
             id: true,
             label: true,
@@ -32,11 +39,11 @@ export async function GET(
       },
     });
 
-    if (!result) {
+    if (!plant) {
       return NextResponse.json({ error: "Plant not found" }, { status: 404 });
     }
 
-    return NextResponse.json(result);
+    return NextResponse.json(plant);
   } catch (error) {
     console.error("Failed to fetch plant:", error);
     return NextResponse.json(

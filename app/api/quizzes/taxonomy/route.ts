@@ -1,0 +1,22 @@
+import prisma from "@/lib/prisma/db";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  try {
+    return NextResponse.json(
+      prisma.$queryRaw`
+          SELECT p."commonName", p."taxonomicName", p."imageUrl", f.label AS "familyLabel" 
+          FROM "Plant" p 
+          JOIN "Family" f ON g."familyId" = f.id 
+          ORDER BY RANDOM() 
+          LIMIT 15;
+        `
+    );
+  } catch (error) {
+    console.error("Failed to fetch listed plants:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch listed plants" },
+      { status: 500 }
+    );
+  }
+}

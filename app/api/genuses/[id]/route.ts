@@ -13,6 +13,7 @@ export async function GET(
       include: {
         family: {
           select: {
+            id: true,
             label: true,
           },
         },

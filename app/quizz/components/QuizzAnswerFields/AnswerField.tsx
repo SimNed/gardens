@@ -1,7 +1,8 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import { sanitizedString } from "@/lib/utils";
+import { Input } from "@/app/components/shadcn-ui/input";
+import { sanitizedQuizzString, sanitizedString } from "@/lib/utils/string";
+import { cn } from "@/lib/utils/style";
 import { CircleCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -25,7 +26,6 @@ const AnswerField = ({
 
   useEffect(() => {
     setInputValue("");
-    console.log(solution);
   }, [solution]);
 
   useEffect(() => {
@@ -36,18 +36,27 @@ const AnswerField = ({
     <div className="flex items-center gap-4">
       <Input
         autoFocus={autoFocus}
-        className="disabled:cursor-default"
+        className={cn("disabled:cursor-default")}
         placeholder={label}
         onChange={(e) => {
           setInputValue(e.target.value);
-          if (sanitizedString(e.target.value) === sanitizedString(solution)) {
+          if (
+            sanitizedQuizzString(e.target.value) === sanitizedString(solution)
+          ) {
             setIsSuccess(true);
           }
         }}
         value={isSuccess ? solution : inputValue}
         disabled={isSuccess}
       />
-      {validateField && isSuccess && <CircleCheck className="text-green-500" />}
+      {validateField && (
+        <CircleCheck
+          className={cn(
+            "text-green-500 transition-all duration-300 ease-out",
+            isSuccess ? "scale-x-100" : "scale-x-0"
+          )}
+        />
+      )}
     </div>
   );
 };

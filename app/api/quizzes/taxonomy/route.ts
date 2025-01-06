@@ -4,13 +4,14 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     return NextResponse.json(
-      prisma.$queryRaw`
-          SELECT p."commonName", p."taxonomicName", p."imageUrl", f.label AS "familyLabel" 
-          FROM "Plant" p 
-          JOIN "Family" f ON g."familyId" = f.id 
-          ORDER BY RANDOM() 
-          LIMIT 15;
-        `
+      await prisma.$queryRaw`
+        SELECT p."commonName", p."taxonomicName", p."imageUrl", f.label AS "familyLabel" 
+        FROM "Plant" p 
+        JOIN "Genus" g ON p."genusId" = g.id
+        JOIN "Family" f ON g."familyId" = f.id
+        ORDER BY RANDOM() 
+        LIMIT 15;
+      `
     );
   } catch (error) {
     console.error("Failed to fetch listed plants:", error);

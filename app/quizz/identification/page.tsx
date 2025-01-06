@@ -1,11 +1,10 @@
 import Section from "@/app/components/Section";
-import { PlantQuizzType } from "@/types/QuizzType";
+import { PlantQuizzType } from "@/types/quizz";
 import QuizzWithPictureDisplayer from "../components/QuizzWithPictureDisplayer";
+import { getIdentificationQuizz } from "@/lib/api/quizz";
 
-export default async function PictureIdentificationPage() {
-  const data: PlantQuizzType[] = await fetch(
-    "http://localhost:3000/api/quizzes/identification-by-picture"
-  ).then((response) => response.json());
+export default async function QuizzIdentificationByPicturePage() {
+  const data: PlantQuizzType[] = await getIdentificationQuizz();
 
   return (
     <Section className="flex items-center">

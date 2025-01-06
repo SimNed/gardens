@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { QuizzItemAnswersType, QuizzItemType } from "@/types/QuizzType";
+import { QuizzItemAnswersType, QuizzItemType } from "@/types/quizz";
 import Image from "next/image";
 import ProgressBar from "@/app/components/ProgressBar";
 import {
@@ -9,8 +9,8 @@ import {
   CardHeader,
   CardContent,
   CardFooter,
-} from "@/components/ui/card";
-import QuizzAnswerFields from "./QuizzItem/QuizzAnswerFields";
+} from "@/app/components/shadcn-ui/card";
+import QuizzAnswerFields from "./QuizzAnswerFields/QuizzAnswerFields";
 
 interface QuizzDisplayerInterface {
   data: QuizzItemType[];
@@ -72,6 +72,8 @@ const QuizzWithPictureDisplayer = ({
             src={data[quizzState.currentIndex].element}
             alt={"plante mystère"}
             fill
+            priority
+            sizes="(max-width: 450px) 100vw, (max-width: 200px) 50vw, 33vw"
             className="object-cover"
           />
         </div>

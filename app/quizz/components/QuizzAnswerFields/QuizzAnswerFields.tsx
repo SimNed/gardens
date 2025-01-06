@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { QuizzItemAnswersType, QuizzItemType } from "@/types/QuizzType";
+import { QuizzItemAnswersType, QuizzItemType } from "@/types/quizz";
 import AnswerField from "./AnswerField";
 
 interface QuizzAnswerFieldsProps {

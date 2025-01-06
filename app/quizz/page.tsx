@@ -1,39 +1,43 @@
 import Section from "../components/Section";
-import { Binoculars, BookOpenText, Sprout } from "lucide-react";
+import { Binoculars, BookOpenText } from "lucide-react";
 import QuizzNavigationCard from "./components/QuizzNavigationCard";
 
 const navigationData = [
   {
-    label: "Identification par image",
-    url: "/identification-by-picture",
-    description: "Identifier une plante à partir de sa photo",
+    label: "Identification",
     icon: <Binoculars />,
+    description: "Identifier une plante à partir de sa photo",
+    data: [
+      {
+        label: "Identification par plante",
+        url: "/identification",
+      },
+    ],
   },
   {
-    label: "Taxonomie par image",
-    url: "/taxonomy-by-picture",
-    description: "Identifier une plante à partir de son nom vernaculaire",
+    label: "Taxonomie",
     icon: <BookOpenText />,
-  },
-  {
-    label: "Culture générale",
-    url: "/taxonomy-guess",
-    description: "Renseigner la taxonomie de différentes plantes",
-    icon: <Sprout />,
+    description: "Trouver la taxonomie d'une plante",
+    data: [
+      {
+        label: "Taxonomie par nom commun",
+        url: "/taxonomy",
+      },
+    ],
   },
 ];
 
 export default async function QuizzPage() {
   return (
-    <Section className="flex items-center">
-      <div className="my-24 grid grid-cols-3 gap-6 [&>*]:aspect-square h-fit">
-        {navigationData.map((d) => (
+    <Section variant="lg" className="flex items-center">
+      <div className="grid grid-cols-2 gap-10 w-full">
+        {navigationData.map((data) => (
           <QuizzNavigationCard
-            key={d.label}
-            label={d.label}
-            url={d.url}
-            description={d.description}
-            icon={d.icon}
+            key={data.label}
+            label={data.label}
+            icon={data.icon}
+            description={data.description}
+            data={data.data}
           />
         ))}
       </div>

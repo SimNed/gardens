@@ -9,10 +9,25 @@ export type QuizzItemType = {
   questions: QuestionType[];
 };
 
-export type PlantQuizzType = {
+// interface PlantQuizzProps {
+//   commonName: string;
+//   taxonomicName: string;
+//   imageUrl: string;
+//   familyLabel: string;
+//   genusLabel: string;
+// }
+
+// export type PlantQuizzType = Partial<PlantQuizzProps>;
+
+export type PlantWithTaxonomyQuizzType = {
   commonName: string;
   taxonomicName: string;
   familyLabel: string;
   genusLabel: string;
+  imageUrl: string;
+};
+
+export type PlantQuizzType = {
+  commonName: string;
   imageUrl: string;
 };

@@ -1,6 +1,6 @@
 import { Genus } from "@prisma/client";
 
-export type GenusDetailedType = Genus & {
+export type GenusType = Genus & {
   family: {
     id: string;
     label: string;

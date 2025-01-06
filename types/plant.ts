@@ -1,6 +1,6 @@
 import { Plant } from "@prisma/client";
 
-export type PlantWithTaxonomyType = Plant & {
+export type PlantType = Plant & {
   genus: {
     id: string;
     label: string;
@@ -9,9 +9,6 @@ export type PlantWithTaxonomyType = Plant & {
       label: string;
     };
   };
-};
-
-export type PlantDetailedType = PlantWithTaxonomyType & {
   diseases: {
     id: string;
     label: string;

@@ -1,10 +1,9 @@
 import { LifeCycle, Melliferous, SunExposure, WaterNeed } from "@prisma/client";
-import { RangeValueType, SelectOptionsType } from "./forms";
-import { KeyValueType, KeyValueWithRelationType } from "./data";
+import { KeyValueType, ValueWithRelationType } from "./data";
 
 export interface SearchFormProps {
   family: KeyValueType<string>;
-  genus: KeyValueWithRelationType<string, string>;
+  genus: KeyValueType<ValueWithRelationType<string, string>>;
   category: KeyValueType<string>;
   lifeCycle: KeyValueType<LifeCycle>;
   sunExposure: KeyValueType<SunExposure>;
@@ -16,12 +15,10 @@ export interface SearchFormProps {
 export type SearchFormType = Partial<SearchFormProps>;
 
 export type SearchFormOptionProps = {
-  [key in keyof SearchFormProps]: key extends "coldHardiness"
-    ? RangeValueType
-    : SelectOptionsType;
+  [K in keyof Omit<SearchFormProps, "coldHardiness">]: SearchFormProps[K][];
+} & {
+  coldHardiness: KeyValueType<{ min: number; max: number }>;
 };
-
-export type FilterOptionType = Partial<SearchFormOptionProps>;
 
 interface SearchRequestProps {
   familyId: string;

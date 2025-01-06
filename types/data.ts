@@ -3,6 +3,7 @@ export type KeyValueType<T> = {
   value: T;
 };
 
-export type KeyValueWithRelationType<T, U> = KeyValueType<T> & {
-  relation?: KeyValueType<U>;
+export type ValueWithRelationType<T, U> = {
+  value: T;
+  relation: KeyValueType<U>;
 };

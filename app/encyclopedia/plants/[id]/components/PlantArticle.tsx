@@ -3,12 +3,12 @@
 import EncyclopediaArticleBreadCrumb from "@/app/encyclopedia/components/EncyclopediaArticleBreadCrumb";
 import PlantArticleHeader from "./PlantArticleHeader";
 import Section from "@/app/components/Section";
-import { PlantDetailedType } from "@/types/plant";
 import PlantArticleInfos from "./PlantArticleInfos";
 import PlantArticleAffinities from "./PlantArticleAffinities";
+import { PlantType } from "@/types/plant";
 
 interface PlantArticleProps {
-  plant: PlantDetailedType;
+  plant: PlantType;
 }
 
 const PlantArticle = ({ plant }: PlantArticleProps) => {

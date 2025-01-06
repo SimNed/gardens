@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/app/components/shadcn-ui/button";
 import { normalizeString } from "@/lib/utils/string";
 import { KeyValueType } from "@/types/data";
-import { sortInsensitivelyKeyValueArray } from "@/lib/utils/key-value";
+import { sortInsensitivelyKeyValueStringArray } from "@/lib/utils/key-value";
 
 interface SidebarProps extends React.ComponentProps<typeof Sidebar> {
   data: EncyclopediaDataType;
@@ -45,7 +45,7 @@ const EncyclopediaSideBar = ({ data, ...props }: SidebarProps) => {
     filter: string,
     type: keyof EncyclopediaDataType
   ) {
-    const sortedData = sortInsensitivelyKeyValueArray(data[type]);
+    const sortedData = sortInsensitivelyKeyValueStringArray(data[type]);
 
     return sortedData.filter((data: KeyValueType<string>) => {
       return normalizeString(data.value)
@@ -80,17 +80,18 @@ const EncyclopediaSideBar = ({ data, ...props }: SidebarProps) => {
       <Separator className="w-5/6 m-auto" />
       <SidebarContent className="p-4">
         <SidebarMenu>
-          {filterData(data, filter, datasetType).map((d) => (
-            <SidebarMenuItem key={d.value} className="p-1">
-              <SidebarMenuButton
-                onClick={() =>
-                  router.push(`/encyclopedia/${datasetType}/${d.key}`)
-                }
-              >
-                {d.value}
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {data &&
+            filterData(data, filter, datasetType).map((d) => (
+              <SidebarMenuItem key={d.value} className="p-1">
+                <SidebarMenuButton
+                  onClick={() =>
+                    router.push(`/encyclopedia/${datasetType}/${d.key}`)
+                  }
+                >
+                  {d.value}
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
         </SidebarMenu>
       </SidebarContent>
     </Sidebar>

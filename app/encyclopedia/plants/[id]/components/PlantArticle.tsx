@@ -27,7 +27,7 @@ const PlantArticle = ({ plant }: PlantArticleProps) => {
     <>
       <EncyclopediaArticleBreadCrumb
         prevSteps={prevSteps}
-        currentStepLabel={plant.taxonomicName}
+        currentStepLabel={plant.species}
       />
       <Section variant="lg">
         <PlantArticleHeader plant={plant} />

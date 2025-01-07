@@ -256,8 +256,8 @@ async function main() {
   await Promise.all([
     prisma.plant.create({
       data: {
-        taxonomicName: "Allium sativum",
         commonName: "Ail",
+        species: "sativum",
         genusId: genuses[0].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: -15,
@@ -281,8 +281,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Allium schoenoprasum",
         commonName: "Ciboulette",
+        species: "schoenoprasum",
         genusId: genuses[0].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: -15,
@@ -305,8 +305,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Daucus carota",
         commonName: "Carotte",
+        species: "carota",
         genusId: genuses[1].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: -10,
@@ -329,8 +329,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Coriandrum sativum",
         commonName: "Coriandre",
+        species: "sativum",
         genusId: genuses[2].id,
         plantCategoryId: plantCategories[2].id,
         coldHardiness: 0,
@@ -353,8 +353,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Spinacia oleracea",
         commonName: "Épinard",
+        species: "oleracea",
         genusId: genuses[3].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: -10,
@@ -377,8 +377,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Petroselinum crispum",
         commonName: "Persil",
+        species: "crispum",
         genusId: genuses[4].id,
         plantCategoryId: plantCategories[2].id,
         coldHardiness: -8,
@@ -402,8 +402,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Cucumis sativus",
         commonName: "Concombre",
+        species: "sativus",
         genusId: genuses[5].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: 0,
@@ -426,8 +426,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Cucumis melo",
         commonName: "Melon",
+        species: "melo",
         genusId: genuses[5].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: 5,
@@ -450,8 +450,9 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Brassica oleracea var. romanesco",
         commonName: "Chou romanesco",
+        species: "oleracea",
+        variety: "romanesco",
         genusId: genuses[6].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: -8,
@@ -474,8 +475,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Phaseolus vulgaris",
         commonName: "Haricot vert",
+        species: "vulgaris",
         genusId: genuses[7].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: 0,
@@ -498,8 +499,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Solanum tuberosum",
         commonName: "Pomme de terre",
+        species: "tuberosum",
         genusId: genuses[10].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: -5,
@@ -523,8 +524,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Solanum lycopersicum",
         commonName: "Tomate",
+        species: "lycopersicum",
         genusId: genuses[10].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: 0,
@@ -548,8 +549,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Capsicum annuum",
         commonName: "Poivron",
+        species: "annuum",
         genusId: genuses[11].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: 0,
@@ -572,8 +573,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Prunus armeniaca",
         commonName: "Abricot",
+        species: "armeniaca",
         genusId: genuses[12].id,
         plantCategoryId: plantCategories[1].id,
         coldHardiness: -15,
@@ -596,8 +597,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Prunus domestica",
         commonName: "Prune",
+        species: "domestica",
         genusId: genuses[12].id,
         plantCategoryId: plantCategories[1].id,
         coldHardiness: -20,
@@ -620,8 +621,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Fragaria × ananassa",
         commonName: "Fraise",
+        species: "× ananassa",
         genusId: genuses[13].id,
         plantCategoryId: plantCategories[0].id,
         coldHardiness: 0,
@@ -644,8 +645,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Pyrus communis",
         commonName: "Poire",
+        species: "communis",
         genusId: genuses[14].id,
         plantCategoryId: plantCategories[1].id,
         coldHardiness: -20,
@@ -668,8 +669,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Malus domestica",
         commonName: "Pomme",
+        species: "domestica",
         genusId: genuses[15].id,
         plantCategoryId: plantCategories[1].id,
         coldHardiness: -25,
@@ -692,8 +693,8 @@ async function main() {
 
     prisma.plant.create({
       data: {
-        taxonomicName: "Ocimum basilicum",
         commonName: "Basilic",
+        species: "basilicum",
         genusId: genuses[8].id,
         plantCategoryId: plantCategories[2].id,
         coldHardiness: 0,
@@ -715,8 +716,8 @@ async function main() {
     }),
     prisma.plant.create({
       data: {
-        taxonomicName: "Mentha spicata",
         commonName: "Menthe",
+        species: "spicata",
         genusId: genuses[9].id,
         plantCategoryId: plantCategories[2].id,
         coldHardiness: -10,

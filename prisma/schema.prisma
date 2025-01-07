@@ -9,8 +9,9 @@ datasource db {
 
 model Plant {
   id               String         @id @default(uuid())
-  taxonomicName    String         @unique @db.VarChar(255)
   commonName       String         @unique @db.VarChar(255)
+  species          String         @db.VarChar(255)
+  variety          String?        @db.VarChar(255)
   genusId          String         @db.VarChar(255)
   plantCategoryId  String?        @db.VarChar(255)
   coldHardiness    Int

@@ -19,7 +19,7 @@ export type QuizzStateType = {
 
 export type PlantWithTaxonomyQuizzType = {
   commonName: string;
-  taxonomicName: string;
+  species: string;
   familyLabel: string;
   genusLabel: string;
   imageUrl: string;

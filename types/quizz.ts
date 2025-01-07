@@ -1,23 +1,21 @@
-type QuestionType = { label: string; solution: string };
-
 type AnswerType = { solution: string; success: boolean };
 
-export type QuizzItemAnswersType = Record<string, AnswerType>;
+export type QuestionType = { label: string; solution: string };
 
-export type QuizzItemType = {
+export type ItemQuestionsType = {
   element: string;
   questions: QuestionType[];
 };
 
-// interface PlantQuizzProps {
-//   commonName: string;
-//   taxonomicName: string;
-//   imageUrl: string;
-//   familyLabel: string;
-//   genusLabel: string;
-// }
+export type ItemAnswersType = {
+  element: string;
+  answers: AnswerType[];
+};
 
-// export type PlantQuizzType = Partial<PlantQuizzProps>;
+export type QuizzStateType = {
+  currentIndex: number;
+  results: ItemAnswersType[];
+};
 
 export type PlantWithTaxonomyQuizzType = {
   commonName: string;

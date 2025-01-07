@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import AnswerField from "./AnswerField";
 import { ItemAnswersType, ItemQuestionsType } from "@/types/quizz";
+import { useInputNavigation } from "@/lib/hooks/use-input-navigation";
 
 interface QuizzItemProps {
   item: ItemQuestionsType;
@@ -12,6 +13,8 @@ interface QuizzItemProps {
 
 const QuizzItem = ({ item, isTimerOver, handleResult }: QuizzItemProps) => {
   const [result, setResult] = useState<ItemAnswersType>(initResult());
+  const { inputRefs, focusOnFirst, handleKeyDown, handleDisable } =
+    useInputNavigation();
 
   useEffect(() => {
     if (isTimerOver) {
@@ -46,13 +49,22 @@ const QuizzItem = ({ item, isTimerOver, handleResult }: QuizzItemProps) => {
   }
 
   return (
-    <div className="grid gap-2">
+    <div>
       {item.questions.map((question, i) => (
         <AnswerField
           key={question.label}
+          ref={(el) => {
+            inputRefs.current[i] = el;
+          }}
           question={question}
-          autoFocus={true}
-          handleCorrectAnswer={() => handleCorrectAnswer(i)}
+          handleCorrectAnswer={() => {
+            handleCorrectAnswer(i);
+            handleDisable(i);
+          }}
+          onKeyDown={(e) => handleKeyDown(e, i)}
+          onInit={() => {
+            focusOnFirst();
+          }}
         />
       ))}
     </div>

@@ -13,7 +13,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/app/components/shadcn-ui/card";
-import QuizzItem from "./QuizzAnswerFields/QuizzItem";
+import QuizzItem from "./QuizzItem";
 import QuizzResults from "./QuizzResults";
 
 interface QuizzDisplayerInterface {
@@ -34,6 +34,7 @@ const QuizzDisplayer = ({
 
   useEffect(() => {
     if (isTimerOver) setIsTimerOver(false);
+    return;
   }, [isTimerOver, quizzState]);
 
   function handleItemResult(result: ItemAnswersType) {

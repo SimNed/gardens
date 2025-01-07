@@ -10,6 +10,7 @@ interface ProgressBarInterface {
 
 const ProgressBar = ({ duration, onComplete }: ProgressBarInterface) => {
   const [progress, setProgress] = useState(0);
+
   const intervalRef = useRef<NodeJS.Timeout>();
   const startTimeRef = useRef<number>();
 
@@ -35,9 +36,7 @@ const ProgressBar = ({ duration, onComplete }: ProgressBarInterface) => {
     intervalRef.current = setInterval(tick, 50);
 
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [duration, onComplete]);
 

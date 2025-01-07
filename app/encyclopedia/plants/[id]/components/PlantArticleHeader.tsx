@@ -28,7 +28,9 @@ const PlantArticleHeader = ({ plant }: PlantArticleHeaderProps) => {
           <h1 className="text-5xl font-semibold mb-0 pb-0">
             {plant.commonName}
           </h1>
-          <p className="text-xl font-noto-serif italic">{plant.species}</p>
+          <p className="text-xl font-noto-serif italic">
+            {`${plant.genus.label} ${plant.species}`}
+          </p>
         </div>
         <div className="border-y py-2 grid grid-cols-4 justify-center">
           <Rank length={getSunExposureRank(plant.sunExposure)}>

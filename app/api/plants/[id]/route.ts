@@ -7,8 +7,6 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 ms = 1 seconde
-
     const plant = await prisma.plant.findUnique({
       where: { id: params.id },
       include: {

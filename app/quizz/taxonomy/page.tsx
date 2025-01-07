@@ -20,7 +20,8 @@ export default async function QuizzTaxonomyByNamePage() {
             element: plant.commonName,
             questions: [
               { label: "famille", solution: plant.familyLabel },
-              { label: "nom vernaculaire", solution: plant.taxonomicName },
+              { label: "genre", solution: plant.genusLabel },
+              { label: "espèce", solution: plant.species },
             ],
           };
         })}

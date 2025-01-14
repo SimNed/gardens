@@ -168,6 +168,7 @@ const GridEditor = () => {
                   rectangle={rect}
                   onMouseDown={(e, direction) => {
                     e.stopPropagation();
+                    setSelectedRect(rect);
                     handleResizeDirection(direction);
                     handleMouseDown(e, GridMode.RESIZING);
                   }}

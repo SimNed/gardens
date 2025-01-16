@@ -1,5 +1,5 @@
 import { Badge } from "@/app/components/shadcn-ui/badge";
-import { SearchFormProps } from "@/types/filter";
+import { SearchFormProps } from "@/types/search";
 
 import { X } from "lucide-react";
 

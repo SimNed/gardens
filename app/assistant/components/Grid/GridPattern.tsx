@@ -1,11 +1,11 @@
 interface GridPatternProps {
-  gridSize: number;
+  cellSize: number;
   color?: string;
   viewBox: { x: number; y: number; width: number; height: number };
 }
 
 const GridPattern = ({
-  gridSize,
+  cellSize,
   color = "#DDD",
   viewBox,
 }: GridPatternProps) => {
@@ -15,8 +15,8 @@ const GridPattern = ({
         <pattern
           id="gridPattern"
           patternUnits="userSpaceOnUse"
-          width={gridSize}
-          height={gridSize}
+          width={cellSize}
+          height={cellSize}
           x={viewBox.x}
           y={viewBox.y}
         >
@@ -24,22 +24,22 @@ const GridPattern = ({
             x1="0"
             y1="0"
             x2="0"
-            y2={gridSize}
+            y2={cellSize}
             stroke={color}
             strokeWidth="1"
           />
           <line
             x1="0"
             y1="0"
-            x2={gridSize}
+            x2={cellSize}
             y2="0"
             stroke={color}
             strokeWidth="1"
           />
           <circle cx={1} cy={1} r="1" fill={color} />
-          <circle cx={gridSize} cy={1} r="1" fill={color} />
-          <circle cx={1} cy={gridSize} r="1" fill={color} />
-          <circle cx={gridSize} cy={gridSize} r="1" fill={color} />
+          <circle cx={cellSize} cy={1} r="1" fill={color} />
+          <circle cx={1} cy={cellSize} r="1" fill={color} />
+          <circle cx={cellSize} cy={cellSize} r="1" fill={color} />
         </pattern>
       </defs>
 

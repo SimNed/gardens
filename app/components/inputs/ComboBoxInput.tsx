@@ -1,8 +1,10 @@
 import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { ForwardedRef, forwardRef } from "react";
 
 import { cn } from "@/lib/utils/style";
-import { Button } from "@/app/components/shadcn-ui/button";
+
+import { Check, ChevronsUpDown } from "lucide-react";
+
 import {
   Command,
   CommandEmpty,
@@ -16,94 +18,101 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/app/components/shadcn-ui/popover";
+import { Button } from "@/app/components/shadcn-ui/button";
 import { Label } from "@/app/components/shadcn-ui/label";
-import { KeyValueWithRelationType } from "@/types/data";
 
-interface ComboBoxInputProps
+import { KeyValueType } from "@/types/data";
+
+export interface ComboBoxInputProps<T>
   extends React.ComponentPropsWithRef<typeof Button> {
-  data: KeyValueWithRelationType[];
+  data: KeyValueType<T>[];
+  selectValue: T;
   label?: string;
   placeholder?: string;
   inputPlaceholder?: string;
   notFoundPlaceholder?: string;
-  selectValue: string;
-  onSelectChange: (data: KeyValueWithRelationType) => void;
+  onSelectChange: (data: KeyValueType<T>) => void;
 }
 
-const ComboBoxInput = React.forwardRef<HTMLButtonElement, ComboBoxInputProps>(
-  (
-    {
-      label,
-      data,
-      placeholder = "sélection",
-      inputPlaceholder = "recherche",
-      notFoundPlaceholder = "aucun résultat",
-      selectValue,
-      onSelectChange,
-      className,
-      ...props
-    },
-    ref
-  ) => {
-    const [open, setOpen] = React.useState(false);
+// function fixedForwardRef<T, P = {}>(
+//   render: (props: P, ref: React.Ref<T>) => React.ReactNode
+// ): (props: P & React.RefAttributes<T>) => React.ReactNode {
+//   return forwardRef(render) as any;
+// }
 
-    return (
-      <div className="w-full p-2">
-        <Popover open={open} onOpenChange={setOpen}>
-          {label && <Label>{label}</Label>}
-          <PopoverTrigger asChild>
-            <Button
-              ref={ref}
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              className={cn("w-full justify-between", className)}
-              {...props}
-            >
-              {selectValue
-                ? data.find((d) => d.value === selectValue)?.key
-                : placeholder}
-              <ChevronsUpDown className="opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]">
-            <Command className="w-full">
-              <CommandInput placeholder={inputPlaceholder} />
-              <CommandList>
-                <CommandEmpty>{notFoundPlaceholder}</CommandEmpty>
-                {data && data.length > 0 && (
-                  <CommandGroup>
-                    {data.map((d) => (
-                      <CommandItem
-                        key={d.value}
-                        value={d.key}
-                        onSelect={() => {
-                          setOpen(false);
-                          onSelectChange({ ...d, value: d.value });
-                        }}
-                      >
-                        {d.key}
-                        <Check
-                          className={cn(
-                            "ml-auto",
-                            selectValue === d.value
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                )}
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-      </div>
-    );
-  }
-);
+const ComboBox = <T,>(
+  {
+    data,
+    selectValue,
+    label,
+    placeholder,
+    inputPlaceholder,
+    notFoundPlaceholder,
+    onSelectChange,
+    className,
+    ...props
+  }: ComboBoxInputProps<T>,
+  ref: ForwardedRef<HTMLButtonElement>
+) => {
+  const [open, setOpen] = React.useState(false);
 
-ComboBoxInput.displayName = "ComboBoxInput";
+  return (
+    <div className="w-full p-2">
+      <Popover open={open} onOpenChange={setOpen}>
+        {label && <Label>{label}</Label>}
+        <PopoverTrigger asChild>
+          <Button
+            ref={ref}
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className={cn("w-full justify-between", className)}
+            {...props}
+          >
+            {selectValue
+              ? data.find((d) => d.value === selectValue)?.key
+              : placeholder}
+            <ChevronsUpDown className="opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]">
+          <Command className="w-full">
+            <CommandInput placeholder={inputPlaceholder} />
+            <CommandList>
+              <CommandEmpty>{notFoundPlaceholder}</CommandEmpty>
+              {data && data.length > 0 && (
+                <CommandGroup>
+                  {data.map((d) => (
+                    <CommandItem
+                      key={d.key}
+                      value={d.key}
+                      onSelect={() => {
+                        setOpen(false);
+                        onSelectChange({ ...d, value: d.value });
+                      }}
+                    >
+                      {d.key}
+                      <Check
+                        className={cn(
+                          "ml-auto",
+                          selectValue === d.value ? "opacity-100" : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              )}
+            </CommandList>
+          </Command>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+};
+
+// Utilisation correcte de forwardRef avec types explicites
+const ComboBoxInput = forwardRef(ComboBox) as <T>(
+  props: ComboBoxInputProps<T> & React.RefAttributes<HTMLButtonElement>
+) => JSX.Element;
 
 export default ComboBoxInput;

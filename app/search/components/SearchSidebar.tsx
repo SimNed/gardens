@@ -17,7 +17,7 @@ import {
   SearchFormOptionProps,
   SearchFormType,
   SearchRequestType,
-} from "@/types/filter";
+} from "@/types/search";
 import { convertFormToRequest } from "@/lib/utils/search";
 import SearchResult from "./SearchResult";
 import Section from "@/app/components/Section";
@@ -32,7 +32,9 @@ const SearchSidebar = ({ formOptions }: SearchSidebarProps) => {
   const [shouldFetch, setShouldFetch] = useState(false);
 
   const { data: results } = useSWR(
-    shouldFetch ? `/api/search?${new URLSearchParams(filteredRequest)}` : null,
+    shouldFetch
+      ? `/api/plants/filtred?${new URLSearchParams(filteredRequest)}`
+      : null,
     fetcher
   );
 

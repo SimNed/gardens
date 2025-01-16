@@ -17,15 +17,12 @@ import QuizzItem from "./QuizzItem";
 import QuizzResults from "./QuizzResults";
 import Section from "@/app/components/Section";
 
-interface QuizzDisplayerInterface {
+interface QuizzDisplayerProps {
   items: ItemQuestionsType[];
   timerDuration?: number;
 }
 
-const QuizzDisplayer = ({
-  items,
-  timerDuration = 10,
-}: QuizzDisplayerInterface) => {
+const QuizzDisplayer = ({ items, timerDuration = 10 }: QuizzDisplayerProps) => {
   const [isTimerOver, setIsTimerOver] = useState(false);
 
   const [quizzState, setQuizzState] = useState<QuizzStateType>({
@@ -48,7 +45,7 @@ const QuizzDisplayer = ({
   }
 
   return quizzState.currentIndex < items.length ? (
-    <Section className="flex flex-col gap-8 items-center">
+    <Section variant="md" className="flex flex-col gap-8 items-center">
       <Card className="h-fit">
         <CardHeader className="flex gap-2">
           <h1 className="text-2xl font-semibold">

@@ -10,7 +10,7 @@ import {
   CardContent,
   CardFooter,
 } from "@/app/components/shadcn-ui/card";
-import QuizzAnswerFields from "./QuizzAnswerFields/QuizzAnswerFields";
+import QuizzAnswerFields from "./QuizzItem";
 
 interface QuizzDisplayerInterface {
   data: QuizzItemType[];

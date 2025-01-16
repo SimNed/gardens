@@ -21,8 +21,6 @@ const NumberInput = ({
   maxRange = 99,
   onValueChange,
 }: NumberInputProps) => {
-  console.log(value);
-
   return (
     <div className="p-2">
       {label && <Label>{label}</Label>}

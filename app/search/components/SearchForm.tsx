@@ -4,7 +4,6 @@ import * as React from "react";
 
 import {
   Sidebar,
-  SidebarCombobox,
   SidebarContent,
   SidebarFooter,
   SidebarMenuButton,
@@ -16,11 +15,11 @@ import { useState } from "react";
 import FiltersHeader from "./SearchSidebarHeader";
 import FiltersGroup from "./FiltersGroup";
 import FiltersBadgeGroup from "./FiltersBadgeGroup";
-import { SearchFormOptionProps, SearchFormType } from "@/types/filter";
-import { KeyValueWithRelationType } from "@/types/data";
+import { SearchFormOptionProps, SearchFormType } from "@/types/search";
 import SelectInput from "@/app/components/inputs/SelectInput";
 import NumberInput from "@/app/components/inputs/NumberInput";
 import { LifeCycle, SunExposure, WaterNeed } from "@prisma/client";
+import ComboBoxInput from "@/app/components/inputs/ComboBoxInput";
 
 type BadgeGroupType = Partial<Record<keyof SearchFormType, string>>;
 
@@ -54,13 +53,13 @@ const SearchForm = ({
 
   function handleFilters(filters: SearchFormType) {
     if (filters.genus && !formFilters.family) {
-      filters.family = filters.genus.relation;
+      filters.family = filters.genus.value.relation;
     }
 
     if (
       filters.family &&
       filters.genus &&
-      filters.genus.relation?.value !== filters.family.value
+      filters.genus.value.relation.value !== filters.family.value
     ) {
       delete filters.genus;
     }
@@ -102,8 +101,7 @@ const SearchForm = ({
   function getFilteredGenusOptions() {
     return formFilters.family
       ? options.genus.filter(
-          (option: KeyValueWithRelationType<string, string>) =>
-            option.relation?.value === formFilters.family?.value
+          (option) => option.value.relation.value === formFilters.family?.value
         )
       : options.genus;
   }
@@ -114,7 +112,7 @@ const SearchForm = ({
       <Separator className="mb-2" />
       <SidebarContent>
         <FiltersGroup label={"Taxonomie"}>
-          <SidebarCombobox
+          <ComboBoxInput
             label={"Famille"}
             data={options.family}
             selectValue={formFilters.family?.value || ""}
@@ -122,7 +120,7 @@ const SearchForm = ({
               handleFilters({ family: data });
             }}
           />
-          <SidebarCombobox
+          <ComboBoxInput
             label={"Genre"}
             data={getFilteredGenusOptions()}
             selectValue={formFilters.genus?.value || ""}
@@ -178,8 +176,8 @@ const SearchForm = ({
             label="Rusticité"
             unit="°C"
             value={formFilters.coldHardiness?.value || 0}
-            minRange={options.coldHardiness.min}
-            maxRange={options.coldHardiness.max}
+            minRange={options.coldHardiness.value.min}
+            maxRange={options.coldHardiness.value.max}
             onValueChange={(data) => handleFilters({ coldHardiness: data })}
           />
         </FiltersGroup>

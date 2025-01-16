@@ -12,7 +12,6 @@ const useMouse = ({ ref }: UseGridMouseProps) => {
     if (!ref.current) return;
 
     const point = ref.current.createSVGPoint();
-
     point.x = e.clientX;
     point.y = e.clientY;
 

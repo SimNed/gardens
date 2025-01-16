@@ -1,5 +1,5 @@
 import { AspectRatio } from "@/app/components/shadcn-ui/aspect-ratio";
-import { SearchResultType } from "@/types/filter";
+import { SearchResultType } from "@/types/search";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 

@@ -1,6 +1,5 @@
 import Section from "@/app/components/Section";
 import { Separator } from "@/app/components/shadcn-ui/separator";
-import { cn } from "@/lib/utils/style";
 import { ItemAnswersType } from "@/types/quizz";
 import { CircleCheck, CircleX } from "lucide-react";
 
@@ -21,13 +20,7 @@ const QuizzResults = ({ results }: QuizzResultsProps) => {
               {result.answers.map((answer) => (
                 <li key={answer.solution}>
                   <div className="flex justify-between items-center gap-2 m-0">
-                    <p
-                      className={cn(
-                        answer.success ? "text-green-500" : "text-red-500"
-                      )}
-                    >
-                      {answer.solution}
-                    </p>
+                    <p>{answer.solution}</p>
                   </div>
                 </li>
               ))}

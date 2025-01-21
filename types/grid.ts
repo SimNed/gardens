@@ -3,6 +3,13 @@ export type Vector2Type = {
   y: number;
 };
 
+export type ViewBoxType = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
 export type RectangleType = {
   id: number;
   x: number;

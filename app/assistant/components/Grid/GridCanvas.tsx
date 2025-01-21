@@ -1,48 +1,65 @@
 "use client";
 
 import useGridMouse from "@/lib/hooks/use-mouse";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import ResizeHandles from "./ResizeHandles";
-import { RIGHT_CLICK_BUTTON_CODE } from "@/lib/utils/grid";
+import {
+  getMousePositionInGrid,
+  getRectDrawUpdate,
+  getRectPositionUpdate,
+  getRectSizeUpdate,
+  getViewBoxPanningUpdate,
+  getViewBoxString,
+  RIGHT_CLICK_BUTTON_CODE,
+} from "@/lib/utils/grid";
 import GridPattern from "./GridPattern";
 import { DirectionVariantType } from "@/types/variant";
-import useGrid, { GridMode } from "@/lib/hooks/use-grid";
-import { useGardenContext } from "../../GardenContext";
+import { GridMode } from "@/lib/hooks/use-grid";
+import { RectangleType, ViewBoxType } from "@/types/grid";
 
 interface GridCanvasProps {
+  rectangles: RectangleType[];
+  selectedRectangle: RectangleType | null;
   width?: number;
   height?: number;
   cellSize?: number;
+  handleCreateRectangle: (rectangle: RectangleType) => void;
+  handleUpdateRectangle: (rectangle: RectangleType) => void;
+  handleSelectedRectangle: (rectangle: RectangleType | null) => void;
 }
 
-function GridCanvas({ cellSize = 20 }: GridCanvasProps) {
-  const gridRef = useRef(null);
+export interface GridStateProps {
+  viewBox: ViewBoxType;
+  mode: GridMode;
+  tempRect: RectangleType | null;
+}
 
-  const { gardenState, getRectangles } = useGardenContext();
+function GridCanvas({
+  cellSize = 20,
+  rectangles,
+  selectedRectangle,
+  handleCreateRectangle,
+  handleUpdateRectangle,
+  handleSelectedRectangle,
+}: GridCanvasProps) {
+  const gridRef = useRef(null);
+  const resizeDirectionRef = useRef<DirectionVariantType | null>(null);
+
+  const [gridState, setGridState] = useState<GridStateProps>({
+    viewBox: {
+      x: 0,
+      y: 0,
+      width: 800,
+      height: 600,
+    },
+    mode: GridMode.DEFAULT,
+    tempRect: null,
+  });
 
   const { getDragPoints, setDragPoints, getDragDeltas, getMousePosition } =
     useGridMouse({
       ref: gridRef,
     });
-
-  const {
-    updatePanning,
-    updateRectDrawing,
-    updateRectPosition,
-    updateRectSize,
-    getMousePositionInGrid,
-    getViewBoxString,
-    gridState,
-    setGridState,
-  } = useGrid({
-    rectangles: getRectangles(),
-    selectedRectangle: gardenState.selectedGardenBed
-      ? gardenState.selectedGardenBed.rectangle
-      : null,
-    cellSize,
-    handleRectangles: () => {},
-    handleSelectedRectangle: () => {},
-  });
 
   const handleMouseDown = (
     e: React.MouseEvent<SVGRectElement | SVGSVGElement, MouseEvent>,
@@ -53,7 +70,7 @@ function GridCanvas({ cellSize = 20 }: GridCanvasProps) {
     const mousePosition = getMousePosition(e);
     if (!mousePosition) return;
 
-    const mousePositionInGrid = getMousePositionInGrid(mousePosition);
+    const mousePositionInGrid = getMousePositionInGrid(mousePosition, cellSize);
     if (!mousePositionInGrid) return;
 
     setDragPoints({
@@ -71,25 +88,41 @@ function GridCanvas({ cellSize = 20 }: GridCanvasProps) {
 
     if (!mousePosition) return;
 
-    const mousePositionInGrid = getMousePositionInGrid(mousePosition);
+    const mousePositionInGrid = getMousePositionInGrid(mousePosition, cellSize);
 
     setDragPoints({ current: mousePositionInGrid });
 
-    const dragDeltas = getDragDeltas();
-
     switch (gridState.mode) {
       case GridMode.PANNING:
-        updatePanning(dragDeltas);
+        setGridState((prev) => ({
+          ...prev,
+          viewBox: getViewBoxPanningUpdate(prev.viewBox, getDragDeltas()),
+        }));
         break;
       case GridMode.DRAWING:
-        const dragPoints = getDragPoints();
-        updateRectDrawing(dragPoints);
+        setGridState((prev) => ({
+          ...prev,
+          tempRect: getRectDrawUpdate(getDragPoints()),
+        }));
         break;
       case GridMode.MOVING:
-        if (gardenState.selectedGardenBed) updateRectPosition(dragDeltas);
+        if (selectedRectangle) {
+          handleUpdateRectangle(
+            getRectPositionUpdate(selectedRectangle, cellSize, getDragDeltas())
+          );
+        }
         break;
       case GridMode.RESIZING:
-        updateRectSize(dragDeltas);
+        if (selectedRectangle && resizeDirectionRef.current) {
+          handleUpdateRectangle(
+            getRectSizeUpdate(
+              selectedRectangle,
+              getDragDeltas(),
+              resizeDirectionRef.current,
+              cellSize
+            )
+          );
+        }
         break;
       default:
         break;
@@ -101,8 +134,9 @@ function GridCanvas({ cellSize = 20 }: GridCanvasProps) {
 
     if (gridState.mode === GridMode.DRAWING && gridState.tempRect) {
       if (gridState.tempRect.width > 0 && gridState.tempRect.height > 0) {
+        handleCreateRectangle(gridState.tempRect);
         currentGridState = {
-          rectangles: [getRectangles(), gridState.tempRect],
+          rectangles: [...rectangles, gridState.tempRect],
           selectedRect: gridState.tempRect,
         };
       }
@@ -129,7 +163,7 @@ function GridCanvas({ cellSize = 20 }: GridCanvasProps) {
   };
 
   const handleResizeDirection = (direction: DirectionVariantType) => {
-    setGridState((prev) => ({ ...prev, resizeDirection: direction }));
+    resizeDirectionRef.current = direction;
   };
 
   return (
@@ -137,14 +171,17 @@ function GridCanvas({ cellSize = 20 }: GridCanvasProps) {
       ref={gridRef}
       width="800"
       height="600"
-      viewBox={getViewBoxString()}
+      viewBox={getViewBoxString(gridState.viewBox)}
       className="bg-white"
       onContextMenu={(e) => e.preventDefault()}
       onMouseDown={(e) => {
         setGridState((prevState) => ({ ...prevState, selectedRect: null }));
         if (e.button === RIGHT_CLICK_BUTTON_CODE)
           handleMouseDown(e, GridMode.PANNING);
-        else handleMouseDown(e, GridMode.DRAWING);
+        else {
+          handleSelectedRectangle(null);
+          handleMouseDown(e, GridMode.DRAWING);
+        }
       }}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
@@ -157,7 +194,7 @@ function GridCanvas({ cellSize = 20 }: GridCanvasProps) {
       <GridPattern cellSize={cellSize} viewBox={gridState.viewBox} />
 
       <g>
-        {getRectangles().map((rect) => (
+        {rectangles.map((rect) => (
           <g key={rect.id}>
             <rect
               x={rect.x}
@@ -165,26 +202,21 @@ function GridCanvas({ cellSize = 20 }: GridCanvasProps) {
               width={rect.width}
               height={rect.height}
               fill={
-                gardenState.selectedGardenBed?.rectangle.id === rect.id
+                selectedRectangle?.id === rect.id
                   ? "rgba(0, 100, 255, 0.4)"
                   : "rgba(0, 100, 255, 0.2)"
               }
               stroke={
-                gardenState.selectedGardenBed?.rectangle.id === rect.id
-                  ? "rgb(0, 0, 255)"
-                  : "blue"
+                selectedRectangle?.id === rect.id ? "rgb(0, 0, 255)" : "blue"
               }
               onMouseDown={(e) => {
                 e.stopPropagation();
-                setGridState((prevState) => ({
-                  ...prevState,
-                  selectedRect: rect,
-                }));
+                handleSelectedRectangle(rect);
                 handleMouseDown(e, GridMode.MOVING);
               }}
               style={{ cursor: "move" }}
             />
-            {gardenState.selectedGardenBed?.rectangle.id === rect.id && (
+            {selectedRectangle?.id === rect.id && (
               <ResizeHandles
                 rectangle={rect}
                 onMouseDown={(e, direction) => {

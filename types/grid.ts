@@ -11,11 +11,15 @@ export type ViewBoxType = {
 };
 
 export type RectangleType = {
-  id: number;
   x: number;
   y: number;
   width: number;
   height: number;
+};
+
+export type GridElementType = {
+  id: number;
+  rectangle: RectangleType;
 };
 
 export type DragPointType = {

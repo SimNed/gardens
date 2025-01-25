@@ -18,7 +18,7 @@ export enum GridMode {
 }
 
 const useGrid = ({ cellSize }: UseGridProps) => {
-  const { getSelectedRectangle, updateRectangle } = useGridContext();
+  const { getSelectedElement, updateElement } = useGridContext();
 
   // const setResizeDirection = (direction: DirectionVariantType | null) => {
   //   resizeDirectionRef.current = direction;
@@ -44,28 +44,36 @@ const useGrid = ({ cellSize }: UseGridProps) => {
 
   const updateRectPosition = useCallback(
     (dragDeltas: Vector2Type) => {
-      const selectedRectangle = getSelectedRectangle();
+      const selectedElement = getSelectedElement();
 
-      if (!selectedRectangle) return;
+      if (!selectedElement) return;
 
-      const targetX = snapToGrid(selectedRectangle.x + dragDeltas.x, cellSize);
-      const targetY = snapToGrid(selectedRectangle.y + dragDeltas.y, cellSize);
+      const targetX = snapToGrid(
+        selectedElement.rectangle.x + dragDeltas.x,
+        cellSize
+      );
+      const targetY = snapToGrid(
+        selectedElement.rectangle.y + dragDeltas.y,
+        cellSize
+      );
 
-      if (targetX !== selectedRectangle.x || targetY !== selectedRectangle.y) {
+      if (
+        targetX !== selectedElement.rectangle.x ||
+        targetY !== selectedElement.rectangle.y
+      ) {
         const updatedRectangle = {
-          ...selectedRectangle,
+          ...selectedElement.rectangle,
           x: targetX,
           y: targetY,
         };
-        updateRectangle(updatedRectangle);
+        updateElement({ ...selectedElement, rectangle: updatedRectangle });
       }
     },
-    [cellSize, getSelectedRectangle, updateRectangle]
+    [cellSize, getSelectedElement, updateElement]
   );
 
   const updateRectDrawing = useCallback((dragPoints: DragPointType) => {
     return {
-      id: Date.now(),
       x: Math.min(dragPoints.origin.x, dragPoints.current.x),
       y: Math.min(dragPoints.origin.y, dragPoints.current.y),
       width: Math.abs(dragPoints.current.x - dragPoints.origin.x),
@@ -73,51 +81,53 @@ const useGrid = ({ cellSize }: UseGridProps) => {
     };
   }, []);
 
-  // const updateRectSize = useCallback(
-  //   (dragDeltas: Vector2Type) => {
-  //     const resizeDirection = resizeDirectionRef.current;
+  const updateRectSize = useCallback(
+    (dragDeltas: Vector2Type) => {
+      // const resizeDirection = resizeDirectionRef.current;
+      const selectedElement = getSelectedElement();
+      const resizeDirection = "top";
 
-  //     if (!resizeDirection || !gridState.selectedRect) return;
+      if (!resizeDirection || !selectedElement) return;
 
-  //     const tempRect = { ...gridState.selectedRect };
+      const tempRect = { ...selectedElement.rectangle };
 
-  //     if (resizeDirection.includes("right")) {
-  //       tempRect.width = Math.max(
-  //         cellSize,
-  //         gridState.selectedRect.width + dragDeltas.x
-  //       );
-  //     }
-  //     if (resizeDirection.includes("left")) {
-  //       const newWidth = gridState.selectedRect.width - dragDeltas.x;
-  //       if (newWidth >= cellSize) {
-  //         tempRect.x = gridState.selectedRect.x + dragDeltas.x;
-  //         tempRect.width = newWidth;
-  //       }
-  //     }
-  //     if (resizeDirection.includes("bottom")) {
-  //       tempRect.height = Math.max(
-  //         cellSize,
-  //         gridState.selectedRect.height + dragDeltas.y
-  //       );
-  //     }
-  //     if (resizeDirection.includes("top")) {
-  //       const newHeight = gridState.selectedRect.height - dragDeltas.y;
-  //       if (newHeight >= cellSize) {
-  //         tempRect.y = gridState.selectedRect.y + dragDeltas.y;
-  //         tempRect.height = newHeight;
-  //       }
-  //     }
+      if (resizeDirection.includes("right")) {
+        tempRect.width = Math.max(
+          cellSize,
+          selectedElement.rectangle.width + dragDeltas.x
+        );
+      }
+      if (resizeDirection.includes("left")) {
+        const newWidth = selectedElement.rectangle.width - dragDeltas.x;
+        if (newWidth >= cellSize) {
+          tempRect.x = selectedElement.rectangle.x + dragDeltas.x;
+          tempRect.width = newWidth;
+        }
+      }
+      if (resizeDirection.includes("bottom")) {
+        tempRect.height = Math.max(
+          cellSize,
+          selectedElement.rectangle.height + dragDeltas.y
+        );
+      }
+      if (resizeDirection.includes("top")) {
+        const newHeight = selectedElement.rectangle.height - dragDeltas.y;
+        if (newHeight >= cellSize) {
+          tempRect.y = selectedElement.rectangle.y + dragDeltas.y;
+          tempRect.height = newHeight;
+        }
+      }
 
-  //     const updatedRects = gridState.rectangles.map((rect) =>
-  //       rect.id === (gridState.selectedRect && gridState.selectedRect.id)
-  //         ? tempRect
-  //         : rect
-  //     );
+      // const updatedRects = gridState.rectangles.map((rect) =>
+      //   rect.id === (gridState.selectedRect && gridState.selectedRect.id)
+      //     ? tempRect
+      //     : rect
+      // );
 
-  //     setGridState({ ...gridState, rectangles: updatedRects });
-  //   },
-  //   [cellSize, gridState]
-  // );
+      updateElement({ ...selectedElement, rectangle: tempRect });
+    },
+    [cellSize, getSelectedElement, updateElement]
+  );
 
   const snapToGrid = (value: number, gridSize: number) =>
     Math.round(value / gridSize) * gridSize;
@@ -128,6 +138,7 @@ const useGrid = ({ cellSize }: UseGridProps) => {
     updatePanning,
     updateRectPosition,
     updateRectDrawing,
+    updateRectSize,
   };
 };
 

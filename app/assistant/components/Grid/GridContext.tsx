@@ -1,14 +1,14 @@
-import { RectangleType } from "@/types/grid";
+import { GridElementType, RectangleType } from "@/types/grid";
 
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface GridContextProps {
-  getRectangles: () => Array<RectangleType>;
-  createRectangle: (rectangle: RectangleType) => void;
-  selectRectangle: (rectangle: RectangleType) => void;
-  unselectRectangle: () => void;
-  getSelectedRectangle: () => RectangleType | null;
-  updateRectangle: (rectangle: RectangleType) => void;
+  getElements: () => Array<GridElementType>;
+  createElement: (rectangle: RectangleType) => void;
+  selectElement: (element: GridElementType) => void;
+  unselectElement: () => void;
+  getSelectedElement: () => GridElementType | null;
+  updateElement: (element: GridElementType) => void;
 }
 
 const GridContext = createContext<GridContextProps | null>(null);
@@ -18,58 +18,58 @@ interface GridProviderProps {
 }
 
 interface GridStateProps {
-  rectangles: Array<RectangleType>;
-  selectedRectangle: RectangleType | null;
+  elements: Array<GridElementType>;
+  selectedElement: GridElementType | null;
 }
 
 export function GridProvider({ children }: GridProviderProps) {
   const [gridState, setGridState] = useState<GridStateProps>({
-    rectangles: [],
-    selectedRectangle: null,
+    elements: [],
+    selectedElement: null,
   });
 
-  const getRectangles = () => {
-    return gridState.rectangles;
+  const getElements = () => {
+    return gridState.elements;
   };
 
-  const createRectangle = (rectangle: RectangleType) => {
+  const createElement = (rectangle: RectangleType) => {
+    const element = { id: Date.now(), rectangle: rectangle };
+
     setGridState((prev) => ({
-      ...prev,
-      rectangles: [...prev.rectangles, rectangle],
-      selectedRectangle: rectangle,
+      elements: [...prev.elements, element],
+      selectedElement: element,
     }));
   };
 
-  const getSelectedRectangle = () => {
-    return gridState.selectedRectangle;
+  const getSelectedElement = () => {
+    return gridState.selectedElement;
   };
 
-  const selectRectangle = (rectangle: RectangleType) => {
-    setGridState((prev) => ({ ...prev, selectedRectangle: rectangle }));
+  const selectElement = (element: GridElementType) => {
+    setGridState((prev) => ({ ...prev, selectedElement: element }));
   };
 
-  const unselectRectangle = () => {
-    setGridState((prev) => ({ ...prev, selectedRectangle: null }));
+  const unselectElement = () => {
+    setGridState((prev) => ({ ...prev, selectedElement: null }));
   };
 
-  const updateRectangle = (rectangle: RectangleType) => {
-    const updatedRects = gridState.rectangles.map((rect) =>
-      rect.id === gridState.selectedRectangle?.id ? rectangle : rect
+  const updateElement = (element: GridElementType) => {
+    const updatedElements = gridState.elements.map((el) =>
+      el.id === element.id ? element : el
     );
-
     setGridState((prev) => ({
       ...prev,
-      rectangles: updatedRects,
+      elements: updatedElements,
     }));
   };
 
   const value: GridContextProps = {
-    getRectangles,
-    createRectangle,
-    selectRectangle,
-    unselectRectangle,
-    getSelectedRectangle,
-    updateRectangle,
+    getElements,
+    createElement,
+    selectElement,
+    unselectElement,
+    getSelectedElement,
+    updateElement,
   };
 
   return <GridContext.Provider value={value}>{children}</GridContext.Provider>;

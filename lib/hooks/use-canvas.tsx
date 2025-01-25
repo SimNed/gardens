@@ -1,15 +1,21 @@
-import { RefObject, useCallback } from "react";
-import { DragPointType, Vector2Type, ViewBoxType } from "@/types/grid";
+import { RefObject, useCallback, useRef, useState } from "react";
+import {
+  DragPointType,
+  RectangleType,
+  Vector2Type,
+  ViewBoxType,
+} from "@/types/grid";
 import { useGridContext } from "@/app/assistant/components/Grid/GridContext";
+import { DirectionVariantType } from "@/types/variant";
 
-interface UseGridProps {
-  gridRef: RefObject<SVGSVGElement>;
+interface UseCanvasProps {
+  canvasRef: RefObject<SVGSVGElement>;
   width: number;
   height: number;
   cellSize: number;
 }
 
-export enum GridMode {
+export enum CanvasMode {
   DEFAULT,
   PANNING,
   DRAWING,
@@ -17,14 +23,48 @@ export enum GridMode {
   RESIZING,
 }
 
-const useGrid = ({ cellSize }: UseGridProps) => {
+interface CanvasStateProps {
+  viewBox: ViewBoxType;
+  tempRect: RectangleType | null;
+}
+
+const useCanvas = ({ width, height, cellSize }: UseCanvasProps) => {
   const { getSelectedElement, updateElement } = useGridContext();
 
-  // const setResizeDirection = (direction: DirectionVariantType | null) => {
-  //   resizeDirectionRef.current = direction;
-  // };
+  const [canvasState, setCanvasState] = useState<CanvasStateProps>({
+    viewBox: {
+      x: 0,
+      y: 0,
+      width: width,
+      height: height,
+    },
+    tempRect: null,
+  });
 
-  const getMousePositionInGrid = (mousePosition: Vector2Type) => {
+  const modeRef = useRef<CanvasMode>(CanvasMode.DEFAULT);
+  const resizeDirectionRef = useRef<DirectionVariantType | null>(null);
+
+  const setViewBox = (viewBox: ViewBoxType) => {
+    setCanvasState((prev) => ({ ...prev, viewBox }));
+  };
+
+  const setTempRectangle = (tempRect: RectangleType | null) => {
+    setCanvasState((prev) => ({ ...prev, tempRect }));
+  };
+
+  const getMode = () => {
+    return modeRef.current;
+  };
+
+  const setMode = (mode: CanvasMode) => {
+    modeRef.current = mode;
+  };
+
+  const setResizeDirection = (direction: DirectionVariantType | null) => {
+    resizeDirectionRef.current = direction;
+  };
+
+  const getMousePositionInCanvas = (mousePosition: Vector2Type) => {
     return {
       x: snapToGrid(mousePosition.x, cellSize),
       y: snapToGrid(mousePosition.y, cellSize),
@@ -83,9 +123,8 @@ const useGrid = ({ cellSize }: UseGridProps) => {
 
   const updateRectSize = useCallback(
     (dragDeltas: Vector2Type) => {
-      // const resizeDirection = resizeDirectionRef.current;
       const selectedElement = getSelectedElement();
-      const resizeDirection = "top";
+      const resizeDirection = resizeDirectionRef.current;
 
       if (!resizeDirection || !selectedElement) return;
 
@@ -118,12 +157,6 @@ const useGrid = ({ cellSize }: UseGridProps) => {
         }
       }
 
-      // const updatedRects = gridState.rectangles.map((rect) =>
-      //   rect.id === (gridState.selectedRect && gridState.selectedRect.id)
-      //     ? tempRect
-      //     : rect
-      // );
-
       updateElement({ ...selectedElement, rectangle: tempRect });
     },
     [cellSize, getSelectedElement, updateElement]
@@ -133,8 +166,13 @@ const useGrid = ({ cellSize }: UseGridProps) => {
     Math.round(value / gridSize) * gridSize;
 
   return {
-    getMousePositionInGrid,
-    snapToGrid,
+    canvasState,
+    setViewBox,
+    setTempRectangle,
+    getMode,
+    setMode,
+    setResizeDirection,
+    getMousePositionInCanvas,
     updatePanning,
     updateRectPosition,
     updateRectDrawing,
@@ -142,4 +180,4 @@ const useGrid = ({ cellSize }: UseGridProps) => {
   };
 };
 
-export default useGrid;
+export default useCanvas;

@@ -9,6 +9,7 @@ interface GridContextProps {
   unselectElement: () => void;
   getSelectedElement: () => GridElementType | null;
   updateElement: (element: GridElementType) => void;
+  deleteElement: (element: GridElementType) => void;
 }
 
 const GridContext = createContext<GridContextProps | null>(null);
@@ -63,13 +64,24 @@ export function GridProvider({ children }: GridProviderProps) {
     }));
   };
 
+  const deleteElement = (element: GridElementType) => {
+    const updatedElements = gridState.elements.filter(
+      (el) => el.id !== element.id
+    );
+    setGridState((prev) => ({
+      ...prev,
+      elements: updatedElements,
+    }));
+  };
+
   const value: GridContextProps = {
     getElements,
     createElement,
+    getSelectedElement,
     selectElement,
     unselectElement,
-    getSelectedElement,
     updateElement,
+    deleteElement,
   };
 
   return <GridContext.Provider value={value}>{children}</GridContext.Provider>;

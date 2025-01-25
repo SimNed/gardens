@@ -6,7 +6,7 @@ import {
 } from "@/types/grid";
 import { DirectionVariantType } from "@/types/variant";
 
-export const LEFT_CLICK_BUTTON_CODE = 1;
+export const LEFT_CLICK_BUTTON_CODE = 0;
 export const RIGHT_CLICK_BUTTON_CODE = 2;
 
 export const DEFAULT_RECT_FILL = "rgba(0, 100, 255, 0.2)";

@@ -3,7 +3,10 @@
 import useGridMouse from "@/lib/hooks/use-mouse";
 import React, { useRef } from "react";
 import ResizeHandles from "./ResizeHandles";
-import { RIGHT_CLICK_BUTTON_CODE } from "@/lib/utils/grid";
+import {
+  LEFT_CLICK_BUTTON_CODE,
+  RIGHT_CLICK_BUTTON_CODE,
+} from "@/lib/utils/grid";
 import GridPattern from "./GridPattern";
 import useGridCanvas, { CanvasMode } from "@/lib/hooks/use-canvas";
 import { useGridContext } from "./GridContext";
@@ -176,9 +179,11 @@ const GridCanvas = ({
                   selectedElement?.id === element.id ? "rgb(0, 0, 255)" : "blue"
                 }
                 onMouseDown={(e) => {
-                  e.stopPropagation();
-                  selectElement(element);
-                  handleMouseDown(e, CanvasMode.MOVING);
+                  if (e.button === LEFT_CLICK_BUTTON_CODE) {
+                    e.stopPropagation();
+                    selectElement(element);
+                    handleMouseDown(e, CanvasMode.MOVING);
+                  }
                 }}
                 style={{ cursor: "move" }}
               />

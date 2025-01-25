@@ -1,3 +1,4 @@
+import { LEFT_CLICK_BUTTON_CODE } from "@/lib/utils/grid";
 import { RectangleType } from "@/types/grid";
 import { DirectionVariantType } from "@/types/variant";
 
@@ -102,8 +103,10 @@ const ResizeHandles = ({
           height={handle.height}
           fill="blue"
           onMouseDown={(e) => {
-            e.stopPropagation();
-            onMouseDown(e, handle.direction);
+            if (e.button === LEFT_CLICK_BUTTON_CODE) {
+              e.stopPropagation();
+              onMouseDown(e, handle.direction);
+            }
           }}
           style={{ cursor: handle.cursor }}
         />

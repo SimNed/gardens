@@ -1,4 +1,4 @@
-import { Vector2Type } from "@/types/grid";
+import { Vector2Type } from "@/types/canvas";
 import { RefObject, useRef } from "react";
 
 interface UseGridMouseProps {

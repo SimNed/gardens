@@ -1,5 +1,9 @@
-import { LEFT_CLICK_BUTTON_CODE } from "@/lib/utils/grid";
-import { RectangleType } from "@/types/grid";
+import {
+  LEFT_CLICK_BUTTON_CODE,
+  SELECTED_RECT_FILL,
+  SELECTED_RECT_STROKE,
+} from "@/lib/utils/canvas";
+import { RectangleType } from "@/types/canvas";
 import { DirectionVariantType } from "@/types/variant";
 
 interface ResizeHandlesProps {
@@ -22,7 +26,7 @@ type ResizeHandle = {
 
 const ResizeHandles = ({
   rectangle,
-  size = 8,
+  size = 4,
   onMouseDown,
 }: ResizeHandlesProps) => {
   const handles: Array<ResizeHandle> = [
@@ -101,7 +105,7 @@ const ResizeHandles = ({
           y={handle.y}
           width={handle.width}
           height={handle.height}
-          fill="blue"
+          fill={SELECTED_RECT_FILL}
           onMouseDown={(e) => {
             if (e.button === LEFT_CLICK_BUTTON_CODE) {
               e.stopPropagation();

@@ -45,8 +45,8 @@ const QuizzDisplayer = ({ items, timerDuration = 10 }: QuizzDisplayerProps) => {
   }
 
   return quizzState.currentIndex < items.length ? (
-    <Section variant="md" className="flex flex-col gap-8 items-center">
-      <Card className="h-fit">
+    <Section variant="sm" className="flex flex-col gap-8 items-center">
+      <Card className="h-fit w-full">
         <CardHeader className="flex gap-2">
           <h1 className="text-2xl font-semibold">
             {items[quizzState.currentIndex].element}

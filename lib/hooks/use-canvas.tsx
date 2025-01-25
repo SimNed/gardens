@@ -1,17 +1,10 @@
-import { RefObject, useCallback, useRef, useState } from "react";
-import {
-  DragPointType,
-  RectangleType,
-  Vector2Type,
-  ViewBoxType,
-} from "@/types/grid";
-import { useGridContext } from "@/app/assistant/components/Grid/GridContext";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { DragPointType, RectangleType, Vector2Type } from "@/types/canvas";
+import { useAssistantContext } from "@/app/assistant/components/AssistantContext";
 import { DirectionVariantType } from "@/types/variant";
 
 interface UseCanvasProps {
   canvasRef: RefObject<SVGSVGElement>;
-  width: number;
-  height: number;
   cellSize: number;
 }
 
@@ -24,19 +17,19 @@ export enum CanvasMode {
 }
 
 interface CanvasStateProps {
-  viewBox: ViewBoxType;
+  viewBox: RectangleType;
   tempRect: RectangleType | null;
 }
 
-const useCanvas = ({ width, height, cellSize }: UseCanvasProps) => {
-  const { getSelectedElement, updateElement } = useGridContext();
+const useCanvas = ({ canvasRef, cellSize }: UseCanvasProps) => {
+  const { getSelectedElement, updateElement } = useAssistantContext();
 
   const [canvasState, setCanvasState] = useState<CanvasStateProps>({
     viewBox: {
       x: 0,
       y: 0,
-      width: width,
-      height: height,
+      width: 0,
+      height: 0,
     },
     tempRect: null,
   });
@@ -44,7 +37,19 @@ const useCanvas = ({ width, height, cellSize }: UseCanvasProps) => {
   const modeRef = useRef<CanvasMode>(CanvasMode.DEFAULT);
   const resizeDirectionRef = useRef<DirectionVariantType | null>(null);
 
-  const setViewBox = (viewBox: ViewBoxType) => {
+  useEffect(() => {
+    if (canvasRef.current)
+      setCanvasState((prev) => ({
+        ...prev,
+        viewBox: {
+          ...prev.viewBox,
+          width: canvasRef.current!.width.baseVal.value,
+          height: canvasRef.current!.height.baseVal.value,
+        },
+      }));
+  }, [canvasRef]);
+
+  const setViewBox = (viewBox: RectangleType) => {
     setCanvasState((prev) => ({ ...prev, viewBox }));
   };
 
@@ -72,7 +77,7 @@ const useCanvas = ({ width, height, cellSize }: UseCanvasProps) => {
   };
 
   const updatePanning = useCallback(
-    (viewBox: ViewBoxType, dragDeltas: Vector2Type) => {
+    (viewBox: RectangleType, dragDeltas: Vector2Type) => {
       return {
         ...viewBox,
         x: viewBox.x - dragDeltas.x,

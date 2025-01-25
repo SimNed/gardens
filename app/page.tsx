@@ -1,4 +1,3 @@
-import GardenAssistant from "./assistant/components/GardenAssistant";
 import Section from "./components/Section";
 
 export default async function HomePage() {
@@ -6,7 +5,6 @@ export default async function HomePage() {
     <>
       <Section variant="xl">
         <p>home</p>
-        <GardenAssistant plants={[]} />
       </Section>
     </>
   );

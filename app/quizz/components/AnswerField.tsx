@@ -34,7 +34,7 @@ const AnswerField = forwardRef<HTMLInputElement, AnswerFieldProps>(
     }, [isCorrect]);
 
     return (
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 p-2 w-full">
         <Input
           ref={ref}
           className={cn("disabled:cursor-default")}

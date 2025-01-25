@@ -49,7 +49,7 @@ const QuizzItem = ({ item, isTimerOver, handleResult }: QuizzItemProps) => {
   }
 
   return (
-    <div>
+    <div className="w-full">
       {item.questions.map((question, i) => (
         <AnswerField
           key={question.label}

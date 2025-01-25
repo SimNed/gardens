@@ -27,6 +27,10 @@ const navigationData = [
     label: "quizz",
     url: "/quizz",
   },
+  {
+    label: "assitant",
+    url: "/assistant",
+  },
 ];
 
 export default function Header() {

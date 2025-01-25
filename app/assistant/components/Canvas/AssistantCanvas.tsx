@@ -10,18 +10,16 @@ import {
   RIGHT_CLICK_BUTTON_CODE,
   SELECTED_RECT_FILL,
   SELECTED_RECT_STROKE,
-} from "@/lib/utils/grid";
+} from "@/lib/utils/canvas";
 import GridPattern from "./GridPattern";
-import useGridCanvas, { CanvasMode } from "@/lib/hooks/use-canvas";
-import { useGridContext } from "./GridContext";
+import useCanvas, { CanvasMode } from "@/lib/hooks/use-canvas";
+import { useAssistantContext } from "../AssistantContext";
 
 interface CanvasProps {
-  width: number;
-  height: number;
   cellSize: number;
 }
 
-const GridCanvas = ({ cellSize, width, height }: CanvasProps) => {
+const AssistantCanvas = ({ cellSize }: CanvasProps) => {
   const canvasRef = useRef(null);
 
   const { getDragPoints, setDragPoints, getDragDeltas, getMousePosition } =
@@ -41,11 +39,9 @@ const GridCanvas = ({ cellSize, width, height }: CanvasProps) => {
     updateRectPosition,
     updateRectDrawing,
     updateRectSize,
-  } = useGridCanvas({
+  } = useCanvas({
     canvasRef: canvasRef,
     cellSize: cellSize,
-    width: width,
-    height: height,
   });
 
   const {
@@ -54,7 +50,7 @@ const GridCanvas = ({ cellSize, width, height }: CanvasProps) => {
     selectElement,
     unselectElement,
     getSelectedElement,
-  } = useGridContext();
+  } = useAssistantContext();
 
   const handleMouseDown = (
     e: React.MouseEvent<SVGRectElement | SVGSVGElement, MouseEvent>,
@@ -136,8 +132,8 @@ const GridCanvas = ({ cellSize, width, height }: CanvasProps) => {
   return (
     <svg
       ref={canvasRef}
-      width={width}
-      height={height}
+      width="100%"
+      height="100%"
       viewBox={`${canvasState.viewBox.x} ${canvasState.viewBox.y} ${canvasState.viewBox.width} ${canvasState.viewBox.height}`}
       onContextMenu={(e) => e.preventDefault()}
       onMouseDown={(e) => {
@@ -175,7 +171,7 @@ const GridCanvas = ({ cellSize, width, height }: CanvasProps) => {
                 }
                 stroke={
                   selectedElement?.id === element.id
-                    ? SELECTED_RECT_STROKE
+                    ? SELECTED_RECT_FILL
                     : DEFAULT_RECT_STROKE
                 }
                 onMouseDown={(e) => {
@@ -218,4 +214,4 @@ const GridCanvas = ({ cellSize, width, height }: CanvasProps) => {
   );
 };
 
-export default GridCanvas;
+export default AssistantCanvas;

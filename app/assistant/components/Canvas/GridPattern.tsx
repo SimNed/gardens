@@ -6,19 +6,21 @@ interface GridPatternProps {
 
 const GridPattern = ({
   cellSize,
-  color = "#DDD",
+  color = "rgba(0, 100, 255, 0.2)",
   viewBox,
 }: GridPatternProps) => {
   return (
     <>
+      Voici un pattern avec une croix alignée sur les lignes de la grille :
+      jsxCopy
       <defs>
         <pattern
           id="gridPattern"
           patternUnits="userSpaceOnUse"
           width={cellSize}
           height={cellSize}
-          x={viewBox.x}
-          y={viewBox.y}
+          x={0}
+          y={0}
         >
           <line
             x1="0"
@@ -36,13 +38,41 @@ const GridPattern = ({
             stroke={color}
             strokeWidth="1"
           />
-          <circle cx={1} cy={1} r="1" fill={color} />
-          <circle cx={cellSize} cy={1} r="1" fill={color} />
-          <circle cx={1} cy={cellSize} r="1" fill={color} />
-          <circle cx={cellSize} cy={cellSize} r="1" fill={color} />
+          {/* CROSS */}
+          <line
+            x1="0"
+            y1="0"
+            x2={cellSize / 5}
+            y2="0"
+            stroke={"rgba(0, 100, 255, 0.4)"}
+            strokeWidth="1"
+          />
+          <line
+            x1={cellSize - (cellSize / 5 - 1)}
+            y1="0"
+            x2={cellSize}
+            y2="0"
+            stroke={"rgba(0, 100, 255, 0.4)"}
+            strokeWidth="1"
+          />
+          <line
+            x1={0}
+            y1={cellSize - (cellSize / 5 - 1)}
+            x2={0}
+            y2={cellSize}
+            stroke={"rgba(0, 100, 255, 0.4)"}
+            strokeWidth="1"
+          />
+          <line
+            x1={0}
+            y1={0}
+            x2={0}
+            y2={cellSize / 5}
+            stroke={"rgba(0, 100, 255, 0.4)"}
+            strokeWidth="1"
+          />
         </pattern>
       </defs>
-
       <rect
         x={viewBox.x}
         y={viewBox.y}

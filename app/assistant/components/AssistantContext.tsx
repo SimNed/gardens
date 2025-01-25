@@ -1,30 +1,31 @@
-import { GridElementType, RectangleType } from "@/types/grid";
+import { AssistantElementType } from "@/types/assistant";
+import { RectangleType } from "@/types/canvas";
 
 import { createContext, useContext, useState, ReactNode } from "react";
 
-interface GridContextProps {
-  getElements: () => Array<GridElementType>;
+interface AssistantContextProps {
+  getElements: () => Array<AssistantElementType>;
   createElement: (rectangle: RectangleType) => void;
-  selectElement: (element: GridElementType) => void;
+  selectElement: (element: AssistantElementType) => void;
   unselectElement: () => void;
-  getSelectedElement: () => GridElementType | null;
-  updateElement: (element: GridElementType) => void;
-  deleteElement: (element: GridElementType) => void;
+  getSelectedElement: () => AssistantElementType | null;
+  updateElement: (element: AssistantElementType) => void;
+  deleteElement: (element: AssistantElementType) => void;
 }
 
-const GridContext = createContext<GridContextProps | null>(null);
+const AssistantContext = createContext<AssistantContextProps | null>(null);
 
-interface GridProviderProps {
+interface AssistantProviderProps {
   children: ReactNode;
 }
 
-interface GridStateProps {
-  elements: Array<GridElementType>;
-  selectedElement: GridElementType | null;
+interface AssistantStateProps {
+  elements: Array<AssistantElementType>;
+  selectedElement: AssistantElementType | null;
 }
 
-export function GridProvider({ children }: GridProviderProps) {
-  const [gridState, setGridState] = useState<GridStateProps>({
+export function AssistantProvider({ children }: AssistantProviderProps) {
+  const [gridState, setGridState] = useState<AssistantStateProps>({
     elements: [],
     selectedElement: null,
   });
@@ -46,7 +47,7 @@ export function GridProvider({ children }: GridProviderProps) {
     return gridState.selectedElement;
   };
 
-  const selectElement = (element: GridElementType) => {
+  const selectElement = (element: AssistantElementType) => {
     setGridState((prev) => ({ ...prev, selectedElement: element }));
   };
 
@@ -54,7 +55,7 @@ export function GridProvider({ children }: GridProviderProps) {
     setGridState((prev) => ({ ...prev, selectedElement: null }));
   };
 
-  const updateElement = (element: GridElementType) => {
+  const updateElement = (element: AssistantElementType) => {
     const updatedElements = gridState.elements.map((el) =>
       el.id === element.id ? element : el
     );
@@ -64,7 +65,7 @@ export function GridProvider({ children }: GridProviderProps) {
     }));
   };
 
-  const deleteElement = (element: GridElementType) => {
+  const deleteElement = (element: AssistantElementType) => {
     const updatedElements = gridState.elements.filter(
       (el) => el.id !== element.id
     );
@@ -74,7 +75,7 @@ export function GridProvider({ children }: GridProviderProps) {
     }));
   };
 
-  const value: GridContextProps = {
+  const value: AssistantContextProps = {
     getElements,
     createElement,
     getSelectedElement,
@@ -84,13 +85,19 @@ export function GridProvider({ children }: GridProviderProps) {
     deleteElement,
   };
 
-  return <GridContext.Provider value={value}>{children}</GridContext.Provider>;
+  return (
+    <AssistantContext.Provider value={value}>
+      {children}
+    </AssistantContext.Provider>
+  );
 }
 
-export function useGridContext() {
-  const context = useContext(GridContext);
+export function useAssistantContext() {
+  const context = useContext(AssistantContext);
   if (!context) {
-    throw new Error("useGridContext must be used within a GridProvider");
+    throw new Error(
+      "useAssistantContext must be used within a AssistantProvider"
+    );
   }
   return context;
 }

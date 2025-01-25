@@ -4,25 +4,24 @@ import useGridMouse from "@/lib/hooks/use-mouse";
 import React, { useRef } from "react";
 import ResizeHandles from "./ResizeHandles";
 import {
+  DEFAULT_RECT_FILL,
+  DEFAULT_RECT_STROKE,
   LEFT_CLICK_BUTTON_CODE,
   RIGHT_CLICK_BUTTON_CODE,
+  SELECTED_RECT_FILL,
+  SELECTED_RECT_STROKE,
 } from "@/lib/utils/grid";
 import GridPattern from "./GridPattern";
 import useGridCanvas, { CanvasMode } from "@/lib/hooks/use-canvas";
 import { useGridContext } from "./GridContext";
 
 interface CanvasProps {
-  width?: number;
-  height?: number;
-  cellSize?: number;
-  onCreateShape: (shapeId: number) => void;
+  width: number;
+  height: number;
+  cellSize: number;
 }
 
-const GridCanvas = ({
-  cellSize = 20,
-  width = 800,
-  height = 600,
-}: CanvasProps) => {
+const GridCanvas = ({ cellSize, width, height }: CanvasProps) => {
   const canvasRef = useRef(null);
 
   const { getDragPoints, setDragPoints, getDragDeltas, getMousePosition } =
@@ -137,15 +136,14 @@ const GridCanvas = ({
   return (
     <svg
       ref={canvasRef}
-      width="800"
-      height="600"
+      width={width}
+      height={height}
       viewBox={`${canvasState.viewBox.x} ${canvasState.viewBox.y} ${canvasState.viewBox.width} ${canvasState.viewBox.height}`}
-      className="bg-white"
       onContextMenu={(e) => e.preventDefault()}
       onMouseDown={(e) => {
         if (e.button === RIGHT_CLICK_BUTTON_CODE)
           handleMouseDown(e, CanvasMode.PANNING);
-        else {
+        else if (e.button === LEFT_CLICK_BUTTON_CODE) {
           unselectElement();
           handleMouseDown(e, CanvasMode.DRAWING);
         }
@@ -172,11 +170,13 @@ const GridCanvas = ({
                 height={element.rectangle.height}
                 fill={
                   selectedElement?.id === element.id
-                    ? "rgba(0, 100, 255, 0.4)"
-                    : "rgba(0, 100, 255, 0.2)"
+                    ? SELECTED_RECT_FILL
+                    : DEFAULT_RECT_FILL
                 }
                 stroke={
-                  selectedElement?.id === element.id ? "rgb(0, 0, 255)" : "blue"
+                  selectedElement?.id === element.id
+                    ? SELECTED_RECT_STROKE
+                    : DEFAULT_RECT_STROKE
                 }
                 onMouseDown={(e) => {
                   if (e.button === LEFT_CLICK_BUTTON_CODE) {
@@ -209,8 +209,8 @@ const GridCanvas = ({
           y={canvasState.tempRect.y}
           width={canvasState.tempRect.width}
           height={canvasState.tempRect.height}
-          fill="rgba(0, 100, 255, 0.3)"
-          stroke="blue"
+          fill={SELECTED_RECT_FILL}
+          stroke={SELECTED_RECT_STROKE}
           strokeWidth="1"
         />
       )}

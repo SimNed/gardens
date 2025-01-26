@@ -8,7 +8,7 @@ export function convertFormToRequest(
   const request: SearchRequestType = {};
 
   if (filterForm.family?.value) request.familyId = filterForm.family.value;
-  if (filterForm.genus?.value) request.genusId = filterForm.genus.value;
+  if (filterForm.genus?.value) request.genusId = filterForm.genus.value.value;
   if (filterForm.category?.value)
     request.plantCategoryId = filterForm.category.value;
   if (filterForm.lifeCycle?.value)

@@ -10,7 +10,7 @@ import {
 } from "@/app/components/shadcn-ui/sidebar";
 
 import { Separator } from "@/app/components/shadcn-ui/separator";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import FiltersHeader from "./SearchSidebarHeader";
 import FiltersGroup from "./FiltersGroup";
@@ -66,6 +66,10 @@ const SearchForm = ({
 
     setFormFilters({ ...formFilters, ...filters });
   }
+
+  useEffect(() => {
+    console.log("FILTERS", formFilters);
+  }, [formFilters]);
 
   function deleteFilter(key: string) {
     if (formFilters.genus && key === "family") return;
@@ -123,7 +127,7 @@ const SearchForm = ({
           <ComboBoxInput
             label={"Genre"}
             data={getFilteredGenusOptions()}
-            selectValue={formFilters.genus?.value || ""}
+            selectValue={formFilters.genus?.value.value || ""}
             onSelectChange={(data) => {
               handleFilters({ genus: data });
             }}

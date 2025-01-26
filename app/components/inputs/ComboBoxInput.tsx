@@ -1,10 +1,7 @@
 import * as React from "react";
 import { ForwardedRef, forwardRef } from "react";
-
 import { cn } from "@/lib/utils/style";
-
 import { Check, ChevronsUpDown } from "lucide-react";
-
 import {
   Command,
   CommandEmpty,
@@ -20,13 +17,12 @@ import {
 } from "@/app/components/shadcn-ui/popover";
 import { Button } from "@/app/components/shadcn-ui/button";
 import { Label } from "@/app/components/shadcn-ui/label";
-
 import { KeyValueType } from "@/types/data";
 
 export interface ComboBoxInputProps<T>
   extends React.ComponentPropsWithRef<typeof Button> {
   data: KeyValueType<T>[];
-  selectValue: T;
+  selectValue: string;
   label?: string;
   placeholder?: string;
   inputPlaceholder?: string;
@@ -34,19 +30,13 @@ export interface ComboBoxInputProps<T>
   onSelectChange: (data: KeyValueType<T>) => void;
 }
 
-// function fixedForwardRef<T, P = {}>(
-//   render: (props: P, ref: React.Ref<T>) => React.ReactNode
-// ): (props: P & React.RefAttributes<T>) => React.ReactNode {
-//   return forwardRef(render) as any;
-// }
-
 const ComboBox = <T,>(
   {
     data,
     selectValue,
     label,
-    placeholder,
-    inputPlaceholder,
+    placeholder = "sélection",
+    inputPlaceholder = "sélection",
     notFoundPlaceholder,
     onSelectChange,
     className,
@@ -55,6 +45,10 @@ const ComboBox = <T,>(
   ref: ForwardedRef<HTMLButtonElement>
 ) => {
   const [open, setOpen] = React.useState(false);
+
+  const selectedItem = data.find(
+    (d) => d.value === selectValue || d.value === (selectValue as string)
+  );
 
   return (
     <div className="w-full p-2">
@@ -69,9 +63,7 @@ const ComboBox = <T,>(
             className={cn("w-full justify-between", className)}
             {...props}
           >
-            {selectValue
-              ? data.find((d) => d.value === selectValue)?.key
-              : placeholder}
+            {selectedItem ? selectedItem.key : placeholder}
             <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -110,7 +102,6 @@ const ComboBox = <T,>(
   );
 };
 
-// Utilisation correcte de forwardRef avec types explicites
 const ComboBoxInput = forwardRef(ComboBox) as <T>(
   props: ComboBoxInputProps<T> & React.RefAttributes<HTMLButtonElement>
 ) => JSX.Element;

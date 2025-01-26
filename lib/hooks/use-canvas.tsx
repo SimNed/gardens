@@ -69,6 +69,18 @@ const useCanvas = ({ canvasRef, cellSize }: UseCanvasProps) => {
     resizeDirectionRef.current = direction;
   };
 
+  const setZoomFactor = (zoomFactor: number) => {
+    const normalizedZoomFactor = zoomFactor > 0 ? 1.1 : 0.9;
+    setCanvasState((prev) => ({
+      ...prev,
+      viewBox: {
+        ...prev.viewBox,
+        width: canvasState.viewBox.width * normalizedZoomFactor,
+        height: canvasState.viewBox.height * normalizedZoomFactor,
+      },
+    }));
+  };
+
   const getMousePositionInCanvas = (mousePosition: Vector2Type) => {
     return {
       x: snapToGrid(mousePosition.x, cellSize),
@@ -177,6 +189,7 @@ const useCanvas = ({ canvasRef, cellSize }: UseCanvasProps) => {
     getMode,
     setMode,
     setResizeDirection,
+    setZoomFactor,
     getMousePositionInCanvas,
     updatePanning,
     updateRectPosition,

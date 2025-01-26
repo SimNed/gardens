@@ -6,7 +6,7 @@ interface GridPatternProps {
 
 const GridPattern = ({
   cellSize,
-  color = "rgba(0, 100, 255, 0.2)",
+  color = "rgba(105, 105, 115, .2)",
   viewBox,
 }: GridPatternProps) => {
   return (
@@ -44,7 +44,7 @@ const GridPattern = ({
             y1="0"
             x2={cellSize / 5}
             y2="0"
-            stroke={"rgba(0, 100, 255, 0.4)"}
+            stroke={"rgba(105, 105, 115, .5)"}
             strokeWidth="1"
           />
           <line
@@ -52,7 +52,7 @@ const GridPattern = ({
             y1="0"
             x2={cellSize}
             y2="0"
-            stroke={"rgba(0, 100, 255, 0.4)"}
+            stroke={"rgba(105, 105, 115, .5)"}
             strokeWidth="1"
           />
           <line
@@ -60,7 +60,7 @@ const GridPattern = ({
             y1={cellSize - (cellSize / 5 - 1)}
             x2={0}
             y2={cellSize}
-            stroke={"rgba(0, 100, 255, 0.4)"}
+            stroke={"rgba(105, 105, 115, .5)"}
             strokeWidth="1"
           />
           <line
@@ -68,7 +68,7 @@ const GridPattern = ({
             y1={0}
             x2={0}
             y2={cellSize / 5}
-            stroke={"rgba(0, 100, 255, 0.4)"}
+            stroke={"rgba(105, 105, 115, .5)"}
             strokeWidth="1"
           />
         </pattern>

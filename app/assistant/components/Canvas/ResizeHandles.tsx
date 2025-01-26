@@ -1,5 +1,6 @@
 import {
   LEFT_CLICK_BUTTON_CODE,
+  RESIZE_HANDLE_FILL,
   SELECTED_RECT_FILL,
   SELECTED_RECT_STROKE,
 } from "@/lib/utils/canvas";
@@ -105,7 +106,7 @@ const ResizeHandles = ({
           y={handle.y}
           width={handle.width}
           height={handle.height}
-          fill={SELECTED_RECT_FILL}
+          fill={RESIZE_HANDLE_FILL}
           onMouseDown={(e) => {
             if (e.button === LEFT_CLICK_BUTTON_CODE) {
               e.stopPropagation();

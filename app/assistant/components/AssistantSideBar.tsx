@@ -1,14 +1,19 @@
 import { useAssistantContext } from "./AssistantContext";
+import SideBarElement from "./SideBarElement";
 
-interface AssistantSideBarProps {}
+interface AssistantSideBarProps {
+  cellSize: number;
+}
 
-export function AssistantSideBar({}: AssistantSideBarProps) {
+export function AssistantSideBar({ cellSize }: AssistantSideBarProps) {
   const { getElements } = useAssistantContext();
 
   return (
-    <ul>
+    <ul className="border-l border-t border-zinc-300 p-2">
       {getElements().map((element) => (
-        <li key={element.id}>{element.id}</li>
+        <li key={element.id} className="bg-red-500">
+          <SideBarElement element={element} cellSize={cellSize} />
+        </li>
       ))}
     </ul>
   );

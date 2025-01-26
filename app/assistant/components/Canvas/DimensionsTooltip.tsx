@@ -19,6 +19,7 @@ export default function DimensionsTooltip({
     <div
       style={{
         position: "absolute",
+        zIndex: 99999,
         left: `${position.x + xOffset}px`,
         top: `${position.y + yOffset}px`,
         pointerEvents: "none",

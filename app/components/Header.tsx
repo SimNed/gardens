@@ -28,7 +28,7 @@ const navigationData = [
     url: "/quizz",
   },
   {
-    label: "assitant",
+    label: "assistant",
     url: "/assistant",
   },
 ];

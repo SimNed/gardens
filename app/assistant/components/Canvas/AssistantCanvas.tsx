@@ -6,6 +6,7 @@ import ResizeHandles from "./ResizeHandles";
 import {
   DEFAULT_RECT_FILL,
   DEFAULT_RECT_STROKE,
+  HOVER_RECT_FILL,
   LEFT_CLICK_BUTTON_CODE,
   RIGHT_CLICK_BUTTON_CODE,
   SELECTED_RECT_FILL,
@@ -52,7 +53,10 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
     createElement,
     selectElement,
     unselectElement,
+    hoverElement,
+    unhoverElement,
     getSelectedElement,
+    getHoveredElement,
   } = useAssistantContext();
 
   const handleMouseDown = (
@@ -170,6 +174,8 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
                   fill={
                     selectedElement?.id === element.id
                       ? SELECTED_RECT_FILL
+                      : getHoveredElement()?.id === element.id
+                      ? HOVER_RECT_FILL // Nouvelle couleur de survol
                       : DEFAULT_RECT_FILL
                   }
                   stroke={
@@ -185,7 +191,9 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
                       handleMouseDown(e, CanvasMode.MOVING);
                     }
                   }}
-                  style={{ cursor: "move" }}
+                  onMouseEnter={() => hoverElement(element)}
+                  onMouseLeave={() => unhoverElement()}
+                  className="cursor-move"
                 />
                 {selectedElement?.id === element.id && (
                   <ResizeHandles

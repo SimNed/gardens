@@ -11,7 +11,7 @@ export function AssistantSideBar({ cellSize }: AssistantSideBarProps) {
   return (
     <ul className="border-l border-t border-zinc-300 p-2">
       {getElements().map((element) => (
-        <li key={element.id} className="bg-red-500">
+        <li key={element.id}>
           <SideBarElement element={element} cellSize={cellSize} />
         </li>
       ))}

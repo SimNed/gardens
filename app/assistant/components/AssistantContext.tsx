@@ -8,7 +8,10 @@ interface AssistantContextProps {
   createElement: (rectangle: RectangleType) => void;
   selectElement: (element: AssistantElementType) => void;
   unselectElement: () => void;
+  hoverElement: (element: AssistantElementType) => void;
+  unhoverElement: () => void;
   getSelectedElement: () => AssistantElementType | null;
+  getHoveredElement: () => AssistantElementType | null;
   updateElement: (element: AssistantElementType) => void;
   deleteElement: (element: AssistantElementType) => void;
 }
@@ -22,12 +25,14 @@ interface AssistantProviderProps {
 interface AssistantStateProps {
   elements: Array<AssistantElementType>;
   selectedElement: AssistantElementType | null;
+  hoveredElement: AssistantElementType | null;
 }
 
 export function AssistantProvider({ children }: AssistantProviderProps) {
   const [gridState, setGridState] = useState<AssistantStateProps>({
     elements: [],
     selectedElement: null,
+    hoveredElement: null,
   });
 
   const getElements = () => {
@@ -38,6 +43,7 @@ export function AssistantProvider({ children }: AssistantProviderProps) {
     const element = { id: Date.now(), rectangle: rectangle };
 
     setGridState((prev) => ({
+      ...prev,
       elements: [...prev.elements, element],
       selectedElement: element,
     }));
@@ -53,6 +59,18 @@ export function AssistantProvider({ children }: AssistantProviderProps) {
 
   const unselectElement = () => {
     setGridState((prev) => ({ ...prev, selectedElement: null }));
+  };
+
+  const getHoveredElement = () => {
+    return gridState.hoveredElement;
+  };
+
+  const hoverElement = (element: AssistantElementType) => {
+    setGridState((prev) => ({ ...prev, hoveredElement: element }));
+  };
+
+  const unhoverElement = () => {
+    setGridState((prev) => ({ ...prev, hoveredElement: null }));
   };
 
   const updateElement = (element: AssistantElementType) => {
@@ -79,8 +97,11 @@ export function AssistantProvider({ children }: AssistantProviderProps) {
     getElements,
     createElement,
     getSelectedElement,
+    getHoveredElement,
     selectElement,
     unselectElement,
+    hoverElement,
+    unhoverElement,
     updateElement,
     deleteElement,
   };

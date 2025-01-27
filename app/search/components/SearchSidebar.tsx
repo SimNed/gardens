@@ -13,20 +13,12 @@ import {
 import { Separator } from "@/app/components/shadcn-ui/separator";
 
 import SearchForm from "./SearchForm";
-import {
-  SearchFormOptionProps,
-  SearchFormType,
-  SearchRequestType,
-} from "@/types/search";
+import { SearchFormType, SearchRequestType } from "@/types/search";
 import { convertFormToRequest } from "@/lib/utils/search";
 import SearchResult from "./SearchResult";
 import Section from "@/app/components/Section";
 
-interface SearchSidebarProps {
-  formOptions: SearchFormOptionProps;
-}
-
-const SearchSidebar = ({ formOptions }: SearchSidebarProps) => {
+const SearchSidebar = () => {
   const [filteredRequest, setFilteredRequest] = useState<SearchRequestType>({});
 
   const [shouldFetch, setShouldFetch] = useState(false);
@@ -50,7 +42,6 @@ const SearchSidebar = ({ formOptions }: SearchSidebarProps) => {
   return (
     <SidebarProvider>
       <SearchForm
-        options={formOptions}
         handleFilteredRequest={(filters) => handleFilteredRequest(filters)}
       />
       <SidebarInset>

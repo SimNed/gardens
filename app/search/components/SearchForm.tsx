@@ -16,10 +16,13 @@ import FiltersHeader from "./SearchSidebarHeader";
 import FiltersGroup from "./FiltersGroup";
 import FiltersBadgeGroup from "./FiltersBadgeGroup";
 import { SearchFormOptionProps, SearchFormType } from "@/types/search";
-import SelectInput from "@/app/components/inputs/SelectInput";
-import NumberInput from "@/app/components/inputs/NumberInput";
-import { LifeCycle, SunExposure, WaterNeed } from "@prisma/client";
-import ComboBoxInput from "@/app/components/inputs/ComboBoxInput";
+import SunExposureSelect from "@/app/components/filters/SunExposureSelect";
+import WaterNeedSelect from "@/app/components/filters/WaterNeedSelect";
+import GenusSelect from "@/app/components/filters/GenusSelect";
+import FamilySelect from "@/app/components/filters/FamilySelect";
+import LifeCycleSelect from "@/app/components/filters/LifeCycleSelect";
+import CategorySelect from "@/app/components/filters/CategorySelect";
+import ColdHardinessInput from "@/app/components/filters/ColdHardinessInput";
 
 type BadgeGroupType = Partial<Record<keyof SearchFormType, string>>;
 
@@ -40,12 +43,10 @@ const environmentBadgeGroup: BadgeGroupType = {
 };
 
 type FiltersSideBarProps = React.ComponentProps<typeof Sidebar> & {
-  options: SearchFormOptionProps;
   handleFilteredRequest: (formFilters: SearchFormType) => void;
 };
 
 const SearchForm = ({
-  options,
   handleFilteredRequest,
   ...props
 }: FiltersSideBarProps) => {
@@ -116,23 +117,20 @@ const SearchForm = ({
       <Separator className="mb-2" />
       <SidebarContent>
         <FiltersGroup label={"Taxonomie"}>
-          <ComboBoxInput
-            label={"Famille"}
-            data={options.family}
-            selectValue={formFilters.family?.value || ""}
-            onSelectChange={(data) => {
+          <FamilySelect
+            value={formFilters.family?.value || ""}
+            onValueChange={(data) => {
               handleFilters({ family: data });
             }}
           />
-          <ComboBoxInput
-            label={"Genre"}
-            data={getFilteredGenusOptions()}
-            selectValue={formFilters.genus?.value.value || ""}
-            onSelectChange={(data) => {
+          <GenusSelect
+            value={formFilters.genus?.value.value || ""}
+            onValueChange={(data) => {
               handleFilters({ genus: data });
             }}
           />
         </FiltersGroup>
+
         {(formFilters.family || formFilters.genus) && (
           <FiltersBadgeGroup
             badges={generateBadges(taxonomyBadgeGroup)}
@@ -142,16 +140,12 @@ const SearchForm = ({
         <Separator />
 
         <FiltersGroup label={"Type"}>
-          <SelectInput<string>
-            options={options.category}
-            selectValue={formFilters.category?.value || ""}
-            label="Catégorie"
+          <CategorySelect
+            value={formFilters.category?.value || ""}
             onValueChange={(data) => handleFilters({ category: data })}
           />
-          <SelectInput<LifeCycle>
-            options={options.lifeCycle}
-            selectValue={formFilters.lifeCycle?.value || ""}
-            label="Cycle"
+          <LifeCycleSelect
+            value={formFilters.lifeCycle?.value || ""}
             onValueChange={(data) => handleFilters({ lifeCycle: data })}
           />
         </FiltersGroup>
@@ -164,24 +158,16 @@ const SearchForm = ({
         <Separator />
 
         <FiltersGroup label={"Environnement"}>
-          <SelectInput<WaterNeed>
-            label="Besoin en eau"
-            options={options.waterNeed}
-            selectValue={formFilters.waterNeed?.value || ""}
+          <WaterNeedSelect
+            value={formFilters.waterNeed?.value || ""}
             onValueChange={(data) => handleFilters({ waterNeed: data })}
           />
-          <SelectInput<SunExposure>
-            label="Exposition"
-            options={options.sunExposure}
-            selectValue={formFilters.sunExposure?.value || ""}
+          <SunExposureSelect
+            value={formFilters.sunExposure?.value || ""}
             onValueChange={(data) => handleFilters({ sunExposure: data })}
           />
-          <NumberInput
-            label="Rusticité"
-            unit="°C"
+          <ColdHardinessInput
             value={formFilters.coldHardiness?.value || 0}
-            minRange={options.coldHardiness.value.min}
-            maxRange={options.coldHardiness.value.max}
             onValueChange={(data) => handleFilters({ coldHardiness: data })}
           />
         </FiltersGroup>

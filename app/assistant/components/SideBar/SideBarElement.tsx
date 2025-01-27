@@ -1,7 +1,7 @@
 import { Separator } from "@/app/components/shadcn-ui/separator";
 import { cn } from "@/lib/utils/style";
 import { AssistantElementType } from "@/types/assistant";
-import { useAssistantContext } from "./AssistantContext";
+import { useAssistantContext } from "../AssistantContext";
 
 interface SideBarElementProps {
   element: AssistantElementType;

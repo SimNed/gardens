@@ -1,7 +1,7 @@
 "use client";
 
 import { PlantType } from "@/types/plant";
-import { AssistantSideBar } from "./AssistantSideBar";
+import { AssistantSideBar } from "./SideBar/AssistantSideBar";
 import { AssistantProvider } from "./AssistantContext";
 import AssistantCanvas from "./Canvas/AssistantCanvas";
 

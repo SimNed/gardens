@@ -1,4 +1,4 @@
-import { useAssistantContext } from "./AssistantContext";
+import { useAssistantContext } from "../AssistantContext";
 import SideBarElement from "./SideBarElement";
 
 interface AssistantSideBarProps {

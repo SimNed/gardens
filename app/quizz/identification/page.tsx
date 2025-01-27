@@ -10,7 +10,7 @@ export default async function QuizzIdentificationByPicturePage() {
     <Section className="flex items-center">
       {data.length > 0 && (
         <QuizzWithPictureDisplayer
-          data={data.map((d) => {
+          items={data.map((d) => {
             return {
               element: d.imageUrl,
               questions: [{ label: "nom commun", solution: d.commonName }],

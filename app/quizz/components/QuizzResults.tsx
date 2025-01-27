@@ -13,8 +13,8 @@ const QuizzResults = ({ results }: QuizzResultsProps) => {
       <h2 className="text-3xl text-center">Score</h2>
       <Separator className="my-16" />
       {results.map((result) => (
-        <>
-          <div key={result.element} className="flex items-center">
+        <div key={result.element}>
+          <div className="flex items-center">
             <ul className="w-full grid grid-cols-4 items-center m-0">
               <li className="font-bold">{result.element}</li>
               {result.answers.map((answer) => (
@@ -32,7 +32,7 @@ const QuizzResults = ({ results }: QuizzResultsProps) => {
             )}
           </div>
           <Separator className="m-0" />
-        </>
+        </div>
       ))}
     </Section>
   );

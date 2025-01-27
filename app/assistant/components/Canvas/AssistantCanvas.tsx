@@ -175,7 +175,7 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
                     selectedElement?.id === element.id
                       ? SELECTED_RECT_FILL
                       : getHoveredElement()?.id === element.id
-                      ? HOVER_RECT_FILL // Nouvelle couleur de survol
+                      ? HOVER_RECT_FILL
                       : DEFAULT_RECT_FILL
                   }
                   stroke={
@@ -191,7 +191,9 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
                       handleMouseDown(e, CanvasMode.MOVING);
                     }
                   }}
-                  onMouseEnter={() => hoverElement(element)}
+                  onMouseEnter={() => {
+                    if (getMode() === CanvasMode.DEFAULT) hoverElement(element);
+                  }}
                   onMouseLeave={() => unhoverElement()}
                   className="cursor-move"
                 />

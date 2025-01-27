@@ -70,6 +70,7 @@ export default {
         "noto-serif": ['Noto Serif"', "serif"],
         roboto: ['Roboto"', "sans-serif"],
         poppins: ['Poppins"', "sans-serif"],
+        space: ['"Space Mono"', 'monospace'],
       },
     },
   },

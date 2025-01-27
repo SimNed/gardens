@@ -16,6 +16,10 @@
 @import "@fontsource/roboto/400.css";
 @import "@fontsource/roboto/400-italic.css";
 
+@import "@fontsource/space-mono";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/400-italic.css";
+
 body {
   font-family: "Roboto", Arial, Helvetica, sans-serif;
 }

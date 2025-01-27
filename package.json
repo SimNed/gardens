@@ -13,6 +13,7 @@
     "@fontsource/noto-serif": "^5.1.0",
     "@fontsource/poppins": "^5.1.0",
     "@fontsource/roboto": "^5.1.0",
+    "@fontsource/space-mono": "^5.1.2",
     "@hookform/resolvers": "^3.9.1",
     "@prisma/client": "^5.22.0",
     "@radix-ui/react-aspect-ratio": "^1.1.1",

@@ -38,15 +38,17 @@ const useCanvas = ({ canvasRef, cellSize }: UseCanvasProps) => {
   const resizeDirectionRef = useRef<DirectionVariantType | null>(null);
 
   useEffect(() => {
-    if (canvasRef.current)
+    if (canvasRef.current) {
+      const rectBoundaries = canvasRef.current.getBoundingClientRect();
       setCanvasState((prev) => ({
         ...prev,
         viewBox: {
           ...prev.viewBox,
-          width: canvasRef.current!.width.baseVal.value,
-          height: canvasRef.current!.height.baseVal.value,
+          width: rectBoundaries.width,
+          height: rectBoundaries.height,
         },
       }));
+    }
   }, [canvasRef]);
 
   const setViewBox = (viewBox: RectangleType) => {

@@ -11,8 +11,6 @@ const GridPattern = ({
 }: GridPatternProps) => {
   return (
     <>
-      Voici un pattern avec une croix alignée sur les lignes de la grille :
-      jsxCopy
       <defs>
         <pattern
           id="gridPattern"

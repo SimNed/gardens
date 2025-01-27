@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils/style";
 import { Vector2Type } from "@/types/canvas";
 
 interface DimensionsTooltipProps {
@@ -17,14 +18,10 @@ export default function DimensionsTooltip({
 }: DimensionsTooltipProps) {
   return (
     <div
+      className="absolute pointer-events-none z-[99999] font-space"
       style={{
-        position: "absolute",
-        zIndex: 99999,
         left: `${position.x + xOffset}px`,
         top: `${position.y + yOffset}px`,
-        pointerEvents: "none",
-        fontSize: "16px",
-        fontWeight: "lighter",
       }}
     >
       {`${width}m x ${height}m`}

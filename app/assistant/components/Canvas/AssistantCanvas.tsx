@@ -135,107 +135,112 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
   };
 
   return (
-    <>
-      <svg
-        ref={canvasRef}
-        width="100%"
-        height="100%"
-        viewBox={`${canvasState.viewBox.x} ${canvasState.viewBox.y} ${canvasState.viewBox.width} ${canvasState.viewBox.height}`}
-        onContextMenu={(e) => e.preventDefault()}
-        onMouseDown={(e) => {
-          if (e.button === RIGHT_CLICK_BUTTON_CODE)
-            handleMouseDown(e, CanvasMode.PANNING);
-          else if (e.button === LEFT_CLICK_BUTTON_CODE) {
-            unselectElement();
-            handleMouseDown(e, CanvasMode.DRAWING);
-          }
-        }}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-        onWheel={(e) => {
-          e.stopPropagation();
-          handleWheel(e);
-        }}
-      >
-        <GridPattern cellSize={cellSize} viewBox={canvasState.viewBox} />
-        <g>
-          {(() => {
-            const selectedElement = getSelectedElement();
-
-            return getElements().map((element) => (
-              <g key={element.id}>
-                <rect
-                  x={element.rectangle.x}
-                  y={element.rectangle.y}
-                  rx={16}
-                  width={element.rectangle.width}
-                  height={element.rectangle.height}
-                  fill={
-                    selectedElement?.id === element.id
-                      ? SELECTED_RECT_FILL
-                      : getHoveredElement()?.id === element.id
-                      ? HOVER_RECT_FILL
-                      : DEFAULT_RECT_FILL
-                  }
-                  stroke={
-                    selectedElement?.id === element.id
-                      ? "none"
-                      : DEFAULT_RECT_STROKE
-                  }
-                  strokeWidth={0.5}
-                  onMouseDown={(e) => {
-                    if (e.button === LEFT_CLICK_BUTTON_CODE) {
-                      e.stopPropagation();
-                      selectElement(element);
-                      handleMouseDown(e, CanvasMode.MOVING);
-                    }
-                  }}
-                  onMouseEnter={() => {
-                    if (getMode() === CanvasMode.DEFAULT) hoverElement(element);
-                  }}
-                  onMouseLeave={() => unhoverElement()}
-                  className="cursor-move"
-                />
-                {selectedElement?.id === element.id && (
-                  <ResizeHandles
-                    rectangle={element.rectangle}
-                    onMouseDown={(e, direction) => {
-                      e.stopPropagation();
-                      selectElement(element);
-                      setResizeDirection(direction);
-                      handleMouseDown(e, CanvasMode.RESIZING);
-                    }}
-                  />
-                )}
-              </g>
-            ));
-          })()}
-        </g>
-
-        {getMode() === CanvasMode.DRAWING && canvasState.tempRect && (
-          <>
-            <rect
-              x={canvasState.tempRect.x}
-              y={canvasState.tempRect.y}
-              width={canvasState.tempRect.width}
-              height={canvasState.tempRect.height}
-              fill={SELECTED_RECT_FILL}
-            />
-          </>
-        )}
-      </svg>
-      {canvasState.tempRect && startDragPointRef.current && (
-        <DimensionsTooltip
-          position={{
-            x: startDragPointRef.current.x,
-            y: startDragPointRef.current.y,
+    canvasState.viewBox && (
+      <>
+        <svg
+          ref={canvasRef}
+          xmlns="http://www.w3.org/2000/svg"
+          xmlnsXlink="http://www.w3.org/1999/xlink"
+          width="100%"
+          height="100%"
+          viewBox={`${canvasState.viewBox.x} ${canvasState.viewBox.y} ${canvasState.viewBox.width} ${canvasState.viewBox.height}`}
+          onContextMenu={(e) => e.preventDefault()}
+          onMouseDown={(e) => {
+            if (e.button === RIGHT_CLICK_BUTTON_CODE)
+              handleMouseDown(e, CanvasMode.PANNING);
+            else if (e.button === LEFT_CLICK_BUTTON_CODE) {
+              unselectElement();
+              handleMouseDown(e, CanvasMode.DRAWING);
+            }
           }}
-          width={canvasState.tempRect.width / cellSize}
-          height={canvasState.tempRect.height / cellSize}
-        />
-      )}
-    </>
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onWheel={(e) => {
+            e.stopPropagation();
+            handleWheel(e);
+          }}
+        >
+          <GridPattern cellSize={cellSize} viewBox={canvasState.viewBox} />
+          <g>
+            {(() => {
+              const selectedElement = getSelectedElement();
+
+              return getElements().map((element) => (
+                <g key={element.id}>
+                  <rect
+                    x={element.rectangle.x}
+                    y={element.rectangle.y}
+                    rx={16}
+                    width={element.rectangle.width}
+                    height={element.rectangle.height}
+                    fill={
+                      selectedElement?.id === element.id
+                        ? SELECTED_RECT_FILL
+                        : getHoveredElement()?.id === element.id
+                        ? HOVER_RECT_FILL
+                        : DEFAULT_RECT_FILL
+                    }
+                    stroke={
+                      selectedElement?.id === element.id
+                        ? "none"
+                        : DEFAULT_RECT_STROKE
+                    }
+                    strokeWidth={0.5}
+                    onMouseDown={(e) => {
+                      if (e.button === LEFT_CLICK_BUTTON_CODE) {
+                        e.stopPropagation();
+                        selectElement(element);
+                        handleMouseDown(e, CanvasMode.MOVING);
+                      }
+                    }}
+                    onMouseEnter={() => {
+                      if (getMode() === CanvasMode.DEFAULT)
+                        hoverElement(element);
+                    }}
+                    onMouseLeave={() => unhoverElement()}
+                    className="cursor-move"
+                  />
+                  {selectedElement?.id === element.id && (
+                    <ResizeHandles
+                      rectangle={element.rectangle}
+                      onMouseDown={(e, direction) => {
+                        e.stopPropagation();
+                        selectElement(element);
+                        setResizeDirection(direction);
+                        handleMouseDown(e, CanvasMode.RESIZING);
+                      }}
+                    />
+                  )}
+                </g>
+              ));
+            })()}
+          </g>
+
+          {getMode() === CanvasMode.DRAWING && canvasState.tempRect && (
+            <>
+              <rect
+                x={canvasState.tempRect.x}
+                y={canvasState.tempRect.y}
+                width={canvasState.tempRect.width}
+                height={canvasState.tempRect.height}
+                fill={SELECTED_RECT_FILL}
+              />
+            </>
+          )}
+        </svg>
+        {canvasState.tempRect && startDragPointRef.current && (
+          <DimensionsTooltip
+            position={{
+              x: startDragPointRef.current.x,
+              y: startDragPointRef.current.y,
+            }}
+            width={canvasState.tempRect.width / cellSize}
+            height={canvasState.tempRect.height / cellSize}
+          />
+        )}
+      </>
+    )
   );
 };
 

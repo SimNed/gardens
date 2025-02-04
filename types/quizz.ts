@@ -1,21 +1,16 @@
-type AnswerType = { solution: string; success: boolean };
+export type FieldQuestionType = {
+  index: number;
+  label: string;
+  solution: string;
+  success: boolean;
+};
 
-export type QuestionType = { label: string; solution: string };
-
-export type ItemQuestionsType = {
+export type QuestionType = {
   element: string;
-  questions: QuestionType[];
+  fields: Array<FieldQuestionType>;
 };
 
-export type ItemAnswersType = {
-  element: string;
-  answers: AnswerType[];
-};
-
-export type QuizzStateType = {
-  currentIndex: number;
-  results: ItemAnswersType[];
-};
+///
 
 export type PlantWithTaxonomyQuizzType = {
   commonName: string;

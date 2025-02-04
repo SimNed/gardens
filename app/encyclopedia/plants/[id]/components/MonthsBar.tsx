@@ -1,5 +1,5 @@
-import { getShortenedMonths } from "@/lib/utils/month";
-import { cn } from "@/lib/utils/style";
+import { getShortenedMonths } from "@/app/lib/utils/month";
+import { cn } from "@/app/lib/utils/style";
 import { MonthVariantType } from "@/types/variant";
 
 const defaultVariant = {

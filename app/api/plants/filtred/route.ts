@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma/db";
+import prisma from "@/app/lib/prisma/db";
 
 import {
   Prisma,

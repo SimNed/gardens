@@ -11,3 +11,5 @@ export type DirectionVariantType =
   | "bottom"
   | "bottom-left"
   | "left";
+
+export type QuizzVariantType = "image" | "text";

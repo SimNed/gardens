@@ -1,5 +1,5 @@
-import { getLifeCycleLabel, getSoilLabel } from "@/lib/utils/plant";
-import { capitalizeFirstLetter } from "@/lib/utils/string";
+import { getLifeCycleLabel, getSoilLabel } from "@/app/lib/utils/plant";
+import { capitalizeFirstLetter } from "@/app/lib/utils/string";
 import { PlantWithTaxonomyType } from "@/types/plant";
 
 interface PlantArticleInfosProps {

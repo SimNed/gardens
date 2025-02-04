@@ -1,4 +1,4 @@
-import Section from "../components/Section";
+import Section from "../components/ui/Section";
 import { Binoculars, BookOpenText } from "lucide-react";
 import QuizzNavigationCard from "./components/QuizzNavigationCard";
 

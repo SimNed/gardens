@@ -1,29 +1,22 @@
-import QuizzDisplayer from "../components/QuizzDisplayer";
+import Section from "@/app/components/ui/Section";
 import { PlantWithTaxonomyQuizzType } from "@/types/quizz";
-import { getTaxonomyQuizz } from "@/lib/api/quizz";
-import { notFound } from "next/navigation";
+import Quizz from "../components/Quizz";
+import { getPlantTaxonomyQuestionnaire } from "@/app/lib/utils/quizz";
 
 export default async function QuizzTaxonomyByNamePage() {
-  const plants: PlantWithTaxonomyQuizzType[] = await getTaxonomyQuizz();
-
-  if (!plants) notFound();
+  const plants: Array<PlantWithTaxonomyQuizzType> = await fetch(
+    `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/plants/quizz/taxonomy`
+  ).then((response) => response.json());
 
   return (
-    <>
-      <h1 className="text-5xl font-semibold py-8">Taxonomie par nom</h1>
-      <QuizzDisplayer
-        items={plants.map((plant) => {
-          return {
-            element: plant.commonName,
-            questions: [
-              { label: "famille", solution: plant.familyLabel },
-              { label: "genre", solution: plant.genusLabel },
-              { label: "espèce", solution: plant.species },
-            ],
-          };
-        })}
-        timerDuration={30}
-      />
-    </>
+    <Section className="flex items-center">
+      {plants.length > 0 && (
+        <Quizz
+          variant="text"
+          timerDuration={20}
+          questionnaire={getPlantTaxonomyQuestionnaire(plants)}
+        />
+      )}
+    </Section>
   );
 }

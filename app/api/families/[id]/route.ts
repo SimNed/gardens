@@ -1,32 +1,19 @@
-import prisma from "@/lib/prisma/db";
+import { getFamily } from "@/app/services/family";
 import { NextResponse } from "next/server";
 
 export async function GET(
-  req: Request,
+  request: Request,
   { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
-
   try {
-    const result = await prisma.family.findUnique({
-      where: { id },
-      include: {
-        genuses: {
-          select: {
-            id: true,
-            label: true,
-          },
-        },
-      },
-    });
+    const family = await getFamily(params.id);
 
-    if (!result) {
+    if (!family)
       return NextResponse.json({ error: "Family not found" }, { status: 404 });
-    }
 
-    return NextResponse.json(result);
+    return NextResponse.json(family);
   } catch (error) {
-    console.error("Failed to fetch family:", error);
+    console.error("Error:", error);
     return NextResponse.json(
       { error: "Failed to fetch family" },
       { status: 500 }

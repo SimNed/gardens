@@ -1,4 +1,4 @@
-import Section from "@/app/components/Section";
+import Section from "@/app/components/ui/Section";
 import { Separator } from "@/app/components/shadcn-ui/separator";
 import { ItemAnswersType } from "@/types/quizz";
 import { CircleCheck, CircleX } from "lucide-react";

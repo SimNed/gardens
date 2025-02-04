@@ -1,5 +1,5 @@
 "use client";
-import Section from "@/app/components/Section";
+import Section from "@/app/components/ui/Section";
 import { Skeleton } from "@/app/components/shadcn-ui/skeleton";
 
 export function PlantArticleSkeleton() {

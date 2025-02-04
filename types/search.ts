@@ -1,39 +1,23 @@
-import { LifeCycle, Melliferous, SunExposure, WaterNeed } from "@prisma/client";
-import { KeyValueType, ValueWithRelationType } from "./data";
+import { KeyValueType } from "./base";
 
-export interface SearchFormProps {
-  family: KeyValueType<string>;
-  genus: KeyValueType<ValueWithRelationType<string, string>>;
-  category: KeyValueType<string>;
-  lifeCycle: KeyValueType<LifeCycle>;
-  sunExposure: KeyValueType<SunExposure>;
-  waterNeed: KeyValueType<WaterNeed>;
-  melliferous: KeyValueType<Melliferous>;
-  coldHardiness: KeyValueType<number>;
-}
-
-export type SearchFormType = Partial<SearchFormProps>;
-
-export type SearchFormOptionProps = {
-  [K in keyof Omit<SearchFormProps, "coldHardiness">]: SearchFormProps[K][];
-} & {
-  coldHardiness: KeyValueType<{ min: number; max: number }>;
+export type RequestFilterType<T> = {
+  [K in keyof T]: string;
 };
 
-interface SearchRequestProps {
-  familyId: string;
-  genusId: string;
-  plantCategoryId: string;
-  lifeCycle: string;
-  sunExposure: string;
-  waterNeed: string;
-  melliferous: string;
-  coldHardiness: string;
+interface PlantSearchProps {
+  familyId: KeyValueType<string>;
+  genusId: KeyValueType<string>;
+  plantCategoryId: KeyValueType<string>;
+  lifeCycle: KeyValueType<string>;
+  sunExposure: KeyValueType<string>;
+  waterNeed: KeyValueType<string>;
+  melliferous: KeyValueType<string>;
+  coldHardiness: KeyValueType<string>;
 }
 
-export type SearchRequestType = Partial<SearchRequestProps>;
+export type PlantSearchType = Partial<PlantSearchProps>;
 
-export type SearchResultType = {
+export type PlantSearchResultType = {
   id: string;
   commonName: string;
   imageUrl: string;

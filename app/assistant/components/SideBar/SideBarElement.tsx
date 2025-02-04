@@ -1,7 +1,8 @@
 import { Separator } from "@/app/components/shadcn-ui/separator";
-import { cn } from "@/lib/utils/style";
+import { cn } from "@/app/lib/utils/style";
 import { AssistantElementType } from "@/types/assistant";
 import { useAssistantContext } from "../AssistantContext";
+import { Button } from "@/app/components/shadcn-ui/button";
 
 interface SideBarElementProps {
   element: AssistantElementType;
@@ -30,9 +31,12 @@ export default function SideBarElement({
       onMouseEnter={() => hoverElement(element)}
       onMouseLeave={() => unhoverElement()}
     >
-      <p className="text-sm">{`${element.rectangle.width / cellSize}m x ${
-        element.rectangle.height / cellSize
-      }m`}</p>
+      <div className="flex justify-between items-center px-2">
+        <p className="text-sm">{`${element.rectangle.width / cellSize}m x ${
+          element.rectangle.height / cellSize
+        }m`}</p>
+        <Button variant="outline">Edit</Button>
+      </div>
       <Separator />
     </div>
   );

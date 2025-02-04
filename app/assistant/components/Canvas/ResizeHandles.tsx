@@ -3,7 +3,7 @@ import {
   RESIZE_HANDLE_FILL,
   SELECTED_RECT_FILL,
   SELECTED_RECT_STROKE,
-} from "@/lib/utils/canvas";
+} from "@/app/lib/utils/canvas";
 import { RectangleType } from "@/types/canvas";
 import { DirectionVariantType } from "@/types/variant";
 

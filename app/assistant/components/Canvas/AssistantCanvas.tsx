@@ -1,6 +1,6 @@
 "use client";
 
-import useGridMouse from "@/lib/hooks/use-mouse";
+import useGridMouse from "@/app/lib/hooks/use-mouse";
 import React, { useRef } from "react";
 import ResizeHandles from "./ResizeHandles";
 import {
@@ -10,9 +10,9 @@ import {
   LEFT_CLICK_BUTTON_CODE,
   RIGHT_CLICK_BUTTON_CODE,
   SELECTED_RECT_FILL,
-} from "@/lib/utils/canvas";
+} from "@/app/lib/utils/canvas";
 import GridPattern from "./GridPattern";
-import useCanvas, { CanvasMode } from "@/lib/hooks/use-canvas";
+import useCanvas, { CanvasMode } from "@/app/lib/hooks/use-canvas";
 import { useAssistantContext } from "../AssistantContext";
 import DimensionsTooltip from "./DimensionsTooltip";
 import { Vector2Type } from "@/types/canvas";

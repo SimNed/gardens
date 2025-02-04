@@ -11,28 +11,29 @@ import {
   SidebarInput,
   Sidebar,
 } from "@/app/components/shadcn-ui/sidebar";
-import { EncyclopediaDataType } from "@/types/encyclopedia";
 import { useRouter } from "next/navigation";
 import { Button } from "@/app/components/shadcn-ui/button";
-import { normalizeString } from "@/lib/utils/string";
-import { KeyValueType } from "@/types/data";
-import { sortInsensitivelyKeyValueStringArray } from "@/lib/utils/key-value";
+import { normalizeString } from "@/app/lib/utils/string";
+import { KeyValueType } from "@/types/base";
+import { sortInsensitivelyKeyValueStringArray } from "@/app/lib/utils/key-value";
+
+type SideBarDataType = Record<string, Array<KeyValueType<string>>>;
 
 interface SidebarProps extends React.ComponentProps<typeof Sidebar> {
-  data: EncyclopediaDataType;
+  data: Record<string, Array<KeyValueType<string>>>;
 }
 
 const navigationData = [
-  { label: "Plante", datasetType: "plants" as keyof EncyclopediaDataType },
-  { label: "Famille", datasetType: "families" as keyof EncyclopediaDataType },
-  { label: "Genre", datasetType: "genuses" as keyof EncyclopediaDataType },
+  { label: "Plante", datasetType: "plants" },
+  { label: "Famille", datasetType: "families" },
+  { label: "Genre", datasetType: "genuses" },
 ];
 
 const EncyclopediaSideBar = ({ data, ...props }: SidebarProps) => {
   const router = useRouter();
 
   const [filter, setFilter] = useState("");
-  const [datasetType, setDatasetType] = useState<keyof EncyclopediaDataType>(
+  const [datasetType, setDatasetType] = useState<keyof typeof data>(
     navigationData[0].datasetType
   );
 
@@ -41,14 +42,14 @@ const EncyclopediaSideBar = ({ data, ...props }: SidebarProps) => {
   }, [datasetType]);
 
   function filterData(
-    data: EncyclopediaDataType,
+    data: SideBarDataType,
     filter: string,
-    type: keyof EncyclopediaDataType
+    type: keyof typeof data
   ) {
     const sortedData = sortInsensitivelyKeyValueStringArray(data[type]);
 
     return sortedData.filter((data: KeyValueType<string>) => {
-      return normalizeString(data.value)
+      return normalizeString(data.key)
         .toLowerCase()
         .startsWith(normalizeString(filter).toLowerCase());
     });
@@ -85,10 +86,10 @@ const EncyclopediaSideBar = ({ data, ...props }: SidebarProps) => {
               <SidebarMenuItem key={d.value} className="p-1">
                 <SidebarMenuButton
                   onClick={() =>
-                    router.push(`/encyclopedia/${datasetType}/${d.key}`)
+                    router.push(`/encyclopedia/${datasetType}/${d.value}`)
                   }
                 >
-                  {d.value}
+                  {d.key}
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}

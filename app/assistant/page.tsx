@@ -1,4 +1,4 @@
-import Section from "../components/Section";
+import Section from "../components/ui/Section";
 import Assistant from "./components/Assistant";
 
 export default async function AssistantPage() {

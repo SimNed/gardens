@@ -1,20 +1,14 @@
-import prisma from "@/lib/prisma/db";
+import { getIdentificationQuizzSet } from "@/app/services/quizz";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    return NextResponse.json(
-      await prisma.$queryRaw`
-        SELECT p."commonName", p."imageUrl" 
-        FROM "Plant" p 
-        ORDER BY RANDOM() 
-        LIMIT 15;
-      `
-    );
+    const quizzSet = await getIdentificationQuizzSet();
+    return NextResponse.json(quizzSet);
   } catch (error) {
-    console.error("Failed to fetch listed plants:", error);
+    console.error("Error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch listed plants" },
+      { error: "Failed to fetch identification quizz set" },
       { status: 500 }
     );
   }

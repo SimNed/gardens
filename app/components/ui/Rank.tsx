@@ -1,0 +1,23 @@
+import { PropsWithChildren } from "react";
+import { cn } from "@/app/lib/utils/style";
+
+interface RankProps {
+  length: number;
+  className?: string;
+}
+
+const Rank = ({
+  length,
+  className,
+  children,
+}: PropsWithChildren<RankProps>) => {
+  return (
+    <ul className={cn("flex justify-center items-center", className)}>
+      {Array.from({ length }, (_, index) => (
+        <li key={index}>{children}</li>
+      ))}
+    </ul>
+  );
+};
+
+export default Rank;

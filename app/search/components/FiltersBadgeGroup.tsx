@@ -1,14 +1,16 @@
 import { Badge } from "@/app/components/shadcn-ui/badge";
-import { SearchFormProps } from "@/types/search";
 
 import { X } from "lucide-react";
 
-interface FiltersBadgeGroupProps {
-  badges: { key: keyof SearchFormProps; category: string; label: string }[];
-  onDelete: (key: keyof SearchFormProps) => void;
+interface FiltersBadgeGroupProps<T> {
+  badges: { key: keyof T; category: string; label: string }[];
+  onDelete: (key: keyof T) => void;
 }
 
-const FiltersBadgeGroup = ({ badges, onDelete }: FiltersBadgeGroupProps) => {
+const FiltersBadgeGroup = <T,>({
+  badges,
+  onDelete,
+}: FiltersBadgeGroupProps<T>) => {
   return (
     <div className="p-2 flex gap-2 flex-wrap">
       {badges.map((badge) => (

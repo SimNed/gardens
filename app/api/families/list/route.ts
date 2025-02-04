@@ -1,27 +1,15 @@
-import prisma from "@/lib/prisma/db";
+import { getListedFamilies } from "@/app/services/family";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const families = await prisma.family.findMany({
-      select: {
-        id: true,
-        label: true,
-      },
-      orderBy: {
-        label: "asc",
-      },
-    });
+    const families = await getListedFamilies();
 
-    return NextResponse.json(
-      families.map((f) => {
-        return { key: f.label, value: f.id };
-      })
-    );
+    return NextResponse.json(families);
   } catch (error) {
-    console.error("Failed to fetch genuses list:", error);
+    console.error("Error:", error);
     return NextResponse.json(
-      { error: "Failed to fetch genuses list" },
+      { error: "Failed to fetch families list" },
       { status: 500 }
     );
   }

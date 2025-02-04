@@ -5,7 +5,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { VariantProps, cva } from "class-variance-authority";
 import { PanelLeft } from "lucide-react";
 
-import { cn } from "@/lib/utils/style";
+import { cn } from "@/app/lib/utils/style";
 import { Button } from "@/app/components/shadcn-ui/button";
 import { Input } from "@/app/components/shadcn-ui/input";
 import { Separator } from "@/app/components/shadcn-ui/separator";
@@ -18,8 +18,8 @@ import {
   TooltipTrigger,
 } from "@/app/components/shadcn-ui/tooltip";
 
-import { useIsMobile } from "@/lib/hooks/use-mobile";
-import ComboBoxInput from "@/app/components/inputs/ComboBoxInput";
+import { useIsMobile } from "@/app/lib/hooks/use-mobile";
+import ComboBoxInput from "@/app/components/ui/inputs/ComboBoxInput";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;

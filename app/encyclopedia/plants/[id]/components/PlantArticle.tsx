@@ -2,7 +2,7 @@
 
 import EncyclopediaArticleBreadCrumb from "@/app/encyclopedia/components/EncyclopediaArticleBreadCrumb";
 import PlantArticleHeader from "./PlantArticleHeader";
-import Section from "@/app/components/Section";
+import Section from "@/app/components/ui/Section";
 import PlantArticleInfos from "./PlantArticleInfos";
 import PlantArticleAffinities from "./PlantArticleAffinities";
 import { PlantType } from "@/types/plant";
@@ -12,6 +12,7 @@ interface PlantArticleProps {
 }
 
 const PlantArticle = ({ plant }: PlantArticleProps) => {
+  console.log("PLANT !!", plant);
   const prevSteps = [
     {
       label: plant.genus.family.label,

@@ -1,23 +1,21 @@
-import Section from "@/app/components/Section";
-import { PlantQuizzType } from "@/types/quizz";
-import QuizzWithPictureDisplayer from "../components/QuizzWithPictureDisplayer";
-import { getIdentificationQuizz } from "@/lib/api/quizz";
+import Section from "@/app/components/ui/Section";
+import { PlantWithTaxonomyQuizzType } from "@/types/quizz";
+import Quizz from "../components/Quizz";
+import { getPlantIdentificationQuestionnaire } from "@/app/lib/utils/quizz";
+import { QuizzProvider } from "../../lib/contexts/quizz-context";
 
 export default async function QuizzIdentificationByPicturePage() {
-  const data: PlantQuizzType[] = await getIdentificationQuizz();
+  const plants: Array<PlantWithTaxonomyQuizzType> = await fetch(
+    `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/plants/quizz/identification`
+  ).then((response) => response.json());
 
   return (
-    <Section className="flex items-center">
-      {data.length > 0 && (
-        <QuizzWithPictureDisplayer
-          items={data.map((d) => {
-            return {
-              element: d.imageUrl,
-              questions: [{ label: "nom commun", solution: d.commonName }],
-            };
-          })}
-        />
-      )}
-    </Section>
+    <QuizzProvider
+      initialQuestionnaire={getPlantIdentificationQuestionnaire(plants)}
+    >
+      <Section className="flex items-center">
+        {plants.length > 0 && <Quizz variant="image" />}
+      </Section>
+    </QuizzProvider>
   );
 }

@@ -1,38 +1,19 @@
-import prisma from "@/lib/prisma/db";
+import { getGenus } from "@/app/services/genus";
 import { NextResponse } from "next/server";
 
 export async function GET(
-  req: Request,
+  request: Request,
   { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
-
   try {
-    const result = await prisma.genus.findUnique({
-      where: { id },
-      include: {
-        family: {
-          select: {
-            id: true,
-            label: true,
-          },
-        },
-        plants: {
-          select: {
-            id: true,
-            commonName: true,
-          },
-        },
-      },
-    });
+    const genus = await getGenus(params.id);
 
-    if (!result) {
+    if (!genus)
       return NextResponse.json({ error: "Genus not found" }, { status: 404 });
-    }
 
-    return NextResponse.json(result);
+    return NextResponse.json(genus);
   } catch (error) {
-    console.error("Failed to fetch genus:", error);
+    console.error("Error:", error);
     return NextResponse.json(
       { error: "Failed to fetch genus" },
       { status: 500 }

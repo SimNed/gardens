@@ -33,7 +33,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/components/filters"
+    "app/components/ui/options"
   ],
   "exclude": [
     "node_modules"

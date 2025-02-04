@@ -1,6 +1,6 @@
 "use server";
 
-import Rank from "@/app/components/Rank";
+import Rank from "@/app/components/ui/Rank";
 
 import { Separator } from "@/app/components/shadcn-ui/separator";
 
@@ -11,9 +11,9 @@ import {
   getMelliferousRank,
   getSunExposureRank,
   getWaterNeedRank,
-} from "@/lib/utils/plant";
+} from "@/app/lib/utils/plant";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
-import { getMonthIndex } from "@/lib/utils/month";
+import { getMonthIndex } from "@/app/lib/utils/month";
 import { PlantType } from "@/types/plant";
 
 interface PlantArticleHeaderProps {

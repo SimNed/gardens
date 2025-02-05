@@ -35,6 +35,8 @@ export const useInputNavigation = ({ inputRefs }: UseInputNavigationProps) => {
 
       setActiveIndex(enableInputIndexes[targetEnableIndex]);
     },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [activeIndex]
   );
 

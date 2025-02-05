@@ -1,31 +1,31 @@
 import Section from "@/app/components/ui/Section";
 import { Separator } from "@/app/components/shadcn-ui/separator";
-import { ItemAnswersType } from "@/types/quizz";
 import { CircleCheck, CircleX } from "lucide-react";
+import { QuestionType } from "@/types/quizz";
 
 interface QuizzResultsProps {
-  results: ItemAnswersType[];
+  questionnaire: Array<QuestionType>;
 }
 
-const QuizzResults = ({ results }: QuizzResultsProps) => {
+const QuizzResults = ({ questionnaire }: QuizzResultsProps) => {
   return (
     <Section variant="md">
       <h2 className="text-3xl text-center">Score</h2>
       <Separator className="my-16" />
-      {results.map((result) => (
-        <div key={result.element}>
+      {questionnaire.map((question) => (
+        <div key={question.element}>
           <div className="flex items-center">
             <ul className="w-full grid grid-cols-4 items-center m-0">
-              <li className="font-bold">{result.element}</li>
-              {result.answers.map((answer) => (
-                <li key={answer.solution}>
+              <li className="font-bold">{question.element}</li>
+              {question.fields.map((field) => (
+                <li key={field.index}>
                   <div className="flex justify-between items-center gap-2 m-0">
-                    <p>{answer.solution}</p>
+                    <p>{field.solution}</p>
                   </div>
                 </li>
               ))}
             </ul>
-            {result.answers.some((answer) => !answer.success) ? (
+            {question.fields.some((field) => !field.success) ? (
               <CircleX size={16} className="text-red-500" />
             ) : (
               <CircleCheck size={16} className="text-green-500" />

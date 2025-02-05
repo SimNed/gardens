@@ -28,6 +28,9 @@ export default function Questionnaire({
 
   useEffect(() => {
     resetInputs();
+    return;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [question.element]);
 
   return (

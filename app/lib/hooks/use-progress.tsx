@@ -19,6 +19,8 @@ export function useProgress({ onComplete, duration }: UseProgressProps) {
     }, intervalTime);
 
     return () => clearInterval(interval);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -28,6 +30,8 @@ export function useProgress({ onComplete, duration }: UseProgressProps) {
     }
 
     return;
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress]);
 
   return {

@@ -16,6 +16,6 @@ export const getTaxonomyQuizzSet = async () => {
     JOIN "Genus" g ON p."genusId" = g.id
     JOIN "Family" f ON g."familyId" = f.id
     ORDER BY RANDOM() 
-    LIMIT 15;
+    LIMIT 3;
   `;
 };

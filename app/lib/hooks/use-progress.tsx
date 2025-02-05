@@ -12,21 +12,23 @@ export function useProgress({ onComplete, duration }: UseProgressProps) {
   const intervalTime = durationInMs / 200;
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
+    const interval = setInterval(() => {
       setProgress((prevProgress) => {
-        const tempProgress = prevProgress + 0.5;
-        if (tempProgress + 0.5 >= 100) {
-          onComplete();
-          return 0;
-        }
-        return tempProgress;
+        return prevProgress + 0.5;
       });
     }, intervalTime);
 
-    return () => clearInterval(intervalId);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (progress >= 100) {
+      onComplete();
+      setProgress(0);
+    }
+
+    return;
+  }, [progress]);
 
   return {
     progress,

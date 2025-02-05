@@ -11,14 +11,10 @@ export const useInputNavigation = ({ inputRefs }: UseInputNavigationProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    console.log("on active index change");
     inputRefs.current[activeIndex]?.focus();
   }, [activeIndex, inputRefs]);
 
   const onInputDisable = () => {
-    if (inputRefs.current.every((input) => input && input.disabled))
-      console.log("All disabled");
-    console.log("on inpute disable");
     navigate(1);
   };
 
@@ -52,7 +48,6 @@ export const useInputNavigation = ({ inputRefs }: UseInputNavigationProps) => {
   };
 
   const resetInputs = () => {
-    console.log("reset inputs");
     setActiveIndex(0);
   };
 

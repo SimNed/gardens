@@ -46,7 +46,7 @@ export default function Quizz({
       dispatch({ type: "next_question" });
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return;
   }, [state.questionnaire]);
 
   return (

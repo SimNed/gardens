@@ -12,7 +12,6 @@ interface PlantArticleProps {
 }
 
 const PlantArticle = ({ plant }: PlantArticleProps) => {
-  console.log("PLANT !!", plant);
   const prevSteps = [
     {
       label: plant.genus.family.label,

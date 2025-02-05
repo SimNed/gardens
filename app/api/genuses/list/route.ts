@@ -7,7 +7,7 @@ export async function GET() {
 
     return NextResponse.json(genuses);
   } catch (error) {
-    console.log("Error", error);
+    console.error("Error:", error);
     return NextResponse.json(
       { error: "Failed to fetch genuses list" },
       { status: 500 }

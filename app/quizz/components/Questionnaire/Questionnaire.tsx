@@ -27,7 +27,6 @@ export default function Questionnaire({
   const { onInputDisable, resetInputs } = useInputNavigation({ inputRefs });
 
   useEffect(() => {
-    console.log("reset input in questionnaire");
     resetInputs();
   }, [question.element]);
 

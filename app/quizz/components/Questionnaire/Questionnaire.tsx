@@ -6,7 +6,7 @@ import { QuestionType } from "@/types/quizz";
 import { useInputNavigation } from "@/app/lib/hooks/use-input-navigation";
 import QuestionnaireField from "./QuestionnaireField";
 import { QuizzVariantType } from "@/types/variant";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface QuestionnaireProps {
   variant: QuizzVariantType;
@@ -24,7 +24,12 @@ export default function Questionnaire({
     question.fields.map(() => null)
   );
 
-  useInputNavigation({ inputRefs });
+  const { onInputDisable, resetInputs } = useInputNavigation({ inputRefs });
+
+  useEffect(() => {
+    console.log("reset input in questionnaire");
+    resetInputs();
+  }, [question.element]);
 
   return (
     <div>
@@ -51,6 +56,7 @@ export default function Questionnaire({
             }}
             field={field}
             handleCorrectField={handleCorrectField}
+            handleDisable={onInputDisable}
           />
         ))}
       </div>

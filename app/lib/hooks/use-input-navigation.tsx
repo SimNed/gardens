@@ -1,111 +1,67 @@
 import { MutableRefObject, useCallback, useEffect, useState } from "react";
 import { useKeyPress } from "./use-keys";
 
-// creer une instance de useInputsRef dans  quizz context ??
-
 interface UseInputNavigationProps {
   inputRefs: MutableRefObject<Array<HTMLInputElement | null>>;
 }
 
+// FIX FOCUS ON FIRST ON RESET WHEN ALL DISABLE
+
 export const useInputNavigation = ({ inputRefs }: UseInputNavigationProps) => {
-  const [enabledIndexes, setEnabledIndexes] = useState<Array<number>>([]);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    resetInputs();
+    console.log("on active index change");
+    inputRefs.current[activeIndex]?.focus();
+  }, [activeIndex, inputRefs]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const inputToFocus = inputRefs.current[activeIndex];
-    if (inputToFocus) inputToFocus.focus();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeIndex]);
-
-  const resetInputs = () => {
-    inputRefs.current.forEach((input) => {
-      if (!input) return;
-      input.disabled = false;
-      input.value = "";
-    });
-
-    updateEnabledIndexes();
-    focusOnFirst();
-  };
-
-  const focusOnFirst = () => {
-    const input = inputRefs.current[enabledIndexes[0]];
-    if (input) input.focus();
-  };
-
-  const handleDisable = () => {
+  const onInputDisable = () => {
+    if (inputRefs.current.every((input) => input && input.disabled))
+      console.log("All disabled");
+    console.log("on inpute disable");
     navigate(1);
-    updateEnabledIndexes();
-  };
-
-  const updateEnabledIndexes = () => {
-    const updatedEnabledIndexes = inputRefs.current.reduce<number[]>(
-      (acc, input, index) => {
-        if (input && !input.disabled) {
-          acc.push(index);
-        }
-        return acc;
-      },
-      []
-    );
-
-    setEnabledIndexes(updatedEnabledIndexes);
   };
 
   const navigate = useCallback(
     (direction: number) => {
-      const indexInEnabledInputs = enabledIndexes.indexOf(activeIndex);
+      const enableInputIndexes = getEnableInputIndexes();
 
-      const targetIndex =
-        direction < 0
-          ? getPrevEnableIndex(indexInEnabledInputs)
-          : getNextEnableIndex(indexInEnabledInputs);
+      if (enableInputIndexes.length < 2) return;
 
-      setActiveIndex(targetIndex);
+      let targetEnableIndex =
+        enableInputIndexes.indexOf(activeIndex) + direction;
+
+      if (targetEnableIndex < 0) {
+        targetEnableIndex = enableInputIndexes.length - 1;
+      } else if (targetEnableIndex >= enableInputIndexes.length) {
+        targetEnableIndex = 0;
+      }
+
+      setActiveIndex(enableInputIndexes[targetEnableIndex]);
     },
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [enabledIndexes, activeIndex]
+    [activeIndex]
   );
+
+  const getEnableInputIndexes = () => {
+    return inputRefs.current.reduce<number[]>((acc, input, index) => {
+      if (input && !input.disabled) {
+        acc.push(index);
+      }
+      return acc;
+    }, []);
+  };
+
+  const resetInputs = () => {
+    console.log("reset inputs");
+    setActiveIndex(0);
+  };
 
   useKeyPress(() => navigate(-1), ["ArrowUp"]);
   useKeyPress(() => navigate(1), ["ArrowDown"]);
 
-  const getPrevEnableIndex = (index: number) => {
-    return index > 0 ? index - 1 : enabledIndexes.length - 1;
-  };
-
-  const getNextEnableIndex = (index: number) => {
-    return index < enabledIndexes.length - 1 ? index + 1 : 0;
-  };
-
-  const getInputValue = (index: number) => {
-    const input = inputRefs.current[index];
-    if (!input) return "";
-
-    return input.value;
-  };
-
-  const setInputValue = (index: number, value: string) => {
-    const input = inputRefs.current[index];
-    if (!input) return;
-    console.log("INPUTOK");
-
-    input.value = value;
-  };
-
   return {
-    handleDisable,
     resetInputs,
-    setActiveIndex,
-    getInputValue,
-    setInputValue,
+    onInputDisable,
+    activeIndex,
   };
 };

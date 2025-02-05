@@ -10,7 +10,7 @@ import {
   CardFooter,
 } from "@/app/components/shadcn-ui/card";
 import { useEffect, useReducer } from "react";
-import quizzReducer, { QuizzState } from "../quizz-reducer";
+import quizzReducer, { QuizzState } from "../reducer";
 import { QuestionType } from "@/types/quizz";
 import { Progress } from "@/app/components/shadcn-ui/progress";
 import { useProgress } from "@/app/lib/hooks/use-progress";
@@ -18,13 +18,13 @@ import { useProgress } from "@/app/lib/hooks/use-progress";
 interface QuizzProps {
   variant: QuizzVariantType;
   questionnaire: Array<QuestionType>;
-  timerDuration?: number;
+  duration?: number;
 }
 
 export default function Quizz({
   variant,
   questionnaire,
-  timerDuration = 10,
+  duration = 10,
 }: QuizzProps) {
   const initialState: QuizzState = {
     index: 0,
@@ -34,7 +34,7 @@ export default function Quizz({
   const [state, dispatch] = useReducer(quizzReducer, initialState);
 
   const { progress, resetProgress } = useProgress({
-    duration: timerDuration,
+    duration,
     onComplete: () => dispatch({ type: "next_question" }),
   });
 
@@ -45,6 +45,8 @@ export default function Quizz({
       resetProgress();
       dispatch({ type: "next_question" });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.questionnaire]);
 
   return (

@@ -10,12 +10,13 @@ import { IsFieldCorrect } from "@/app/lib/utils/quizz";
 interface QuestionnaireFieldProps {
   field: FieldQuestionType;
   handleCorrectField: (index: number) => void;
+  handleDisable: () => void;
 }
 
 const QuestionnaireField = forwardRef<
   HTMLInputElement,
   QuestionnaireFieldProps
->(({ field, handleCorrectField }, ref) => {
+>(({ field, handleCorrectField, handleDisable }, ref) => {
   const [value, setValue] = useState("");
 
   useEffect(() => {
@@ -24,7 +25,10 @@ const QuestionnaireField = forwardRef<
 
   const handleChange = (value: string) => {
     setValue(value);
-    if (IsFieldCorrect(value, field)) handleCorrectField(field.index);
+    if (IsFieldCorrect(value, field)) {
+      handleCorrectField(field.index);
+      handleDisable();
+    }
   };
 
   return (

@@ -13,7 +13,7 @@ export default async function QuizzTaxonomyByNamePage() {
       {plants.length > 0 && (
         <Quizz
           variant="text"
-          timerDuration={20}
+          duration={20}
           questionnaire={getPlantTaxonomyQuestionnaire(plants)}
         />
       )}

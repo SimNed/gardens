@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 
-import QuizzQuestions from "./QuizzQuestions";
-import QuizzResults from "./QuizzResults";
+import QuizzQuestions from "./QuizzQuestions/QuizzQuestions";
+import QuizzResults from "./QuizzResults/QuizzResults";
 
 import { QuestionType } from "@/types/quizz";
 import { QuizzVariantType } from "@/types/variant";
@@ -20,6 +20,7 @@ export default function Quizz({
   duration = 10,
 }: QuizzProps) {
   const [quizzResults, setQuizzResults] = useState<Array<QuestionType>>([]);
+
   return quizzResults.length === 0 ? (
     <QuizzQuestions
       variant={variant}
@@ -28,6 +29,6 @@ export default function Quizz({
       handleQuizzResults={setQuizzResults}
     />
   ) : (
-    <QuizzResults questionnaire={quizzResults} />
+    <QuizzResults variant={variant} questionnaire={quizzResults} />
   );
 }

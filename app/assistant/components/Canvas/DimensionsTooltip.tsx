@@ -17,14 +17,10 @@ export default function DimensionsTooltip({
 }: DimensionsTooltipProps) {
   return (
     <div
+      className="font-mono text-sm font-light pointer-events-none z-50 absolute"
       style={{
-        position: "absolute",
-        zIndex: 99999,
         left: `${position.x + xOffset}px`,
         top: `${position.y + yOffset}px`,
-        pointerEvents: "none",
-        fontSize: "16px",
-        fontWeight: "lighter",
       }}
     >
       {`${width}m x ${height}m`}

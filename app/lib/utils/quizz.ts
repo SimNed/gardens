@@ -22,12 +22,12 @@ export const IsFieldCorrect = (value: string, field: FieldQuestionType) => {
 export const getPlantIdentificationQuestionnaire = (
   plants: Array<PlantWithTaxonomyQuizzType>
 ) => {
-  return plants.map((plant, index) => {
+  return plants.map((plant) => {
     return {
       element: plant.imageUrl,
       fields: [
         {
-          index,
+          index: 0,
           label: "nom commun",
           solution: plant.commonName,
           success: false,

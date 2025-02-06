@@ -26,6 +26,7 @@ const QuestionnaireField = forwardRef<
   const handleChange = (value: string) => {
     setValue(value);
     if (IsFieldCorrect(value, field)) {
+      console.log("FIELD OK", field.index);
       handleCorrectField(field.index);
       handleDisable();
     }

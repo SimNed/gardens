@@ -8,7 +8,7 @@ import Questionnaire from "./Questionnaire/Questionnaire";
 import { Progress } from "@/app/components/shadcn-ui/progress";
 import { QuestionType } from "@/types/quizz";
 import { useReducer, useEffect } from "react";
-import quizzReducer, { QuizzState } from "../reducer";
+import quizzReducer, { QuizzState } from "../../reducer";
 import { useProgress } from "@/app/lib/hooks/use-progress";
 import { QuizzVariantType } from "@/types/variant";
 
@@ -46,15 +46,12 @@ export default function QuizzQuestions({
     }
 
     return;
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.questionnaire]);
 
   useEffect(() => {
-    if (state.index >= state.questionnaire.length) {
-      console.log("IJ PASS");
+    if (state.index >= state.questionnaire.length)
       handleQuizzResults(state.questionnaire);
-    }
 
     return;
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -67,9 +67,9 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        "noto-serif": ['Noto Serif"', "serif"],
-        roboto: ['Roboto"', "sans-serif"],
-        poppins: ['Poppins"', "sans-serif"],
+        "noto-serif": ["Noto Serif", "serif"],
+        roboto: ["Roboto", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
       },
     },
   },

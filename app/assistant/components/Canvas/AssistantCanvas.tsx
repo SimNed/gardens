@@ -13,7 +13,7 @@ import {
 } from "@/app/lib/utils/canvas";
 import GridPattern from "./GridPattern";
 import useCanvas, { CanvasMode } from "@/app/lib/hooks/use-canvas";
-import { useAssistantContext } from "../AssistantContext";
+import { useAssistantContext } from "../../context";
 import DimensionsTooltip from "./DimensionsTooltip";
 import { Vector2Type } from "@/types/canvas";
 
@@ -49,14 +49,12 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
   });
 
   const {
-    getElements,
+    state,
     createElement,
     selectElement,
     unselectElement,
     hoverElement,
     unhoverElement,
-    getSelectedElement,
-    getHoveredElement,
   } = useAssistantContext();
 
   const handleMouseDown = (
@@ -105,7 +103,7 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
         setTempRectangle(updateRectDrawing(dragPoints));
         break;
       case CanvasMode.MOVING:
-        if (getSelectedElement()) updateRectPosition(dragDeltas);
+        if (state.selectedElement) updateRectPosition(dragDeltas);
         break;
       case CanvasMode.RESIZING:
         updateRectSize(dragDeltas);
@@ -161,9 +159,9 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
         <GridPattern cellSize={cellSize} viewBox={canvasState.viewBox} />
         <g>
           {(() => {
-            const selectedElement = getSelectedElement();
+            const selectedElement = state.selectedElement;
 
-            return getElements().map((element) => (
+            return state.elements.map((element) => (
               <g key={element.id}>
                 <rect
                   x={element.rectangle.x}
@@ -174,7 +172,7 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
                   fill={
                     selectedElement?.id === element.id
                       ? SELECTED_RECT_FILL
-                      : getHoveredElement()?.id === element.id
+                      : state.hoveredElement?.id === element.id
                       ? HOVER_RECT_FILL
                       : DEFAULT_RECT_FILL
                   }

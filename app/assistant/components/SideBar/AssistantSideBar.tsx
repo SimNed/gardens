@@ -1,4 +1,4 @@
-import { useAssistantContext } from "../AssistantContext";
+import { useAssistantContext } from "../../context";
 import SideBarElement from "./SideBarElement";
 
 interface AssistantSideBarProps {
@@ -6,11 +6,11 @@ interface AssistantSideBarProps {
 }
 
 export function AssistantSideBar({ cellSize }: AssistantSideBarProps) {
-  const { getElements } = useAssistantContext();
+  const { state } = useAssistantContext();
 
   return (
     <ul className="border-l border-t border-zinc-300 p-2">
-      {getElements().map((element) => (
+      {state.elements.map((element) => (
         <li key={element.id}>
           <SideBarElement element={element} cellSize={cellSize} />
         </li>

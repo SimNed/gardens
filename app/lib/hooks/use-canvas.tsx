@@ -1,6 +1,6 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { DragPointType, RectangleType, Vector2Type } from "@/types/canvas";
-import { useAssistantContext } from "@/app/assistant/components/AssistantContext";
+import { useAssistantContext } from "@/app/assistant/context";
 import { DirectionVariantType } from "@/types/variant";
 
 interface UseCanvasProps {
@@ -22,7 +22,7 @@ interface CanvasStateProps {
 }
 
 const useCanvas = ({ canvasRef, cellSize }: UseCanvasProps) => {
-  const { getSelectedElement, updateElement } = useAssistantContext();
+  const { state, updateElement } = useAssistantContext();
 
   const [canvasState, setCanvasState] = useState<CanvasStateProps>({
     viewBox: {
@@ -101,7 +101,7 @@ const useCanvas = ({ canvasRef, cellSize }: UseCanvasProps) => {
 
   const updateRectPosition = useCallback(
     (dragDeltas: Vector2Type) => {
-      const selectedElement = getSelectedElement();
+      const selectedElement = state.selectedElement;
 
       if (!selectedElement) return;
 
@@ -126,7 +126,7 @@ const useCanvas = ({ canvasRef, cellSize }: UseCanvasProps) => {
         updateElement({ ...selectedElement, rectangle: updatedRectangle });
       }
     },
-    [cellSize, getSelectedElement, updateElement]
+    [cellSize, updateElement]
   );
 
   const updateRectDrawing = useCallback((dragPoints: DragPointType) => {
@@ -140,7 +140,7 @@ const useCanvas = ({ canvasRef, cellSize }: UseCanvasProps) => {
 
   const updateRectSize = useCallback(
     (dragDeltas: Vector2Type) => {
-      const selectedElement = getSelectedElement();
+      const selectedElement = state.selectedElement;
       const resizeDirection = resizeDirectionRef.current;
 
       if (!resizeDirection || !selectedElement) return;
@@ -176,7 +176,7 @@ const useCanvas = ({ canvasRef, cellSize }: UseCanvasProps) => {
 
       updateElement({ ...selectedElement, rectangle: tempRect });
     },
-    [cellSize, getSelectedElement, updateElement]
+    [cellSize, updateElement]
   );
 
   const snapToGrid = (value: number, gridSize: number) =>

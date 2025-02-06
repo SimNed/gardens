@@ -11,12 +11,12 @@ import { Separator } from "@/app/components/shadcn-ui/separator";
 import SearchForm from "./SearchForm";
 import SearchResult from "./SearchResult";
 import Section from "@/app/components/ui/Section";
-import useSearch from "@/app/lib/hooks/use-search";
 import { PlantSearchType } from "@/types/search";
+import useSearch from "@/app/lib/hooks/use-search/use-search";
 
 const SearchSidebar = () => {
   const {
-    filters,
+    state,
     updateFilters,
     deleteFilter,
     resetFilters,
@@ -27,7 +27,7 @@ const SearchSidebar = () => {
   return (
     <SidebarProvider>
       <SearchForm
-        filters={filters}
+        filters={state.filters}
         updateFilters={updateFilters}
         deleteFilter={deleteFilter}
         resetFilters={resetFilters}

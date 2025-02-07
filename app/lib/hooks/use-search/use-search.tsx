@@ -5,7 +5,9 @@ import { RequestFilterType } from "@/types/search";
 import searchReducer, { SearchActions, SearchState } from "./reducer";
 import { fetcher } from "../../fetcher";
 
-const useSearch = <T extends { [K in keyof T]: KeyValueType<string> }>() => {
+export function useSearch<
+  T extends { [K in keyof T]: KeyValueType<string> }
+>() {
   const initialState: SearchState<T> = {
     filters: {} as RequestFilterType<T>,
     request: null,
@@ -26,6 +28,4 @@ const useSearch = <T extends { [K in keyof T]: KeyValueType<string> }>() => {
     resetFilters: () => dispatch({ type: "reset_filters" }),
     doRequest: () => dispatch({ type: "do_request" }),
   };
-};
-
-export default useSearch;
+}

@@ -1,6 +1,5 @@
 "use client";
 
-import useGridMouse from "@/app/lib/hooks/use-mouse";
 import React, { useRef } from "react";
 import ResizeHandles from "./ResizeHandles";
 import {
@@ -12,40 +11,37 @@ import {
   SELECTED_RECT_FILL,
 } from "@/app/lib/utils/canvas";
 import GridPattern from "./GridPattern";
-import useCanvas, { CanvasMode } from "@/app/lib/hooks/use-canvas";
 import { useAssistantContext } from "../../context";
 import DimensionsTooltip from "./DimensionsTooltip";
-import { Vector2Type } from "@/types/canvas";
+import { CanvasMode, useCanvas } from "@/app/lib/hooks/use-canvas/use-canvas";
+import { RectangleType } from "@/types/canvas";
 
 interface CanvasProps {
   cellSize: number;
 }
 
-const AssistantCanvas = ({ cellSize }: CanvasProps) => {
+export default function AssistantCanvas({ cellSize }: CanvasProps) {
   const canvasRef = useRef(null);
-  const startDragPointRef = useRef<Vector2Type | null>(null);
-
-  const { getDragPoints, setDragPoints, getDragDeltas, getMousePosition } =
-    useGridMouse({
-      ref: canvasRef,
-    });
 
   const {
-    canvasState,
-    setViewBox,
-    setTempRectangle,
-    getMode,
-    setMode,
+    state: canvasState,
+    mode,
+    dragPointsOrigin,
+    handleMouseDown,
+    handleMouseMove,
+    handleMouseUp,
+    handleWheel,
     setResizeDirection,
-    setZoomFactor,
-    getMousePositionInCanvas,
-    updatePanning,
-    updateRectPosition,
-    updateRectDrawing,
-    updateRectSize,
   } = useCanvas({
     canvasRef: canvasRef,
     cellSize: cellSize,
+    onRectangleUpdate: (rectangle: RectangleType) => {
+      if (state.selectedElement)
+        updateElement({ ...state.selectedElement, rectangle });
+    },
+    onRectangleCreate: (rectangle: RectangleType) => {
+      createElement(rectangle);
+    },
   });
 
   const {
@@ -55,82 +51,8 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
     unselectElement,
     hoverElement,
     unhoverElement,
+    updateElement,
   } = useAssistantContext();
-
-  const handleMouseDown = (
-    e: React.MouseEvent<SVGRectElement | SVGSVGElement, MouseEvent>,
-    mode: CanvasMode
-  ) => {
-    e.preventDefault();
-
-    const mousePosition = getMousePosition(e);
-    if (!mousePosition) return;
-
-    startDragPointRef.current = { x: e.clientX, y: e.clientY };
-
-    const mousePositionInGrid = getMousePositionInCanvas(mousePosition);
-    if (!mousePositionInGrid) return;
-
-    setDragPoints({
-      origin: mousePositionInGrid,
-      current: mousePositionInGrid,
-    });
-
-    setMode(mode);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    const mode = getMode();
-
-    if (mode === CanvasMode.DEFAULT) return;
-
-    const mousePosition = getMousePosition(e);
-
-    if (!mousePosition) return;
-
-    const mousePositionInGrid = getMousePositionInCanvas(mousePosition);
-
-    setDragPoints({ current: mousePositionInGrid });
-
-    const dragDeltas = getDragDeltas();
-
-    switch (mode) {
-      case CanvasMode.PANNING:
-        setViewBox(updatePanning(canvasState.viewBox, dragDeltas));
-        break;
-      case CanvasMode.DRAWING:
-        const dragPoints = getDragPoints();
-        setTempRectangle(updateRectDrawing(dragPoints));
-        break;
-      case CanvasMode.MOVING:
-        if (state.selectedElement) updateRectPosition(dragDeltas);
-        break;
-      case CanvasMode.RESIZING:
-        updateRectSize(dragDeltas);
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleMouseUp = () => {
-    if (
-      getMode() === CanvasMode.DRAWING &&
-      canvasState.tempRect &&
-      canvasState.tempRect.width > 0 &&
-      canvasState.tempRect.height > 0
-    ) {
-      createElement(canvasState.tempRect);
-    }
-
-    setMode(CanvasMode.DEFAULT);
-    setTempRectangle(null);
-  };
-
-  const handleWheel = (e: React.WheelEvent<SVGSVGElement>) => {
-    e.preventDefault();
-    setZoomFactor(e.deltaY);
-  };
 
   return (
     <>
@@ -148,7 +70,9 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
             handleMouseDown(e, CanvasMode.DRAWING);
           }
         }}
-        onMouseMove={handleMouseMove}
+        onMouseMove={(e) =>
+          handleMouseMove(e, state.selectedElement?.rectangle)
+        }
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
         onWheel={(e) => {
@@ -190,7 +114,7 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
                     }
                   }}
                   onMouseEnter={() => {
-                    if (getMode() === CanvasMode.DEFAULT) hoverElement(element);
+                    if (mode === CanvasMode.DEFAULT) hoverElement(element);
                   }}
                   onMouseLeave={() => unhoverElement()}
                   className="cursor-move"
@@ -211,30 +135,28 @@ const AssistantCanvas = ({ cellSize }: CanvasProps) => {
           })()}
         </g>
 
-        {getMode() === CanvasMode.DRAWING && canvasState.tempRect && (
+        {mode === CanvasMode.DRAWING && canvasState.tempRectangle && (
           <>
             <rect
-              x={canvasState.tempRect.x}
-              y={canvasState.tempRect.y}
-              width={canvasState.tempRect.width}
-              height={canvasState.tempRect.height}
+              x={canvasState.tempRectangle.x}
+              y={canvasState.tempRectangle.y}
+              width={canvasState.tempRectangle.width}
+              height={canvasState.tempRectangle.height}
               fill={SELECTED_RECT_FILL}
             />
           </>
         )}
       </svg>
-      {canvasState.tempRect && startDragPointRef.current && (
+      {canvasState.tempRectangle && dragPointsOrigin && (
         <DimensionsTooltip
           position={{
-            x: startDragPointRef.current.x,
-            y: startDragPointRef.current.y,
+            x: dragPointsOrigin.x,
+            y: dragPointsOrigin.y,
           }}
-          width={canvasState.tempRect.width / cellSize}
-          height={canvasState.tempRect.height / cellSize}
+          width={canvasState.tempRectangle.width / cellSize}
+          height={canvasState.tempRectangle.height / cellSize}
         />
       )}
     </>
   );
-};
-
-export default AssistantCanvas;
+}

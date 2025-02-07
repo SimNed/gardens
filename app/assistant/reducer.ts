@@ -23,6 +23,7 @@ export default function assistantReducer(
   switch (action.type) {
     case "create_element": {
       const element = { id: Date.now(), rectangle: action.rectangle };
+      console.log("ELEMENT", element);
 
       return {
         ...state,
@@ -30,18 +31,23 @@ export default function assistantReducer(
         selectedElement: element,
       };
     }
+
     case "select_element": {
       return { ...state, selectedElement: action.element };
     }
+
     case "unselect_element": {
       return { ...state, selectedElement: null };
     }
+
     case "hover_element": {
       return { ...state, hoveredElement: action.element };
     }
+
     case "unhover_element": {
       return { ...state, hoveredElement: null };
     }
+
     case "udpate_element": {
       const updatedElements = state.elements.map((element) =>
         element.id === action.element.id ? action.element : element
@@ -52,6 +58,7 @@ export default function assistantReducer(
         elements: updatedElements,
       };
     }
+
     case "delete_element": {
       const updatedElements = state.elements.filter(
         (element) => element.id !== action.element.id
@@ -62,6 +69,7 @@ export default function assistantReducer(
         elements: updatedElements,
       };
     }
+
     default: {
       throw Error("Unknown action");
     }

@@ -11,19 +11,19 @@ import {
 import { Separator } from "@/app/components/shadcn-ui/separator";
 import { useRouter } from "next/navigation";
 
-interface QuizzNavigationCardProps {
+interface QuizzMenuProps {
   label: string;
   description: string;
   icon: JSX.Element;
-  data: { label: string; url: string }[];
+  elements: { label: string; url: string }[];
 }
 
-const QuizzNavigationCard = ({
+export default function QuizzMenu({
   label,
   description,
   icon,
-  data,
-}: QuizzNavigationCardProps) => {
+  elements,
+}: QuizzMenuProps) {
   const router = useRouter();
 
   return (
@@ -40,13 +40,13 @@ const QuizzNavigationCard = ({
       <Separator />
       <CardContent className="w-full p-0">
         <ul className="p-2">
-          {data.map((d) => (
+          {elements.map((element) => (
             <li
-              key={d.label}
-              onClick={() => router.push(`/quizz/${d.url}`)}
+              key={element.label}
+              onClick={() => router.push(`/quizz/${element.url}`)}
               className="p-2 hover:cursor-pointer hover:bg-zinc-100"
             >
-              {d.label}
+              {element.label}
             </li>
           ))}
         </ul>
@@ -54,6 +54,4 @@ const QuizzNavigationCard = ({
       <CardFooter className="text-lg flex justify-center items-center "></CardFooter>
     </Card>
   );
-};
-
-export default QuizzNavigationCard;
+}

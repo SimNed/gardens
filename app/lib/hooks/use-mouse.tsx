@@ -5,7 +5,7 @@ interface UseGridMouseProps {
   ref: RefObject<SVGSVGElement>;
 }
 
-const useMouse = ({ ref }: UseGridMouseProps) => {
+export function useMouse({ ref }: UseGridMouseProps) {
   const getMousePosition = (
     e: React.MouseEvent<SVGSVGElement | SVGRectElement, MouseEvent>
   ) => {
@@ -60,6 +60,4 @@ const useMouse = ({ ref }: UseGridMouseProps) => {
     setDragPoints,
     getDragDeltas,
   };
-};
-
-export default useMouse;
+}

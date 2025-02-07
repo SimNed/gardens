@@ -1,5 +1,5 @@
 import { MutableRefObject, useCallback, useEffect, useState } from "react";
-import { useKeyPress } from "./use-keys";
+import { useKeyPress } from "./use-keys-press";
 
 interface UseInputNavigationProps {
   inputRefs: MutableRefObject<Array<HTMLInputElement | null>>;
@@ -7,7 +7,7 @@ interface UseInputNavigationProps {
 
 // FIX FOCUS ON FIRST ON RESET WHEN ALL DISABLE
 
-export const useInputNavigation = ({ inputRefs }: UseInputNavigationProps) => {
+export function useInputNavigation({ inputRefs }: UseInputNavigationProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -61,4 +61,4 @@ export const useInputNavigation = ({ inputRefs }: UseInputNavigationProps) => {
     onInputDisable,
     activeIndex,
   };
-};
+}

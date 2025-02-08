@@ -4,11 +4,11 @@ interface GridPatternProps {
   viewBox: { x: number; y: number; width: number; height: number };
 }
 
-const GridPattern = ({
+export default function GridPattern({
   cellSize,
   color = "rgba(105, 105, 115, .2)",
   viewBox,
-}: GridPatternProps) => {
+}: GridPatternProps) {
   return (
     <>
       Voici un pattern avec une croix alignée sur les lignes de la grille :
@@ -83,6 +83,4 @@ const GridPattern = ({
       />
     </>
   );
-};
-
-export default GridPattern;
+}

@@ -24,8 +24,8 @@ interface AssistantProviderProps {
 export function AssistantProvider({ children }: AssistantProviderProps) {
   const initialState: AssistantState = {
     elements: [],
-    selectedElement: null,
-    hoveredElement: null,
+    selectedElement: undefined,
+    hoveredElement: undefined,
   };
 
   const [state, dispatch] = useReducer(assistantReducer, initialState);

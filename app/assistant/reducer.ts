@@ -3,8 +3,8 @@ import { RectangleType } from "@/types/canvas";
 
 export interface AssistantState {
   elements: Array<AssistantElementType>;
-  selectedElement: AssistantElementType | null;
-  hoveredElement: AssistantElementType | null;
+  selectedElement?: AssistantElementType;
+  hoveredElement?: AssistantElementType;
 }
 
 type AssistantActions =
@@ -22,8 +22,10 @@ export default function assistantReducer(
 ) {
   switch (action.type) {
     case "create_element": {
-      const element = { id: Date.now(), rectangle: action.rectangle };
-      console.log("ELEMENT", element);
+      const element = {
+        id: Date.now(),
+        rectangle: action.rectangle,
+      };
 
       return {
         ...state,
@@ -37,7 +39,7 @@ export default function assistantReducer(
     }
 
     case "unselect_element": {
-      return { ...state, selectedElement: null };
+      return { ...state, selectedElement: undefined };
     }
 
     case "hover_element": {
@@ -45,7 +47,7 @@ export default function assistantReducer(
     }
 
     case "unhover_element": {
-      return { ...state, hoveredElement: null };
+      return { ...state, hoveredElement: undefined };
     }
 
     case "udpate_element": {

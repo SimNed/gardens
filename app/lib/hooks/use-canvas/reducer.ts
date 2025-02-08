@@ -29,8 +29,6 @@ export default function canvasReducer(
         ),
       };
 
-      console.log("temp", tempRectangle);
-
       return { ...state, tempRectangle };
     }
     case "reset_temp_rectangle": {

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef } from "react";
-import ResizeHandles from "../../../components/ui/Canvas/ResizeHandles";
+
 import {
   DEFAULT_RECT_FILL,
   DEFAULT_RECT_STROKE,
@@ -10,17 +10,38 @@ import {
   RIGHT_CLICK_BUTTON_CODE,
   SELECTED_RECT_FILL,
 } from "@/app/lib/utils/canvas";
-import GridPattern from "../../../components/ui/Canvas/GridPattern";
-import { useAssistantContext } from "../../context";
-import DimensionsTooltip from "../../../components/ui/Canvas/DimensionsTooltip";
+
 import { CanvasMode, useCanvas } from "@/app/lib/hooks/use-canvas/use-canvas";
 import { RectangleType } from "@/types/canvas";
+import GridPattern from "@/app/components/ui/Canvas/GridPattern";
+import ResizeHandles from "@/app/components/ui/Canvas/ResizeHandles";
+import DimensionsTooltip from "@/app/components/ui/Canvas/DimensionsTooltip";
 
 interface CanvasProps {
-  cellSize: number;
+  rectangles: Array<RectangleType>;
+  selectedIndex?: number;
+  hoveredIndex?: number;
+  cellSize?: number;
+  onRectangleCreate: (rectangle: RectangleType) => void;
+  onRectangleUpdate: (rectangle: RectangleType) => void;
+  onSelect: (index: number) => void;
+  onUnselect: () => void;
+  onHover: (index: number) => void;
+  onUnhover: () => void;
 }
 
-export default function AssistantCanvas({ cellSize }: CanvasProps) {
+export default function Canvas({
+  cellSize = 20,
+  rectangles,
+  selectedIndex,
+  hoveredIndex,
+  onRectangleCreate,
+  onRectangleUpdate,
+  onSelect,
+  onUnselect,
+  onHover,
+  onUnhover,
+}: CanvasProps) {
   const canvasRef = useRef(null);
 
   const {
@@ -35,24 +56,9 @@ export default function AssistantCanvas({ cellSize }: CanvasProps) {
   } = useCanvas({
     canvasRef: canvasRef,
     cellSize: cellSize,
-    onRectangleUpdate: (rectangle: RectangleType) => {
-      if (state.selectedElement)
-        updateElement({ ...state.selectedElement, rectangle });
-    },
-    onRectangleCreate: (rectangle: RectangleType) => {
-      createElement(rectangle);
-    },
+    onRectangleUpdate,
+    onRectangleCreate,
   });
-
-  const {
-    state,
-    createElement,
-    selectElement,
-    unselectElement,
-    hoverElement,
-    unhoverElement,
-    updateElement,
-  } = useAssistantContext();
 
   return (
     <>
@@ -66,65 +72,65 @@ export default function AssistantCanvas({ cellSize }: CanvasProps) {
           if (e.button === RIGHT_CLICK_BUTTON_CODE)
             handleMouseDown(e, CanvasMode.PANNING);
           else if (e.button === LEFT_CLICK_BUTTON_CODE) {
-            unselectElement();
+            onUnselect();
             handleMouseDown(e, CanvasMode.DRAWING);
           }
         }}
         onMouseMove={(e) =>
-          handleMouseMove(e, state.selectedElement?.rectangle)
+          handleMouseMove(
+            e,
+            selectedIndex ? rectangles[selectedIndex] : undefined
+          )
         }
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
         onWheel={(e) => {
           e.stopPropagation();
+          console.log(selectedIndex);
           handleWheel(e);
         }}
       >
         <GridPattern cellSize={cellSize} viewBox={canvasState.viewBox} />
         <g>
           {(() => {
-            const selectedElement = state.selectedElement;
-
-            return state.elements.map((element) => (
-              <g key={element.id}>
+            return rectangles.map((rectangle, index) => (
+              <g key={index}>
                 <rect
-                  x={element.rectangle.x}
-                  y={element.rectangle.y}
+                  x={rectangle.x}
+                  y={rectangle.y}
                   rx={16}
-                  width={element.rectangle.width}
-                  height={element.rectangle.height}
+                  width={rectangle.width}
+                  height={rectangle.height}
                   fill={
-                    selectedElement?.id === element.id
+                    selectedIndex === index
                       ? SELECTED_RECT_FILL
-                      : state.hoveredElement?.id === element.id
+                      : hoveredIndex === index
                       ? HOVER_RECT_FILL
                       : DEFAULT_RECT_FILL
                   }
                   stroke={
-                    selectedElement?.id === element.id
-                      ? "none"
-                      : DEFAULT_RECT_STROKE
+                    selectedIndex === index ? "none" : DEFAULT_RECT_STROKE
                   }
                   strokeWidth={0.5}
                   onMouseDown={(e) => {
                     if (e.button === LEFT_CLICK_BUTTON_CODE) {
                       e.stopPropagation();
-                      selectElement(element);
+                      onSelect(index);
                       handleMouseDown(e, CanvasMode.MOVING);
                     }
                   }}
                   onMouseEnter={() => {
-                    if (mode === CanvasMode.DEFAULT) hoverElement(element);
+                    if (mode === CanvasMode.DEFAULT) onHover(index);
                   }}
-                  onMouseLeave={() => unhoverElement()}
+                  onMouseLeave={() => onUnhover()}
                   className="cursor-move"
                 />
-                {selectedElement?.id === element.id && (
+                {selectedIndex === index && (
                   <ResizeHandles
-                    rectangle={element.rectangle}
+                    rectangle={rectangle}
                     onMouseDown={(e, direction) => {
                       e.stopPropagation();
-                      selectElement(element);
+                      onSelect(index);
                       setResizeDirection(direction);
                       handleMouseDown(e, CanvasMode.RESIZING);
                     }}

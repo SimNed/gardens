@@ -57,8 +57,6 @@ export function useCanvas({
   ) => {
     e.preventDefault();
 
-    // canvasRef.current?.onmousedown
-
     const mousePosition = getMousePosition(e);
     if (!mousePosition) return;
 
@@ -79,12 +77,9 @@ export function useCanvas({
     e: React.MouseEvent<SVGSVGElement, MouseEvent>,
     rectangle?: RectangleType
   ) => {
-    const mode = modeRef.current;
-
-    if (mode === CanvasMode.DEFAULT) return;
+    if (modeRef.current === CanvasMode.DEFAULT) return;
 
     const mousePosition = getMousePosition(e);
-
     if (!mousePosition) return;
 
     const mousePositionInGrid = getMousePositionInCanvas(mousePosition);
@@ -93,7 +88,7 @@ export function useCanvas({
 
     const dragDeltas = getDragDeltas();
 
-    switch (mode) {
+    switch (modeRef.current) {
       case CanvasMode.PANNING:
         dispatch({ type: "update_panning", dragDeltas });
         break;

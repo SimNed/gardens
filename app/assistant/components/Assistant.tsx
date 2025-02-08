@@ -3,7 +3,7 @@
 import { PlantType } from "@/types/plant";
 import { AssistantSideBar } from "./SideBar/AssistantSideBar";
 import { AssistantProvider } from "../context";
-import AssistantCanvas from "./Canvas/AssistantCanvas";
+import AssistantCanvas from "./Canvas/AssistantCanvas copy";
 
 interface AssistantProps {
   plants: Array<PlantType>;

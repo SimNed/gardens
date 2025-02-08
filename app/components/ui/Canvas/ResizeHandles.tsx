@@ -1,8 +1,6 @@
 import {
   LEFT_CLICK_BUTTON_CODE,
   RESIZE_HANDLE_FILL,
-  SELECTED_RECT_FILL,
-  SELECTED_RECT_STROKE,
 } from "@/app/lib/utils/canvas";
 import { RectangleType } from "@/types/canvas";
 import { DirectionVariantType } from "@/types/variant";
@@ -25,11 +23,11 @@ type ResizeHandle = {
   cursor: string;
 };
 
-const ResizeHandles = ({
+export default function ResizeHandles({
   rectangle,
   size = 4,
   onMouseDown,
-}: ResizeHandlesProps) => {
+}: ResizeHandlesProps) {
   const handles: Array<ResizeHandle> = [
     {
       x: rectangle.x + size,
@@ -118,6 +116,4 @@ const ResizeHandles = ({
       ))}
     </>
   );
-};
-
-export default ResizeHandles;
+}

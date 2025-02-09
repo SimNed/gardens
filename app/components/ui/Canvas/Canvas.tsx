@@ -79,7 +79,7 @@ export default function Canvas({
         onMouseMove={(e) =>
           handleMouseMove(
             e,
-            selectedIndex ? rectangles[selectedIndex] : undefined
+            selectedIndex !== undefined ? rectangles[selectedIndex] : undefined
           )
         }
         onMouseUp={handleMouseUp}

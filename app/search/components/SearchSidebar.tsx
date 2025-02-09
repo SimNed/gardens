@@ -12,7 +12,7 @@ import SearchForm from "./SearchForm";
 import SearchResult from "./SearchResult";
 import Section from "@/app/components/ui/Section";
 import { PlantSearchType } from "@/types/search";
-import useSearch from "@/app/lib/hooks/use-search/use-search";
+import { useSearch } from "@/app/lib/hooks/use-search/use-search";
 
 const SearchSidebar = () => {
   const {

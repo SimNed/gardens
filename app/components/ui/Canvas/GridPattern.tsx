@@ -1,75 +1,162 @@
+import { RectangleType } from "@/types/canvas";
+
 interface GridPatternProps {
   gridSize: number;
+  zoomLevel: number;
   color?: string;
-  viewBox: { x: number; y: number; width: number; height: number };
+  viewBox: RectangleType;
 }
 
 export default function GridPattern({
   gridSize,
-  color = "rgba(105, 105, 115, .2)",
+  zoomLevel,
   viewBox,
 }: GridPatternProps) {
+  const crossStrokeWidth = 1;
+  const mainLinesWidth = 1.5 * zoomLevel;
+  const interLinesWidth = 1 * zoomLevel;
+
+  const crossStrokeColor = "#6c757d";
+  const mainLinesColor = "#ADB5BD";
+  const interLinesColor = "#C7CDD2";
+
+  const crossOffset = 0.4;
   return (
     <>
-      Voici un pattern avec une croix alignée sur les lignes de la grille :
-      jsxCopy
       <defs>
         <pattern
           id="gridPattern"
           patternUnits="userSpaceOnUse"
-          width={gridSize}
-          height={gridSize}
+          width={gridSize * 2}
+          height={gridSize * 2}
           x={0}
           y={0}
         >
-          <line
-            x1="0"
-            y1="0"
-            x2="0"
-            y2={gridSize}
-            stroke={color}
-            strokeWidth="1"
-          />
-          <line
-            x1="0"
-            y1="0"
-            x2={gridSize}
-            y2="0"
-            stroke={color}
-            strokeWidth="1"
-          />
-          {/* CROSS */}
-          <line
-            x1="0"
-            y1="0"
-            x2={gridSize / 5}
-            y2="0"
-            stroke={"rgba(105, 105, 115, .5)"}
-            strokeWidth="1"
-          />
-          <line
-            x1={gridSize - (gridSize / 5 - 1)}
-            y1="0"
-            x2={gridSize}
-            y2="0"
-            stroke={"rgba(105, 105, 115, .5)"}
-            strokeWidth="1"
-          />
-          <line
+          {/* MAIN LINES */}
+          <line //left
             x1={0}
-            y1={gridSize - (gridSize / 5 - 1)}
+            y1="0"
             x2={0}
-            y2={gridSize}
-            stroke={"rgba(105, 105, 115, .5)"}
-            strokeWidth="1"
+            y2={gridSize * 2}
+            stroke={mainLinesColor}
+            strokeWidth={mainLinesWidth}
           />
-          <line
+          <line //right
+            x1={gridSize * 2 - crossOffset}
+            y1={0 - crossOffset}
+            x2={gridSize * 2 - crossOffset}
+            y2={0 - crossOffset}
+            stroke={mainLinesColor}
+            strokeWidth={mainLinesWidth}
+          />
+          <line //top
             x1={0}
             y1={0}
-            x2={0}
-            y2={gridSize / 5}
-            stroke={"rgba(105, 105, 115, .5)"}
-            strokeWidth="1"
+            x2={gridSize * 2 - crossOffset}
+            y2={0}
+            stroke={mainLinesColor}
+            strokeWidth={mainLinesWidth}
+          />
+          <line //bottom
+            x1={0}
+            y1={gridSize * 2 + crossOffset}
+            x2={gridSize * 2 - crossOffset}
+            y2={gridSize * 2 + crossOffset}
+            stroke={mainLinesColor}
+            strokeWidth={mainLinesWidth}
+          />
+
+          {/* INTERLINES */}
+
+          <line //vertical
+            x1={gridSize}
+            y1="0"
+            x2={gridSize}
+            y2={gridSize * 2}
+            stroke={interLinesColor}
+            strokeWidth={interLinesWidth}
+          />
+          <line //horizontal
+            x1="0"
+            y1={gridSize}
+            x2={gridSize * 2}
+            y2={gridSize}
+            stroke={interLinesColor}
+            strokeWidth={interLinesWidth}
+          />
+
+          {/* COINS */}
+
+          {/* left-up */}
+          <line
+            x1={-crossOffset}
+            y1={-crossOffset}
+            x2={gridSize / 5 - crossOffset}
+            y2={-crossOffset}
+            stroke={crossStrokeColor}
+            strokeWidth={crossStrokeWidth}
+          />
+          <line
+            x1={-crossOffset}
+            y1={-crossOffset}
+            x2={-crossOffset}
+            y2={gridSize / 5 - crossOffset}
+            stroke={crossStrokeColor}
+            strokeWidth={crossStrokeWidth}
+          />
+
+          {/* right-up */}
+          <line
+            x1={gridSize * 2 - gridSize / 5 + crossOffset}
+            y1={-crossOffset}
+            x2={gridSize * 2 + crossOffset}
+            y2={-crossOffset}
+            stroke={crossStrokeColor}
+            strokeWidth={crossStrokeWidth}
+          />
+          <line
+            x1={gridSize * 2 + crossOffset}
+            y1={-crossOffset}
+            x2={gridSize * 2 + crossOffset}
+            y2={gridSize / 5 - crossOffset}
+            stroke={crossStrokeColor}
+            strokeWidth={crossStrokeWidth}
+          />
+
+          {/* left-down */}
+          <line
+            x1={-crossOffset}
+            y1={gridSize * 2 + crossOffset}
+            x2={gridSize / 5 - crossOffset}
+            y2={gridSize * 2 + crossOffset}
+            stroke={crossStrokeColor}
+            strokeWidth={crossStrokeWidth}
+          />
+          <line
+            x1={-crossOffset}
+            y1={gridSize * 2 - gridSize / 5 + crossOffset}
+            x2={-crossOffset}
+            y2={gridSize * 2 + crossOffset}
+            stroke={crossStrokeColor}
+            strokeWidth={crossStrokeWidth}
+          />
+
+          {/* right-down */}
+          <line
+            x1={gridSize * 2 - gridSize / 5 + crossOffset}
+            y1={gridSize * 2 + crossOffset}
+            x2={gridSize * 2 + crossOffset}
+            y2={gridSize * 2 + crossOffset}
+            stroke={crossStrokeColor}
+            strokeWidth={crossStrokeWidth}
+          />
+          <line
+            x1={gridSize * 2 + crossOffset}
+            y1={gridSize * 2 - gridSize / 5 + crossOffset}
+            x2={gridSize * 2 + crossOffset}
+            y2={gridSize * 2 + crossOffset}
+            stroke={crossStrokeColor}
+            strokeWidth={crossStrokeWidth}
           />
         </pattern>
       </defs>

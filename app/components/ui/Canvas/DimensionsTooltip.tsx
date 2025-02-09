@@ -4,26 +4,29 @@ interface DimensionsTooltipProps {
   position: Vector2Type;
   width: number;
   height: number;
+  zoomLevel: number;
   xOffset?: number;
   yOffset?: number;
+  fontSize?: number;
 }
 
 export default function DimensionsTooltip({
   position,
   width,
   height,
+  zoomLevel,
   xOffset = 0,
-  yOffset = -30,
+  yOffset = -20,
+  fontSize = 14,
 }: DimensionsTooltipProps) {
   return (
-    <div
-      className="font-mono text-sm font-light pointer-events-none z-50 absolute"
-      style={{
-        left: `${position.x + xOffset}px`,
-        top: `${position.y + yOffset}px`,
-      }}
+    <text
+      x={position.x + xOffset * zoomLevel}
+      y={position.y + yOffset * zoomLevel}
+      fontSize={fontSize * zoomLevel}
+      className="font-mono"
     >
       {`${width}m x ${height}m`}
-    </div>
+    </text>
   );
 }

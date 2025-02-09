@@ -6,91 +6,95 @@ import { RectangleType, Vector2Type } from "@/types/canvas";
 
 interface ResizeHandlesProps {
   rectangle: RectangleType;
+  zoomLevel: number;
   size?: number;
   onMouseDown: (
-    e: React.MouseEvent<SVGRectElement, MouseEvent>,
+    e: React.MouseEvent<SVGSVGElement, MouseEvent>,
     direction: Vector2Type
   ) => void;
 }
 
-type ResizeHandle = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
+type ResizeHandler = {
   direction: Vector2Type;
   cursor: string;
 };
 
+type ResizeSideHandler = ResizeHandler & {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+};
+
+type ResizeCornerHandler = ResizeHandler & {
+  cx: number;
+  cy: number;
+};
+
 export default function ResizeHandles({
   rectangle,
+  zoomLevel,
   size = 4,
   onMouseDown,
 }: ResizeHandlesProps) {
   // left: -1, right: 1, top: -1, bottom: 1.
-
-  const handles: Array<ResizeHandle> = [
+  const sideHandlers: Array<ResizeSideHandler> = [
     {
-      x: rectangle.x + size,
-      y: rectangle.y - size / 2,
-      width: rectangle.width - size * 2,
-      height: size,
+      x1: rectangle.x,
+      y1: rectangle.y,
+      x2: rectangle.x + rectangle.width,
+      y2: rectangle.y,
       direction: { x: 0, y: -1 },
       cursor: "n-resize",
     },
     {
-      x: rectangle.x + size,
-      y: rectangle.y + rectangle.height - size / 2,
-      width: rectangle.width - size * 2,
-      height: size,
+      x1: rectangle.x,
+      y1: rectangle.y + rectangle.height,
+      x2: rectangle.x + rectangle.width,
+      y2: rectangle.y + rectangle.height,
       direction: { x: 0, y: 1 },
       cursor: "s-resize",
     },
     {
-      x: rectangle.x - size / 2,
-      y: rectangle.y + size,
-      width: size,
-      height: rectangle.height - size * 2,
+      x1: rectangle.x,
+      y1: rectangle.y,
+      x2: rectangle.x,
+      y2: rectangle.y + rectangle.height,
       direction: { x: -1, y: 0 },
       cursor: "w-resize",
     },
     {
-      x: rectangle.x + rectangle.width - size / 2,
-      y: rectangle.y + size,
-      width: size,
-      height: rectangle.height - size * 2,
+      x1: rectangle.x + rectangle.width,
+      y1: rectangle.y,
+      x2: rectangle.x + rectangle.width,
+      y2: rectangle.y + rectangle.height,
       direction: { x: 1, y: 0 },
       cursor: "e-resize",
     },
+  ];
+
+  const cornerHandlers: Array<ResizeCornerHandler> = [
     {
-      x: rectangle.x - size / 2,
-      y: rectangle.y - size / 2,
-      width: size,
-      height: size,
+      cx: rectangle.x,
+      cy: rectangle.y,
       direction: { x: -1, y: -1 },
       cursor: "nw-resize",
     },
     {
-      x: rectangle.x + rectangle.width - size / 2,
-      y: rectangle.y - size / 2,
-      width: size,
-      height: size,
+      cx: rectangle.x + rectangle.width,
+      cy: rectangle.y,
       direction: { x: 1, y: -1 },
       cursor: "ne-resize",
     },
     {
-      x: rectangle.x - size / 2,
-      y: rectangle.y + rectangle.height - size / 2,
-      width: size,
-      height: size,
+      cx: rectangle.x,
+      cy: rectangle.y + rectangle.height,
       direction: { x: -1, y: 1 },
       cursor: "sw-resize",
     },
     {
-      x: rectangle.x + rectangle.width - size / 2,
-      y: rectangle.y + rectangle.height - size / 2,
-      width: size,
-      height: size,
+      cx: rectangle.x + rectangle.width,
+      cy: rectangle.y + rectangle.height,
       direction: { x: 1, y: 1 },
       cursor: "se-resize",
     },
@@ -98,21 +102,41 @@ export default function ResizeHandles({
 
   return (
     <>
-      {handles.map((handle) => (
-        <rect
-          key={handle.cursor}
-          x={handle.x}
-          y={handle.y}
-          width={handle.width}
-          height={handle.height}
+      {sideHandlers.map((handler, index) => (
+        <line
+          key={index}
+          x1={handler.x1}
+          y1={handler.y1}
+          x2={handler.x2}
+          y2={handler.y2}
           fill={RESIZE_HANDLE_FILL}
+          stroke={RESIZE_HANDLE_FILL}
+          strokeWidth={5 * zoomLevel}
           onMouseDown={(e) => {
             if (e.button === LEFT_CLICK_BUTTON_CODE) {
               e.stopPropagation();
-              onMouseDown(e, handle.direction);
+              onMouseDown(e, handler.direction);
             }
           }}
-          style={{ cursor: handle.cursor }}
+          style={{ cursor: handler.cursor }}
+        />
+      ))}
+      {cornerHandlers.map((handler, index) => (
+        <circle
+          key={index}
+          cx={handler.cx}
+          cy={handler.cy}
+          r={5 * zoomLevel}
+          onMouseDown={(e) => {
+            if (e.button === LEFT_CLICK_BUTTON_CODE) {
+              e.stopPropagation();
+              onMouseDown(e, handler.direction);
+            }
+          }}
+          fill={RESIZE_HANDLE_FILL}
+          strokeWidth={3 * zoomLevel}
+          stroke="white"
+          style={{ cursor: handler.cursor }}
         />
       ))}
     </>

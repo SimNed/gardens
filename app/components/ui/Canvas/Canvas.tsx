@@ -6,6 +6,7 @@ import {
   DEFAULT_RECT_FILL,
   DEFAULT_RECT_STROKE,
   HOVER_RECT_FILL,
+  HOVER_RECT_STROKE,
   LEFT_CLICK_BUTTON_CODE,
   RIGHT_CLICK_BUTTON_CODE,
   SELECTED_RECT_FILL,
@@ -45,7 +46,7 @@ export default function Canvas({
   const canvasRef = useRef(null);
 
   const {
-    state: canvasState,
+    state,
     mode,
     dragPoints,
     handleMouseDown,
@@ -66,7 +67,7 @@ export default function Canvas({
         ref={canvasRef}
         width="100%"
         height="100%"
-        viewBox={`${canvasState.viewBox.x} ${canvasState.viewBox.y} ${canvasState.viewBox.width} ${canvasState.viewBox.height}`}
+        viewBox={`${state.viewBox.x} ${state.viewBox.y} ${state.viewBox.width} ${state.viewBox.height}`}
         onContextMenu={(e) => e.preventDefault()}
         onMouseDown={(e) => {
           if (e.button === RIGHT_CLICK_BUTTON_CODE)
@@ -89,7 +90,11 @@ export default function Canvas({
           handleWheel(e);
         }}
       >
-        <GridPattern gridSize={gridSize} viewBox={canvasState.viewBox} />
+        <GridPattern
+          gridSize={gridSize}
+          viewBox={state.viewBox}
+          zoomLevel={state.zoomLevel / 2}
+        />
         <g>
           {(() => {
             return rectangles.map((rectangle, index) => (
@@ -108,9 +113,15 @@ export default function Canvas({
                       : DEFAULT_RECT_FILL
                   }
                   stroke={
-                    selectedIndex === index ? "none" : DEFAULT_RECT_STROKE
+                    selectedIndex === index
+                      ? "none"
+                      : hoveredIndex === index
+                      ? HOVER_RECT_STROKE
+                      : DEFAULT_RECT_STROKE
                   }
-                  strokeWidth={0.5}
+                  strokeWidth={
+                    selectedIndex === index || hoveredIndex === index ? 3 : 0.5
+                  }
                   onMouseDown={(e) => {
                     if (e.button === LEFT_CLICK_BUTTON_CODE) {
                       e.stopPropagation();
@@ -127,6 +138,7 @@ export default function Canvas({
                 {selectedIndex === index && (
                   <ResizeHandles
                     rectangle={rectangle}
+                    zoomLevel={state.zoomLevel}
                     onMouseDown={(e, direction) => {
                       e.stopPropagation();
                       onSelect(index);
@@ -140,28 +152,40 @@ export default function Canvas({
           })()}
         </g>
 
-        {mode === CanvasMode.DRAWING && canvasState.tempRectangle && (
+        {mode === CanvasMode.DRAWING && state.tempRectangle && (
           <>
             <rect
-              x={canvasState.tempRectangle.x}
-              y={canvasState.tempRectangle.y}
-              width={canvasState.tempRectangle.width}
-              height={canvasState.tempRectangle.height}
+              x={state.tempRectangle.x}
+              y={state.tempRectangle.y}
+              width={state.tempRectangle.width}
+              height={state.tempRectangle.height}
               fill={SELECTED_RECT_FILL}
             />
           </>
         )}
+        {state.tempRectangle && dragPoints.start && (
+          <DimensionsTooltip
+            position={{
+              x: dragPoints.start.x,
+              y: dragPoints.start.y,
+            }}
+            width={state.tempRectangle.width / gridSize / 2}
+            height={state.tempRectangle.height / gridSize / 2}
+            zoomLevel={state.zoomLevel}
+          />
+        )}
+        {mode === CanvasMode.RESIZING && selectedIndex && (
+          <DimensionsTooltip
+            position={{
+              x: rectangles[selectedIndex].x,
+              y: rectangles[selectedIndex].y,
+            }}
+            width={rectangles[selectedIndex].width / gridSize / 2}
+            height={rectangles[selectedIndex].height / gridSize / 2}
+            zoomLevel={state.zoomLevel}
+          />
+        )}
       </svg>
-      {canvasState.tempRectangle && dragPoints.start && (
-        <DimensionsTooltip
-          position={{
-            x: dragPoints.start.x,
-            y: dragPoints.start.y,
-          }}
-          width={canvasState.tempRectangle.width / gridSize}
-          height={canvasState.tempRectangle.height / gridSize}
-        />
-      )}
     </>
   );
 }

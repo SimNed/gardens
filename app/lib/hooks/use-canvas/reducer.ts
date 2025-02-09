@@ -3,6 +3,7 @@ import { DragPointType, RectangleType, Vector2Type } from "@/types/canvas";
 export interface CanvasState {
   viewBox: RectangleType;
   tempRectangle: RectangleType | null;
+  zoomLevel: number;
 }
 
 export type CanvasActions =
@@ -10,7 +11,7 @@ export type CanvasActions =
   | { type: "reset_temp_rectangle" }
   | { type: "init_view_box"; canvas: SVGSVGElement }
   | { type: "update_panning"; dragDeltas: Vector2Type }
-  | { type: "update_zoom_factor"; factor: number };
+  | { type: "update_zoom_factor"; factor: number; position: Vector2Type };
 
 export default function canvasReducer(
   state: CanvasState,
@@ -19,14 +20,10 @@ export default function canvasReducer(
   switch (action.type) {
     case "update_temp_rectangle": {
       const tempRectangle = {
-        x: Math.min(action.dragPoints.origin.x, action.dragPoints.current.x),
-        y: Math.min(action.dragPoints.origin.y, action.dragPoints.current.y),
-        width: Math.abs(
-          action.dragPoints.current.x - action.dragPoints.origin.x
-        ),
-        height: Math.abs(
-          action.dragPoints.current.y - action.dragPoints.origin.y
-        ),
+        x: Math.min(action.dragPoints.start.x, action.dragPoints.end.x),
+        y: Math.min(action.dragPoints.start.y, action.dragPoints.end.y),
+        width: Math.abs(action.dragPoints.end.x - action.dragPoints.start.x),
+        height: Math.abs(action.dragPoints.end.y - action.dragPoints.start.y),
       };
 
       return { ...state, tempRectangle };
@@ -53,14 +50,35 @@ export default function canvasReducer(
       return { ...state, viewBox };
     }
     case "update_zoom_factor": {
+      const zoomRange = { min: 0.5, max: 2 };
       const normalizedZoomFactor = action.factor > 0 ? 1.1 : 0.9;
+
+      const nextZoomLevel = state.zoomLevel * normalizedZoomFactor;
+
+      if (nextZoomLevel < zoomRange.min || nextZoomLevel > zoomRange.max)
+        return state;
+
+      const newWidth = state.viewBox.width * normalizedZoomFactor;
+      const newHeight = state.viewBox.height * normalizedZoomFactor;
+
+      const dx = action.position.x - state.viewBox.x;
+      const dy = action.position.y - state.viewBox.y;
+
+      const newX = state.viewBox.x + dx * (1 - normalizedZoomFactor);
+      const newY = state.viewBox.y + dy * (1 - normalizedZoomFactor);
+
       const viewBox = {
-        ...state.viewBox,
-        width: state.viewBox.width * normalizedZoomFactor,
-        height: state.viewBox.height * normalizedZoomFactor,
+        x: newX,
+        y: newY,
+        width: newWidth,
+        height: newHeight,
       };
 
-      return { ...state, viewBox };
+      return {
+        ...state,
+        viewBox,
+        zoomLevel: nextZoomLevel,
+      };
     }
     default: {
       throw Error("Unknown action");

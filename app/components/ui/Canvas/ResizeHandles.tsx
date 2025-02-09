@@ -2,15 +2,14 @@ import {
   LEFT_CLICK_BUTTON_CODE,
   RESIZE_HANDLE_FILL,
 } from "@/app/lib/utils/canvas";
-import { RectangleType } from "@/types/canvas";
-import { DirectionVariantType } from "@/types/variant";
+import { RectangleType, Vector2Type } from "@/types/canvas";
 
 interface ResizeHandlesProps {
   rectangle: RectangleType;
   size?: number;
   onMouseDown: (
     e: React.MouseEvent<SVGRectElement, MouseEvent>,
-    direction: DirectionVariantType
+    direction: Vector2Type
   ) => void;
 }
 
@@ -19,7 +18,7 @@ type ResizeHandle = {
   y: number;
   width: number;
   height: number;
-  direction: DirectionVariantType;
+  direction: Vector2Type;
   cursor: string;
 };
 
@@ -28,13 +27,15 @@ export default function ResizeHandles({
   size = 4,
   onMouseDown,
 }: ResizeHandlesProps) {
+  // left: -1, right: 1, top: -1, bottom: 1.
+
   const handles: Array<ResizeHandle> = [
     {
       x: rectangle.x + size,
       y: rectangle.y - size / 2,
       width: rectangle.width - size * 2,
       height: size,
-      direction: "top",
+      direction: { x: 0, y: -1 },
       cursor: "n-resize",
     },
     {
@@ -42,7 +43,7 @@ export default function ResizeHandles({
       y: rectangle.y + rectangle.height - size / 2,
       width: rectangle.width - size * 2,
       height: size,
-      direction: "bottom",
+      direction: { x: 0, y: 1 },
       cursor: "s-resize",
     },
     {
@@ -50,7 +51,7 @@ export default function ResizeHandles({
       y: rectangle.y + size,
       width: size,
       height: rectangle.height - size * 2,
-      direction: "left",
+      direction: { x: -1, y: 0 },
       cursor: "w-resize",
     },
     {
@@ -58,7 +59,7 @@ export default function ResizeHandles({
       y: rectangle.y + size,
       width: size,
       height: rectangle.height - size * 2,
-      direction: "right",
+      direction: { x: 1, y: 0 },
       cursor: "e-resize",
     },
     {
@@ -66,7 +67,7 @@ export default function ResizeHandles({
       y: rectangle.y - size / 2,
       width: size,
       height: size,
-      direction: "top-left",
+      direction: { x: -1, y: -1 },
       cursor: "nw-resize",
     },
     {
@@ -74,7 +75,7 @@ export default function ResizeHandles({
       y: rectangle.y - size / 2,
       width: size,
       height: size,
-      direction: "top-right",
+      direction: { x: 1, y: -1 },
       cursor: "ne-resize",
     },
     {
@@ -82,7 +83,7 @@ export default function ResizeHandles({
       y: rectangle.y + rectangle.height - size / 2,
       width: size,
       height: size,
-      direction: "bottom-left",
+      direction: { x: -1, y: 1 },
       cursor: "sw-resize",
     },
     {
@@ -90,7 +91,7 @@ export default function ResizeHandles({
       y: rectangle.y + rectangle.height - size / 2,
       width: size,
       height: size,
-      direction: "bottom-right",
+      direction: { x: 1, y: 1 },
       cursor: "se-resize",
     },
   ];

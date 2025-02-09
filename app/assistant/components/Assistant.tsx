@@ -14,7 +14,7 @@ export default function Assistant({ plants }: AssistantProps) {
     <div className="flex h-full">
       <AssistantProvider>
         <div className="grid grid-cols-[3fr_1fr] w-full">
-          <AssistantCanvas cellSize={20} />
+          <AssistantCanvas gridSize={20} />
           <AssistantSideBar cellSize={20} />
         </div>
       </AssistantProvider>

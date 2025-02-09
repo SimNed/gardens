@@ -21,7 +21,7 @@ interface CanvasProps {
   rectangles: Array<RectangleType>;
   selectedIndex?: number;
   hoveredIndex?: number;
-  cellSize?: number;
+  gridSize?: number;
   onRectangleCreate: (rectangle: RectangleType) => void;
   onRectangleUpdate: (rectangle: RectangleType) => void;
   onSelect: (index: number) => void;
@@ -31,7 +31,7 @@ interface CanvasProps {
 }
 
 export default function Canvas({
-  cellSize = 20,
+  gridSize = 20,
   rectangles,
   selectedIndex,
   hoveredIndex,
@@ -47,7 +47,7 @@ export default function Canvas({
   const {
     state: canvasState,
     mode,
-    dragPointsOrigin,
+    dragPoints,
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
@@ -55,7 +55,7 @@ export default function Canvas({
     setResizeDirection,
   } = useCanvas({
     canvasRef: canvasRef,
-    cellSize: cellSize,
+    gridSize: gridSize,
     onRectangleUpdate,
     onRectangleCreate,
   });
@@ -86,11 +86,10 @@ export default function Canvas({
         onMouseLeave={handleMouseUp}
         onWheel={(e) => {
           e.stopPropagation();
-          console.log(selectedIndex);
           handleWheel(e);
         }}
       >
-        <GridPattern cellSize={cellSize} viewBox={canvasState.viewBox} />
+        <GridPattern gridSize={gridSize} viewBox={canvasState.viewBox} />
         <g>
           {(() => {
             return rectangles.map((rectangle, index) => (
@@ -153,14 +152,14 @@ export default function Canvas({
           </>
         )}
       </svg>
-      {canvasState.tempRectangle && dragPointsOrigin && (
+      {canvasState.tempRectangle && dragPoints.start && (
         <DimensionsTooltip
           position={{
-            x: dragPointsOrigin.x,
-            y: dragPointsOrigin.y,
+            x: dragPoints.start.x,
+            y: dragPoints.start.y,
           }}
-          width={canvasState.tempRectangle.width / cellSize}
-          height={canvasState.tempRectangle.height / cellSize}
+          width={canvasState.tempRectangle.width / gridSize}
+          height={canvasState.tempRectangle.height / gridSize}
         />
       )}
     </>

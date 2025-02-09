@@ -1,16 +1,14 @@
 "use client";
 
-import React, { useEffect } from "react";
-
 import { useAssistantContext } from "../../context";
 import { RectangleType } from "@/types/canvas";
 import Canvas from "@/app/components/ui/Canvas/Canvas";
 
 interface CanvasProps {
-  cellSize: number;
+  gridSize: number;
 }
 
-export default function AssistantCanvas({ cellSize }: CanvasProps) {
+export default function AssistantCanvas({ gridSize }: CanvasProps) {
   const {
     state,
     createElement,
@@ -21,17 +19,13 @@ export default function AssistantCanvas({ cellSize }: CanvasProps) {
     updateElement,
   } = useAssistantContext();
 
-  useEffect(() => {
-    console.log("SELECTED ELEMENT IN ASSISTANT CSTATE", state.selectedElement);
-  }, [state.selectedElement]);
-
   const getElementIndex = (id: number) => {
     return state.elements.map((element) => element.id).indexOf(id);
   };
 
   return (
     <Canvas
-      cellSize={cellSize}
+      gridSize={gridSize}
       rectangles={state.elements.map((element) => element.rectangle)}
       selectedIndex={
         state.selectedElement

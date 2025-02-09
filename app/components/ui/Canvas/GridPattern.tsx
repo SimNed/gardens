@@ -1,11 +1,11 @@
 interface GridPatternProps {
-  cellSize: number;
+  gridSize: number;
   color?: string;
   viewBox: { x: number; y: number; width: number; height: number };
 }
 
 export default function GridPattern({
-  cellSize,
+  gridSize,
   color = "rgba(105, 105, 115, .2)",
   viewBox,
 }: GridPatternProps) {
@@ -17,8 +17,8 @@ export default function GridPattern({
         <pattern
           id="gridPattern"
           patternUnits="userSpaceOnUse"
-          width={cellSize}
-          height={cellSize}
+          width={gridSize}
+          height={gridSize}
           x={0}
           y={0}
         >
@@ -26,14 +26,14 @@ export default function GridPattern({
             x1="0"
             y1="0"
             x2="0"
-            y2={cellSize}
+            y2={gridSize}
             stroke={color}
             strokeWidth="1"
           />
           <line
             x1="0"
             y1="0"
-            x2={cellSize}
+            x2={gridSize}
             y2="0"
             stroke={color}
             strokeWidth="1"
@@ -42,24 +42,24 @@ export default function GridPattern({
           <line
             x1="0"
             y1="0"
-            x2={cellSize / 5}
+            x2={gridSize / 5}
             y2="0"
             stroke={"rgba(105, 105, 115, .5)"}
             strokeWidth="1"
           />
           <line
-            x1={cellSize - (cellSize / 5 - 1)}
+            x1={gridSize - (gridSize / 5 - 1)}
             y1="0"
-            x2={cellSize}
+            x2={gridSize}
             y2="0"
             stroke={"rgba(105, 105, 115, .5)"}
             strokeWidth="1"
           />
           <line
             x1={0}
-            y1={cellSize - (cellSize / 5 - 1)}
+            y1={gridSize - (gridSize / 5 - 1)}
             x2={0}
-            y2={cellSize}
+            y2={gridSize}
             stroke={"rgba(105, 105, 115, .5)"}
             strokeWidth="1"
           />
@@ -67,7 +67,7 @@ export default function GridPattern({
             x1={0}
             y1={0}
             x2={0}
-            y2={cellSize / 5}
+            y2={gridSize / 5}
             stroke={"rgba(105, 105, 115, .5)"}
             strokeWidth="1"
           />

@@ -3,14 +3,14 @@ export type Vector2Type = {
   y: number;
 };
 
+export type DragPointType = {
+  start: Vector2Type;
+  end: Vector2Type;
+};
+
 export type RectangleType = {
   x: number;
   y: number;
   width: number;
   height: number;
-};
-
-export type DragPointType = {
-  origin: { x: number; y: number };
-  current: { x: number; y: number };
 };

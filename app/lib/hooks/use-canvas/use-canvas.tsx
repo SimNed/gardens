@@ -1,12 +1,11 @@
 import { RefObject, useCallback, useEffect, useReducer, useRef } from "react";
 import { RectangleType, Vector2Type } from "@/types/canvas";
-import { DirectionVariantType } from "@/types/variant";
 import canvasReducer, { CanvasState } from "./reducer";
-import { useMouse } from "../use-mouse";
+import { useMouse } from "../use-canvas-mouse";
 
 interface UseCanvasProps {
   canvasRef: RefObject<SVGSVGElement>;
-  cellSize: number;
+  gridSize: number;
   onRectangleCreate: (rectangle: RectangleType) => void;
   onRectangleUpdate: (rectangle: RectangleType) => void;
 }
@@ -21,7 +20,7 @@ export enum CanvasMode {
 
 export function useCanvas({
   canvasRef,
-  cellSize,
+  gridSize,
   onRectangleUpdate,
   onRectangleCreate,
 }: UseCanvasProps) {
@@ -33,18 +32,25 @@ export function useCanvas({
       height: 0,
     } as RectangleType,
     tempRectangle: null,
+    zoomLevel: 1,
   };
 
   const [state, dispatch] = useReducer(canvasReducer, initialState);
 
   const modeRef = useRef<CanvasMode>(CanvasMode.DEFAULT);
-  const resizeDirectionRef = useRef<DirectionVariantType | null>(null);
-  const startDragPointRef = useRef<Vector2Type | null>(null);
+  const resizeDirectionRef = useRef<Vector2Type | null>(null);
 
-  const { getDragPoints, setDragPoints, getDragDeltas, getMousePosition } =
-    useMouse({
-      ref: canvasRef,
-    });
+  const {
+    getDragPoints,
+    setDragPoints,
+    getDragDeltas,
+    getUpdatedDragDeltas,
+    getMousePosition,
+    isOnDifferentGridCell,
+  } = useMouse({
+    ref: canvasRef,
+    gridSize,
+  });
 
   useEffect(() => {
     if (canvasRef.current)
@@ -60,14 +66,9 @@ export function useCanvas({
     const mousePosition = getMousePosition(e);
     if (!mousePosition) return;
 
-    startDragPointRef.current = { x: e.clientX, y: e.clientY };
-
-    const mousePositionInGrid = getMousePositionInCanvas(mousePosition);
-    if (!mousePositionInGrid) return;
-
     setDragPoints({
-      origin: mousePositionInGrid,
-      current: mousePositionInGrid,
+      start: mousePosition,
+      end: mousePosition,
     });
 
     modeRef.current = mode;
@@ -80,17 +81,16 @@ export function useCanvas({
     if (modeRef.current === CanvasMode.DEFAULT) return;
 
     const mousePosition = getMousePosition(e);
-    if (!mousePosition) return;
 
-    const mousePositionInGrid = getMousePositionInCanvas(mousePosition);
+    if (!mousePosition || !isOnDifferentGridCell(mousePosition)) return;
 
-    setDragPoints({ current: mousePositionInGrid });
+    setDragPoints({ end: mousePosition });
 
-    const dragDeltas = getDragDeltas();
+    const updatedDragDeltas = getUpdatedDragDeltas();
 
     switch (modeRef.current) {
       case CanvasMode.PANNING:
-        dispatch({ type: "update_panning", dragDeltas });
+        dispatch({ type: "update_panning", dragDeltas: getDragDeltas() });
         break;
       case CanvasMode.DRAWING:
         dispatch({
@@ -100,13 +100,13 @@ export function useCanvas({
         break;
       case CanvasMode.MOVING:
         if (rectangle) {
-          const updatedRect = updateRectPosition(rectangle, dragDeltas);
+          const updatedRect = updateRectPosition(rectangle, updatedDragDeltas);
           onRectangleUpdate(updatedRect);
         }
         break;
       case CanvasMode.RESIZING:
         if (rectangle) {
-          const updatedRect = updateRectSize(rectangle, dragDeltas);
+          const updatedRect = updateRectSize(rectangle, updatedDragDeltas);
           onRectangleUpdate(updatedRect);
         }
         break;
@@ -132,38 +132,28 @@ export function useCanvas({
   const handleWheel = (e: React.WheelEvent<SVGSVGElement>) => {
     e.preventDefault();
     if (modeRef.current !== CanvasMode.DEFAULT) return;
-    dispatch({ type: "update_zoom_factor", factor: e.deltaY });
+    dispatch({
+      type: "update_zoom_factor",
+      factor: e.deltaY,
+      position: getMousePosition(e) || { x: 0, y: 0 },
+    });
   };
 
-  const getMousePositionInCanvas = (mousePosition: Vector2Type) => {
+  const updateRectPosition = (
+    rectangle: RectangleType,
+    dragDeltas: Vector2Type
+  ) => {
+    if (dragDeltas.x === 0 && dragDeltas.y === 0) return rectangle;
+
+    const targetX = rectangle.x + dragDeltas.x;
+    const targetY = rectangle.y + dragDeltas.y;
+
     return {
-      x: snapToGrid(mousePosition.x, cellSize),
-      y: snapToGrid(mousePosition.y, cellSize),
+      ...rectangle,
+      x: targetX,
+      y: targetY,
     };
   };
-
-  const snapToGrid = (value: number, gridSize: number) =>
-    Math.round(value / gridSize) * gridSize;
-
-  const updateRectPosition = useCallback(
-    (rectangle: RectangleType, dragDeltas: Vector2Type) => {
-      const targetX = snapToGrid(rectangle.x + dragDeltas.x, cellSize);
-      const targetY = snapToGrid(rectangle.y + dragDeltas.y, cellSize);
-
-      if (targetX !== rectangle.x || targetY !== rectangle.y) {
-        return {
-          ...rectangle,
-          x: targetX,
-          y: targetY,
-        };
-      }
-
-      return rectangle;
-    },
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
 
   const updateRectSize = useCallback(
     (rectangle: RectangleType, dragDeltas: Vector2Type) => {
@@ -173,45 +163,45 @@ export function useCanvas({
 
       const tempRectangle = { ...rectangle };
 
-      if (direction.includes("right")) {
-        const newWidth = snapToGrid(rectangle.width + dragDeltas.x, cellSize);
-        tempRectangle.width = Math.max(cellSize, newWidth);
+      if (direction.x === 1) {
+        const newWidth = rectangle.width + dragDeltas.x;
+        tempRectangle.width = Math.max(gridSize, newWidth);
       }
-      if (direction.includes("left")) {
-        const newWidth = snapToGrid(rectangle.width - dragDeltas.x, cellSize);
-        if (newWidth >= cellSize) {
-          tempRectangle.x = snapToGrid(rectangle.x + dragDeltas.x, cellSize);
+      if (direction.x === -1) {
+        const newWidth = rectangle.width - dragDeltas.x;
+        if (newWidth >= gridSize) {
+          tempRectangle.x = rectangle.x + dragDeltas.x;
           tempRectangle.width = newWidth;
         }
       }
-      if (direction.includes("bottom")) {
-        const newHeight = snapToGrid(rectangle.height + dragDeltas.y, cellSize);
-        tempRectangle.height = Math.max(cellSize, newHeight);
+      if (direction.y === 1) {
+        const newHeight = rectangle.height + dragDeltas.y;
+        tempRectangle.height = Math.max(gridSize, newHeight);
       }
-      if (direction.includes("top")) {
-        const newHeight = snapToGrid(rectangle.height - dragDeltas.y, cellSize);
-        if (newHeight >= cellSize) {
-          tempRectangle.y = snapToGrid(rectangle.y + dragDeltas.y, cellSize);
+      if (direction.y === -1) {
+        const newHeight = rectangle.height - dragDeltas.y;
+        if (newHeight >= gridSize) {
+          tempRectangle.y = rectangle.y + dragDeltas.y;
           tempRectangle.height = newHeight;
         }
       }
 
       return tempRectangle;
     },
-    [cellSize]
+    [gridSize]
   );
 
   return {
     state,
     mode: modeRef.current,
-    dragPointsOrigin: startDragPointRef.current,
+    dragPoints: getDragPoints(),
 
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
     handleWheel,
 
-    setResizeDirection: (direction: DirectionVariantType) =>
+    setResizeDirection: (direction: Vector2Type) =>
       (resizeDirectionRef.current = direction),
   };
 }

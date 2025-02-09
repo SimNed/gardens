@@ -26,7 +26,7 @@ export default function DimensionsTooltip({
       fontSize={fontSize * zoomLevel}
       className="font-mono"
     >
-      {`${width}m x ${height}m`}
+      {`${width.toFixed(1)}m x ${height.toFixed(1)}m`}
     </text>
   );
 }

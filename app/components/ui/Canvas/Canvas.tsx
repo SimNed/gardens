@@ -17,6 +17,7 @@ import { RectangleType } from "@/types/canvas";
 import GridPattern from "@/app/components/ui/Canvas/GridPattern";
 import ResizeHandles from "@/app/components/ui/Canvas/ResizeHandles";
 import DimensionsTooltip from "@/app/components/ui/Canvas/DimensionsTooltip";
+import { MessageCircleWarning } from "lucide-react";
 
 interface CanvasProps {
   rectangles: Array<RectangleType>;
@@ -135,6 +136,29 @@ export default function Canvas({
                   onMouseLeave={() => onUnhover()}
                   className="cursor-move"
                 />
+                {/* create "warnings" or "actions" for storing warnings actions*/}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox={`${0} ${0} ${
+                    state.viewBox.width / 1.15 / state.zoomLevel
+                  } ${state.viewBox.height / 1.15 / state.zoomLevel}`}
+                  x={
+                    rectangle.x +
+                    rectangle.width +
+                    (gridSize / 2) * state.zoomLevel
+                  }
+                  y={rectangle.y - (gridSize / 2) * state.zoomLevel}
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className=" hover:cursor-pointer fill-yellow-400 stroke-white hover:fill-white hover:stroke-black"
+                  style={{ transform: "scale(2)", transformOrigin: "center" }}
+                >
+                  <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+                  <path d="M12 8v4" />
+                  <path d="M12 16h.01" />
+                </svg>
+
                 {selectedIndex === index && (
                   <ResizeHandles
                     rectangle={rectangle}
@@ -174,17 +198,31 @@ export default function Canvas({
             zoomLevel={state.zoomLevel}
           />
         )}
-        {mode === CanvasMode.RESIZING && selectedIndex && (
-          <DimensionsTooltip
-            position={{
-              x: rectangles[selectedIndex].x,
-              y: rectangles[selectedIndex].y,
-            }}
-            width={rectangles[selectedIndex].width / gridSize / 2}
-            height={rectangles[selectedIndex].height / gridSize / 2}
-            zoomLevel={state.zoomLevel}
-          />
-        )}
+        {selectedIndex !== undefined &&
+          (mode === CanvasMode.RESIZING || mode === CanvasMode.DEFAULT) && (
+            <DimensionsTooltip
+              position={{
+                x: rectangles[selectedIndex].x,
+                y: rectangles[selectedIndex].y,
+              }}
+              width={rectangles[selectedIndex].width / gridSize / 2}
+              height={rectangles[selectedIndex].height / gridSize / 2}
+              zoomLevel={state.zoomLevel}
+            />
+          )}
+        {hoveredIndex !== undefined &&
+          hoveredIndex !== selectedIndex &&
+          (mode === CanvasMode.RESIZING || mode === CanvasMode.DEFAULT) && (
+            <DimensionsTooltip
+              position={{
+                x: rectangles[hoveredIndex].x,
+                y: rectangles[hoveredIndex].y,
+              }}
+              width={rectangles[hoveredIndex].width / gridSize / 2}
+              height={rectangles[hoveredIndex].height / gridSize / 2}
+              zoomLevel={state.zoomLevel}
+            />
+          )}
       </svg>
     </>
   );

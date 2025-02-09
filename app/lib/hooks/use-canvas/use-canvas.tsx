@@ -57,88 +57,6 @@ export function useCanvas({
       dispatch({ type: "init_view_box", canvas: canvasRef.current });
   }, [canvasRef]);
 
-  const handleMouseDown = (
-    e: React.MouseEvent<SVGRectElement | SVGSVGElement, MouseEvent>,
-    mode: CanvasMode
-  ) => {
-    e.preventDefault();
-
-    const mousePosition = getMousePosition(e);
-    if (!mousePosition) return;
-
-    setDragPoints({
-      start: mousePosition,
-      end: mousePosition,
-    });
-
-    modeRef.current = mode;
-  };
-
-  const handleMouseMove = (
-    e: React.MouseEvent<SVGSVGElement, MouseEvent>,
-    rectangle?: RectangleType
-  ) => {
-    if (modeRef.current === CanvasMode.DEFAULT) return;
-
-    const mousePosition = getMousePosition(e);
-
-    if (!mousePosition || !isOnDifferentGridCell(mousePosition)) return;
-
-    setDragPoints({ end: mousePosition });
-
-    const updatedDragDeltas = getUpdatedDragDeltas();
-
-    switch (modeRef.current) {
-      case CanvasMode.PANNING:
-        dispatch({ type: "update_panning", dragDeltas: getDragDeltas() });
-        break;
-      case CanvasMode.DRAWING:
-        dispatch({
-          type: "update_temp_rectangle",
-          dragPoints: getDragPoints(),
-        });
-        break;
-      case CanvasMode.MOVING:
-        if (rectangle) {
-          const updatedRect = updateRectPosition(rectangle, updatedDragDeltas);
-          onRectangleUpdate(updatedRect);
-        }
-        break;
-      case CanvasMode.RESIZING:
-        if (rectangle) {
-          const updatedRect = updateRectSize(rectangle, updatedDragDeltas);
-          onRectangleUpdate(updatedRect);
-        }
-        break;
-      default:
-        break;
-    }
-  };
-
-  const handleMouseUp = () => {
-    if (
-      modeRef.current === CanvasMode.DRAWING &&
-      state.tempRectangle &&
-      state.tempRectangle.width > 0 &&
-      state.tempRectangle.height > 0
-    ) {
-      onRectangleCreate(state.tempRectangle);
-    }
-
-    modeRef.current = CanvasMode.DEFAULT;
-    dispatch({ type: "reset_temp_rectangle" });
-  };
-
-  const handleWheel = (e: React.WheelEvent<SVGSVGElement>) => {
-    e.preventDefault();
-    if (modeRef.current !== CanvasMode.DEFAULT) return;
-    dispatch({
-      type: "update_zoom_factor",
-      factor: e.deltaY,
-      position: getMousePosition(e) || { x: 0, y: 0 },
-    });
-  };
-
   const updateRectPosition = (
     rectangle: RectangleType,
     dragDeltas: Vector2Type
@@ -189,6 +107,97 @@ export function useCanvas({
       return tempRectangle;
     },
     [gridSize]
+  );
+
+  const handleMouseDown = (
+    e: React.MouseEvent<SVGRectElement | SVGSVGElement, MouseEvent>,
+    mode: CanvasMode
+  ) => {
+    e.preventDefault();
+
+    const mousePosition = getMousePosition(e);
+    if (!mousePosition) return;
+
+    setDragPoints({
+      start: mousePosition,
+      end: mousePosition,
+    });
+
+    modeRef.current = mode;
+  };
+
+  const handleMouseMove = useCallback(
+    (
+      e: React.MouseEvent<SVGSVGElement, MouseEvent>,
+      rectangle?: RectangleType
+    ) => {
+      if (modeRef.current === CanvasMode.DEFAULT) return;
+
+      const mousePosition = getMousePosition(e);
+
+      if (!mousePosition || !isOnDifferentGridCell(mousePosition)) return;
+
+      setDragPoints({ end: mousePosition });
+
+      const updatedDragDeltas = getUpdatedDragDeltas();
+
+      switch (modeRef.current) {
+        case CanvasMode.PANNING:
+          dispatch({ type: "update_panning", dragDeltas: getDragDeltas() });
+          break;
+        case CanvasMode.DRAWING:
+          dispatch({
+            type: "update_temp_rectangle",
+            dragPoints: getDragPoints(),
+          });
+          break;
+        case CanvasMode.MOVING:
+          if (rectangle) {
+            const updatedRect = updateRectPosition(
+              rectangle,
+              updatedDragDeltas
+            );
+            onRectangleUpdate(updatedRect);
+          }
+          break;
+        case CanvasMode.RESIZING:
+          if (rectangle) {
+            const updatedRect = updateRectSize(rectangle, updatedDragDeltas);
+            onRectangleUpdate(updatedRect);
+          }
+          break;
+        default:
+          break;
+      }
+    },
+    [onRectangleUpdate]
+  );
+
+  const handleMouseUp = () => {
+    if (
+      modeRef.current === CanvasMode.DRAWING &&
+      state.tempRectangle &&
+      state.tempRectangle.width > 0 &&
+      state.tempRectangle.height > 0
+    ) {
+      onRectangleCreate(state.tempRectangle);
+    }
+
+    modeRef.current = CanvasMode.DEFAULT;
+    dispatch({ type: "reset_temp_rectangle" });
+  };
+
+  const handleWheel = useCallback(
+    (e: React.WheelEvent<SVGSVGElement>) => {
+      e.preventDefault();
+      if (modeRef.current !== CanvasMode.DEFAULT) return;
+      dispatch({
+        type: "update_zoom_factor",
+        factor: e.deltaY,
+        position: getMousePosition(e) || { x: 0, y: 0 },
+      });
+    },
+    [getMousePosition]
   );
 
   return {

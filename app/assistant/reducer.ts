@@ -24,7 +24,10 @@ export default function assistantReducer(
     case "create_element": {
       const element = {
         id: Date.now(),
-        rectangle: action.rectangle,
+        rectangle: {
+          ...action.rectangle,
+          infos: ["pas de type de sol", "pas d'exposition"],
+        },
       };
 
       return {
@@ -68,6 +71,8 @@ export default function assistantReducer(
 
       return {
         ...state,
+        selectedElement: undefined,
+        hoveredElement: undefined,
         elements: updatedElements,
       };
     }

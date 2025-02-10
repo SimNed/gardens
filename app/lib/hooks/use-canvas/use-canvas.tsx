@@ -21,8 +21,8 @@ export enum CanvasMode {
 export function useCanvas({
   canvasRef,
   gridSize,
-  onRectangleUpdate,
   onRectangleCreate,
+  onRectangleUpdate,
 }: UseCanvasProps) {
   const initialState: CanvasState = {
     viewBox: {

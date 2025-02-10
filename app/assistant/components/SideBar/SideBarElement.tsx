@@ -3,6 +3,7 @@ import { cn } from "@/app/lib/utils/style";
 import { AssistantElementType } from "@/types/assistant";
 import { useAssistantContext } from "../../context";
 import { Button } from "@/app/components/shadcn-ui/button";
+import { Trash2 } from "lucide-react";
 
 interface SideBarElementProps {
   element: AssistantElementType;
@@ -13,7 +14,7 @@ export default function SideBarElement({
   element,
   cellSize,
 }: SideBarElementProps) {
-  const { state, hoverElement, unhoverElement, selectElement } =
+  const { state, hoverElement, unhoverElement, selectElement, deleteElement } =
     useAssistantContext();
 
   return (
@@ -30,7 +31,12 @@ export default function SideBarElement({
         <p className="text-sm">{`${element.rectangle.width / cellSize}m x ${
           element.rectangle.height / cellSize
         }m`}</p>
-        <Button variant="outline">Edit</Button>
+        <div className="flex gap-2">
+          <Button variant="outline">Edit</Button>
+          <Button variant="secondary" onClick={() => deleteElement(element)}>
+            <Trash2 />
+          </Button>
+        </div>
       </div>
       <Separator />
     </div>

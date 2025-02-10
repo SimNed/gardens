@@ -17,7 +17,8 @@ import { RectangleType } from "@/types/canvas";
 import GridPattern from "@/app/components/ui/Canvas/GridPattern";
 import ResizeHandles from "@/app/components/ui/Canvas/ResizeHandles";
 import DimensionsTooltip from "@/app/components/ui/Canvas/DimensionsTooltip";
-import { MessageCircleWarning } from "lucide-react";
+import ShapeInfos from "./ShapeInfos";
+import { useKeyPress } from "@/app/lib/hooks/use-keys-press";
 
 interface CanvasProps {
   rectangles: Array<RectangleType>;
@@ -26,6 +27,7 @@ interface CanvasProps {
   gridSize?: number;
   onRectangleCreate: (rectangle: RectangleType) => void;
   onRectangleUpdate: (rectangle: RectangleType) => void;
+  onRectangleDelete: (index: number) => void;
   onSelect: (index: number) => void;
   onUnselect: () => void;
   onHover: (index: number) => void;
@@ -39,6 +41,7 @@ export default function Canvas({
   hoveredIndex,
   onRectangleCreate,
   onRectangleUpdate,
+  onRectangleDelete,
   onSelect,
   onUnselect,
   onHover,
@@ -58,9 +61,13 @@ export default function Canvas({
   } = useCanvas({
     canvasRef: canvasRef,
     gridSize: gridSize,
-    onRectangleUpdate,
     onRectangleCreate,
+    onRectangleUpdate,
   });
+
+  useKeyPress(() => {
+    if (selectedIndex !== undefined) onRectangleDelete(selectedIndex);
+  }, ["Delete", "Backspace"]);
 
   return (
     <>
@@ -136,28 +143,19 @@ export default function Canvas({
                   onMouseLeave={() => onUnhover()}
                   className="cursor-move"
                 />
-                {/* create "warnings" or "actions" for storing warnings actions*/}
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox={`${0} ${0} ${
-                    state.viewBox.width / 1.15 / state.zoomLevel
-                  } ${state.viewBox.height / 1.15 / state.zoomLevel}`}
-                  x={
-                    rectangle.x +
-                    rectangle.width +
-                    (gridSize / 2) * state.zoomLevel
-                  }
-                  y={rectangle.y - (gridSize / 2) * state.zoomLevel}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className=" hover:cursor-pointer fill-yellow-400 stroke-white hover:fill-white hover:stroke-black"
-                  style={{ transform: "scale(2)", transformOrigin: "center" }}
-                >
-                  <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
-                  <path d="M12 8v4" />
-                  <path d="M12 16h.01" />
-                </svg>
+
+                {rectangle.infos && (
+                  <ShapeInfos
+                    position={{
+                      x: rectangle.x + rectangle.width,
+                      y: rectangle.y,
+                    }}
+                    viewBox={`${0} ${0} ${
+                      state.viewBox.width / 1.15 / state.zoomLevel
+                    } ${state.viewBox.height / 1.15 / state.zoomLevel}`}
+                    gridSize={gridSize}
+                  />
+                )}
 
                 {selectedIndex === index && (
                   <ResizeHandles
@@ -199,6 +197,7 @@ export default function Canvas({
           />
         )}
         {selectedIndex !== undefined &&
+          rectangles[selectedIndex] &&
           (mode === CanvasMode.RESIZING || mode === CanvasMode.DEFAULT) && (
             <DimensionsTooltip
               position={{

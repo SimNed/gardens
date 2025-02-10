@@ -13,4 +13,5 @@ export type RectangleType = {
   y: number;
   width: number;
   height: number;
+  infos?: Array<string>;
 };

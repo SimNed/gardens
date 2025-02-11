@@ -26,7 +26,7 @@ export default function assistantReducer(
         id: Date.now(),
         rectangle: {
           ...action.rectangle,
-          infos: ["pas de type de sol", "pas d'exposition"],
+          infos: ["pas de sol", "pas d'exposition"],
         },
       };
 

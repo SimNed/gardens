@@ -8,10 +8,13 @@ export type DragPointType = {
   end: Vector2Type;
 };
 
-export type RectangleType = {
+export type CanvasShape = {
   x: number;
   y: number;
+  infos?: Array<string>;
+};
+
+export type RectangleType = CanvasShape & {
   width: number;
   height: number;
-  infos?: Array<string>;
 };

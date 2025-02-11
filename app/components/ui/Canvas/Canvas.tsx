@@ -69,6 +69,22 @@ export default function Canvas({
     if (selectedIndex !== undefined) onRectangleDelete(selectedIndex);
   }, ["Delete", "Backspace"]);
 
+  // const getSortedRectangles = (
+  //   index: number | undefined,
+  //   rectangles: Array<RectangleType>
+  // ) => {
+  //   console.log([
+  //     ...rectangles.filter((_rectangle, idx) => index !== idx),
+  //     rectangles[index!],
+  //   ]);
+  //   return index !== undefined
+  //     ? [
+  //         ...rectangles.filter((_rectangle, idx) => index !== idx),
+  //         rectangles[index],
+  //       ]
+  //     : rectangles;
+  // };
+
   return (
     <>
       <svg
@@ -144,18 +160,21 @@ export default function Canvas({
                   className="cursor-move"
                 />
 
-                {rectangle.infos && (
-                  <ShapeInfos
-                    position={{
-                      x: rectangle.x + rectangle.width,
-                      y: rectangle.y,
-                    }}
-                    viewBox={`${0} ${0} ${
-                      state.viewBox.width / 1.15 / state.zoomLevel
-                    } ${state.viewBox.height / 1.15 / state.zoomLevel}`}
-                    gridSize={gridSize}
-                  />
-                )}
+                {rectangle.infos &&
+                  mode !== CanvasMode.RESIZING &&
+                  mode !== CanvasMode.MOVING && (
+                    <ShapeInfos
+                      position={{
+                        x: rectangle.x + rectangle.width,
+                        y: rectangle.y,
+                      }}
+                      viewBox={`${0} ${0} ${
+                        state.viewBox.width / state.zoomLevel
+                      } ${state.viewBox.height / state.zoomLevel}`}
+                      gridSize={gridSize}
+                      infos={rectangle.infos}
+                    />
+                  )}
 
                 {selectedIndex === index && (
                   <ResizeHandles

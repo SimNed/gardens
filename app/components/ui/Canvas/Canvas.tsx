@@ -69,21 +69,22 @@ export default function Canvas({
     if (selectedIndex !== undefined) onRectangleDelete(selectedIndex);
   }, ["Delete", "Backspace"]);
 
-  // const getSortedRectangles = (
-  //   index: number | undefined,
-  //   rectangles: Array<RectangleType>
-  // ) => {
-  //   console.log([
-  //     ...rectangles.filter((_rectangle, idx) => index !== idx),
-  //     rectangles[index!],
-  //   ]);
-  //   return index !== undefined
-  //     ? [
-  //         ...rectangles.filter((_rectangle, idx) => index !== idx),
-  //         rectangles[index],
-  //       ]
-  //     : rectangles;
-  // };
+  const getSortedRectangles = (
+    index: number | undefined,
+    rectangles: Array<RectangleType>
+  ) => {
+    const rectanglesWithIndices = rectangles.map((rectangle, idx) => ({
+      ...rectangle,
+      originalIndex: idx,
+    }));
+
+    return index !== undefined
+      ? [
+          ...rectanglesWithIndices.filter((_rectangle, idx) => index !== idx),
+          rectanglesWithIndices[index],
+        ]
+      : rectanglesWithIndices;
+  };
 
   return (
     <>
@@ -121,75 +122,81 @@ export default function Canvas({
         />
         <g>
           {(() => {
-            return rectangles.map((rectangle, index) => (
-              <g key={index}>
-                <rect
-                  x={rectangle.x}
-                  y={rectangle.y}
-                  rx={16}
-                  width={rectangle.width}
-                  height={rectangle.height}
-                  fill={
-                    selectedIndex === index
-                      ? SELECTED_RECT_FILL
-                      : hoveredIndex === index
-                      ? HOVER_RECT_FILL
-                      : DEFAULT_RECT_FILL
-                  }
-                  stroke={
-                    selectedIndex === index
-                      ? "none"
-                      : hoveredIndex === index
-                      ? HOVER_RECT_STROKE
-                      : DEFAULT_RECT_STROKE
-                  }
-                  strokeWidth={
-                    selectedIndex === index || hoveredIndex === index ? 3 : 0.5
-                  }
-                  onMouseDown={(e) => {
-                    if (e.button === LEFT_CLICK_BUTTON_CODE) {
-                      e.stopPropagation();
-                      onSelect(index);
-                      handleMouseDown(e, CanvasMode.MOVING);
+            return getSortedRectangles(selectedIndex, rectangles).map(
+              (rectangle, index) => (
+                <g key={index}>
+                  <rect
+                    x={rectangle.x}
+                    y={rectangle.y}
+                    rx={16}
+                    width={rectangle.width}
+                    height={rectangle.height}
+                    fill={
+                      selectedIndex === rectangle.originalIndex
+                        ? SELECTED_RECT_FILL
+                        : hoveredIndex === rectangle.originalIndex
+                        ? HOVER_RECT_FILL
+                        : DEFAULT_RECT_FILL
                     }
-                  }}
-                  onMouseEnter={() => {
-                    if (mode === CanvasMode.DEFAULT) onHover(index);
-                  }}
-                  onMouseLeave={() => onUnhover()}
-                  className="cursor-move"
-                />
+                    stroke={
+                      selectedIndex === rectangle.originalIndex
+                        ? "none"
+                        : hoveredIndex === rectangle.originalIndex
+                        ? HOVER_RECT_STROKE
+                        : DEFAULT_RECT_STROKE
+                    }
+                    strokeWidth={
+                      selectedIndex === rectangle.originalIndex ||
+                      hoveredIndex === rectangle.originalIndex
+                        ? 3
+                        : 0.5
+                    }
+                    onMouseDown={(e) => {
+                      if (e.button === LEFT_CLICK_BUTTON_CODE) {
+                        e.stopPropagation();
+                        onSelect(rectangle.originalIndex);
+                        handleMouseDown(e, CanvasMode.MOVING);
+                      }
+                    }}
+                    onMouseEnter={() => {
+                      if (mode === CanvasMode.DEFAULT)
+                        onHover(rectangle.originalIndex);
+                    }}
+                    onMouseLeave={() => onUnhover()}
+                    className="cursor-move"
+                  />
 
-                {rectangle.infos &&
-                  mode !== CanvasMode.RESIZING &&
-                  mode !== CanvasMode.MOVING && (
-                    <ShapeInfos
-                      position={{
-                        x: rectangle.x + rectangle.width,
-                        y: rectangle.y,
+                  {rectangle.infos &&
+                    mode !== CanvasMode.RESIZING &&
+                    mode !== CanvasMode.MOVING && (
+                      <ShapeInfos
+                        position={{
+                          x: rectangle.x + rectangle.width,
+                          y: rectangle.y,
+                        }}
+                        viewBox={`${0} ${0} ${
+                          state.viewBox.width / state.zoomLevel
+                        } ${state.viewBox.height / state.zoomLevel}`}
+                        gridSize={gridSize}
+                        infos={rectangle.infos}
+                      />
+                    )}
+
+                  {selectedIndex === rectangle.originalIndex && (
+                    <ResizeHandles
+                      rectangle={rectangle}
+                      zoomLevel={state.zoomLevel}
+                      onMouseDown={(e, direction) => {
+                        e.stopPropagation();
+                        onSelect(rectangle.originalIndex);
+                        setResizeDirection(direction);
+                        handleMouseDown(e, CanvasMode.RESIZING);
                       }}
-                      viewBox={`${0} ${0} ${
-                        state.viewBox.width / state.zoomLevel
-                      } ${state.viewBox.height / state.zoomLevel}`}
-                      gridSize={gridSize}
-                      infos={rectangle.infos}
                     />
                   )}
-
-                {selectedIndex === index && (
-                  <ResizeHandles
-                    rectangle={rectangle}
-                    zoomLevel={state.zoomLevel}
-                    onMouseDown={(e, direction) => {
-                      e.stopPropagation();
-                      onSelect(index);
-                      setResizeDirection(direction);
-                      handleMouseDown(e, CanvasMode.RESIZING);
-                    }}
-                  />
-                )}
-              </g>
-            ));
+                </g>
+              )
+            );
           })()}
         </g>
 

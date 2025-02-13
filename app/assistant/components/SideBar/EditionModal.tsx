@@ -4,7 +4,7 @@ import SoilSelect from "@/app/components/ui/options/SoilSelect";
 import SunExposureSelect from "@/app/components/ui/options/SunExposureSelect";
 import { AssistantElementType } from "@/types/assistant";
 import { Soil, SunExposure } from "@prisma/client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAssistantContext } from "../../context";
 import PlantSelect from "@/app/components/ui/options/PlantSelect";
 
@@ -30,6 +30,14 @@ export default function EditionModal({
     soil: element.soil,
     sunExposure: element.sunExposure,
   });
+
+  useEffect(() => {
+    setState({
+      cropId: element.crop?.id,
+      soil: element.soil,
+      sunExposure: element.sunExposure,
+    });
+  }, [element]);
 
   const { updateElement } = useAssistantContext();
 

@@ -20,15 +20,23 @@ export default function assistantReducer(
   state: AssistantState,
   action: AssistantActions
 ) {
+  const getElementWarnings = (element: AssistantElementType) => {
+    const warnings = [];
+
+    if (!element.soil) warnings.push("pas de sol");
+    if (!element.sunExposure) warnings.push("pas d'exposition");
+
+    return warnings;
+  };
+
   switch (action.type) {
     case "create_element": {
       const element = {
         id: Date.now(),
-        rectangle: {
-          ...action.rectangle,
-          infos: ["pas de sol", "pas d'exposition"],
-        },
+        rectangle: { ...action.rectangle },
       };
+
+      element.rectangle.infos = getElementWarnings(element);
 
       return {
         ...state,
@@ -55,7 +63,15 @@ export default function assistantReducer(
 
     case "udpate_element": {
       const updatedElements = state.elements.map((element) =>
-        element.id === action.element.id ? action.element : element
+        element.id === action.element.id
+          ? {
+              ...action.element,
+              rectangle: {
+                ...action.element.rectangle,
+                infos: getElementWarnings(action.element),
+              },
+            }
+          : element
       );
 
       return {

@@ -75,6 +75,7 @@ export default function RectangleShape({
       />
 
       {rectangle.infos &&
+        rectangle.infos?.length > 0 &&
         mode !== CanvasMode.RESIZING &&
         mode !== CanvasMode.MOVING && (
           <ShapeInfos

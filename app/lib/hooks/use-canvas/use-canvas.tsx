@@ -1,6 +1,8 @@
 import { RefObject, useCallback, useEffect, useReducer, useRef } from "react";
 import { RectangleType, Vector2Type } from "@/types/canvas";
-import canvasReducer, { CanvasState } from "./reducer";
+import canvasReducer, {
+  CanvasState,
+} from "../../../components/ui/Canvas/reducer";
 import { useMouse } from "../use-canvas-mouse";
 
 interface UseCanvasProps {

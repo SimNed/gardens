@@ -8,6 +8,10 @@ interface DimensionsTooltipProps {
   xOffset?: number;
   yOffset?: number;
   fontSize?: number;
+  viewBoxPosition: {
+    x: number;
+    y: number;
+  };
 }
 
 export default function DimensionsTooltip({
@@ -18,11 +22,21 @@ export default function DimensionsTooltip({
   xOffset = 0,
   yOffset = -20,
   fontSize = 14,
+  viewBoxPosition,
 }: DimensionsTooltipProps) {
+  // Calcul de la position Y initiale
+  const initialY = position.y + yOffset * zoomLevel;
+
+  // Si le tooltip est au-dessus de la viewBox, on le place en dessous du point
+  const adjustedY =
+    initialY + yOffset < viewBoxPosition.y
+      ? position.y + height * 40 + yOffset * -1.5 * zoomLevel
+      : initialY;
+
   return (
     <text
       x={position.x + xOffset * zoomLevel}
-      y={position.y + yOffset * zoomLevel}
+      y={adjustedY}
       fontSize={fontSize * zoomLevel}
       className="font-mono"
     >

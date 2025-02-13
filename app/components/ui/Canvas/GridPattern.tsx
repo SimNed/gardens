@@ -1,26 +1,18 @@
-import { RectangleType } from "@/types/canvas";
+import { useCanvasContext } from "./context";
 
-interface GridPatternProps {
-  gridSize: number;
-  zoomLevel: number;
-  color?: string;
-  viewBox: RectangleType;
-}
+export default function GridPattern() {
+  const { state, gridSize } = useCanvasContext();
 
-export default function GridPattern({
-  gridSize,
-  zoomLevel,
-  viewBox,
-}: GridPatternProps) {
-  const crossStrokeWidth = 1;
-  const mainLinesWidth = 1.5 * zoomLevel;
-  const interLinesWidth = 1 * zoomLevel;
+  const COIN_STROKE_WIDTH = 1;
+  const MAIN_STROKE_WIDTH = 1.5 * state.zoomLevel;
+  const SECONDARY_STROKE_WIDTH = 1 * state.zoomLevel;
 
-  const crossStrokeColor = "#6c757d";
-  const mainLinesColor = "#ADB5BD";
-  const interLinesColor = "#C7CDD2";
+  const COIN_STROKE_COLOR = "#6c757d";
+  const MAIN_STROKE_COLOR = "#ADB5BD";
+  const SECONDARY_STROKE_COLOR = "#C7CDD2";
 
-  const crossOffset = 0.4;
+  const OFFSET = 0.4;
+
   return (
     <>
       <defs>
@@ -38,133 +30,133 @@ export default function GridPattern({
             y1="0"
             x2={0}
             y2={gridSize * 2}
-            stroke={mainLinesColor}
-            strokeWidth={mainLinesWidth}
+            stroke={MAIN_STROKE_COLOR}
+            strokeWidth={MAIN_STROKE_WIDTH}
           />
           <line //right
-            x1={gridSize * 2 - crossOffset}
-            y1={0 - crossOffset}
-            x2={gridSize * 2 - crossOffset}
-            y2={0 - crossOffset}
-            stroke={mainLinesColor}
-            strokeWidth={mainLinesWidth}
+            x1={gridSize * 2 - OFFSET}
+            y1={0 - OFFSET}
+            x2={gridSize * 2 - OFFSET}
+            y2={0 - OFFSET}
+            stroke={MAIN_STROKE_COLOR}
+            strokeWidth={MAIN_STROKE_WIDTH}
           />
           <line //top
             x1={0}
             y1={0}
-            x2={gridSize * 2 - crossOffset}
+            x2={gridSize * 2 - OFFSET}
             y2={0}
-            stroke={mainLinesColor}
-            strokeWidth={mainLinesWidth}
+            stroke={MAIN_STROKE_COLOR}
+            strokeWidth={MAIN_STROKE_WIDTH}
           />
           <line //bottom
             x1={0}
-            y1={gridSize * 2 + crossOffset}
-            x2={gridSize * 2 - crossOffset}
-            y2={gridSize * 2 + crossOffset}
-            stroke={mainLinesColor}
-            strokeWidth={mainLinesWidth}
+            y1={gridSize * 2 + OFFSET}
+            x2={gridSize * 2 - OFFSET}
+            y2={gridSize * 2 + OFFSET}
+            stroke={MAIN_STROKE_COLOR}
+            strokeWidth={MAIN_STROKE_WIDTH}
           />
 
-          {/* INTERLINES */}
+          {/* SECONDARY LINES */}
 
           <line //vertical
             x1={gridSize}
             y1="0"
             x2={gridSize}
             y2={gridSize * 2}
-            stroke={interLinesColor}
-            strokeWidth={interLinesWidth}
+            stroke={SECONDARY_STROKE_COLOR}
+            strokeWidth={SECONDARY_STROKE_WIDTH}
           />
           <line //horizontal
             x1="0"
             y1={gridSize}
             x2={gridSize * 2}
             y2={gridSize}
-            stroke={interLinesColor}
-            strokeWidth={interLinesWidth}
+            stroke={SECONDARY_STROKE_COLOR}
+            strokeWidth={SECONDARY_STROKE_WIDTH}
           />
 
           {/* COINS */}
 
           {/* left-up */}
           <line
-            x1={-crossOffset}
-            y1={-crossOffset}
-            x2={gridSize / 5 - crossOffset}
-            y2={-crossOffset}
-            stroke={crossStrokeColor}
-            strokeWidth={crossStrokeWidth}
+            x1={-OFFSET}
+            y1={-OFFSET}
+            x2={gridSize / 5 - OFFSET}
+            y2={-OFFSET}
+            stroke={COIN_STROKE_COLOR}
+            strokeWidth={COIN_STROKE_WIDTH}
           />
           <line
-            x1={-crossOffset}
-            y1={-crossOffset}
-            x2={-crossOffset}
-            y2={gridSize / 5 - crossOffset}
-            stroke={crossStrokeColor}
-            strokeWidth={crossStrokeWidth}
+            x1={-OFFSET}
+            y1={-OFFSET}
+            x2={-OFFSET}
+            y2={gridSize / 5 - OFFSET}
+            stroke={COIN_STROKE_COLOR}
+            strokeWidth={COIN_STROKE_WIDTH}
           />
 
           {/* right-up */}
           <line
-            x1={gridSize * 2 - gridSize / 5 + crossOffset}
-            y1={-crossOffset}
-            x2={gridSize * 2 + crossOffset}
-            y2={-crossOffset}
-            stroke={crossStrokeColor}
-            strokeWidth={crossStrokeWidth}
+            x1={gridSize * 2 - gridSize / 5 + OFFSET}
+            y1={-OFFSET}
+            x2={gridSize * 2 + OFFSET}
+            y2={-OFFSET}
+            stroke={COIN_STROKE_COLOR}
+            strokeWidth={COIN_STROKE_WIDTH}
           />
           <line
-            x1={gridSize * 2 + crossOffset}
-            y1={-crossOffset}
-            x2={gridSize * 2 + crossOffset}
-            y2={gridSize / 5 - crossOffset}
-            stroke={crossStrokeColor}
-            strokeWidth={crossStrokeWidth}
+            x1={gridSize * 2 + OFFSET}
+            y1={-OFFSET}
+            x2={gridSize * 2 + OFFSET}
+            y2={gridSize / 5 - OFFSET}
+            stroke={COIN_STROKE_COLOR}
+            strokeWidth={COIN_STROKE_WIDTH}
           />
 
           {/* left-down */}
           <line
-            x1={-crossOffset}
-            y1={gridSize * 2 + crossOffset}
-            x2={gridSize / 5 - crossOffset}
-            y2={gridSize * 2 + crossOffset}
-            stroke={crossStrokeColor}
-            strokeWidth={crossStrokeWidth}
+            x1={-OFFSET}
+            y1={gridSize * 2 + OFFSET}
+            x2={gridSize / 5 - OFFSET}
+            y2={gridSize * 2 + OFFSET}
+            stroke={COIN_STROKE_COLOR}
+            strokeWidth={COIN_STROKE_WIDTH}
           />
           <line
-            x1={-crossOffset}
-            y1={gridSize * 2 - gridSize / 5 + crossOffset}
-            x2={-crossOffset}
-            y2={gridSize * 2 + crossOffset}
-            stroke={crossStrokeColor}
-            strokeWidth={crossStrokeWidth}
+            x1={-OFFSET}
+            y1={gridSize * 2 - gridSize / 5 + OFFSET}
+            x2={-OFFSET}
+            y2={gridSize * 2 + OFFSET}
+            stroke={COIN_STROKE_COLOR}
+            strokeWidth={COIN_STROKE_WIDTH}
           />
 
           {/* right-down */}
           <line
-            x1={gridSize * 2 - gridSize / 5 + crossOffset}
-            y1={gridSize * 2 + crossOffset}
-            x2={gridSize * 2 + crossOffset}
-            y2={gridSize * 2 + crossOffset}
-            stroke={crossStrokeColor}
-            strokeWidth={crossStrokeWidth}
+            x1={gridSize * 2 - gridSize / 5 + OFFSET}
+            y1={gridSize * 2 + OFFSET}
+            x2={gridSize * 2 + OFFSET}
+            y2={gridSize * 2 + OFFSET}
+            stroke={COIN_STROKE_COLOR}
+            strokeWidth={COIN_STROKE_WIDTH}
           />
           <line
-            x1={gridSize * 2 + crossOffset}
-            y1={gridSize * 2 - gridSize / 5 + crossOffset}
-            x2={gridSize * 2 + crossOffset}
-            y2={gridSize * 2 + crossOffset}
-            stroke={crossStrokeColor}
-            strokeWidth={crossStrokeWidth}
+            x1={gridSize * 2 + OFFSET}
+            y1={gridSize * 2 - gridSize / 5 + OFFSET}
+            x2={gridSize * 2 + OFFSET}
+            y2={gridSize * 2 + OFFSET}
+            stroke={COIN_STROKE_COLOR}
+            strokeWidth={COIN_STROKE_WIDTH}
           />
         </pattern>
       </defs>
       <rect
-        x={viewBox.x}
-        y={viewBox.y}
-        width={viewBox.width}
-        height={viewBox.height}
+        x={state.viewBox.x}
+        y={state.viewBox.y}
+        width={state.viewBox.width}
+        height={state.viewBox.height}
         fill="url(#gridPattern)"
         style={{ pointerEvents: "none" }}
       />

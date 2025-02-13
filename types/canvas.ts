@@ -5,6 +5,7 @@ export type Vector2Type = {
 
 export type DragPointType = {
   start: Vector2Type;
+  current: Vector2Type;
   end: Vector2Type;
 };
 

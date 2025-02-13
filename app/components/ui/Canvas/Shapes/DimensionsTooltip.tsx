@@ -1,46 +1,39 @@
-import { Vector2Type } from "@/types/canvas";
+import { RectangleType } from "@/types/canvas";
+import { useCanvasContext } from "../context";
 
 interface DimensionsTooltipProps {
-  position: Vector2Type;
-  width: number;
-  height: number;
-  zoomLevel: number;
+  rectangle: RectangleType;
   xOffset?: number;
   yOffset?: number;
   fontSize?: number;
-  viewBoxPosition: {
-    x: number;
-    y: number;
-  };
 }
 
 export default function DimensionsTooltip({
-  position,
-  width,
-  height,
-  zoomLevel,
+  rectangle,
   xOffset = 0,
   yOffset = -20,
   fontSize = 14,
-  viewBoxPosition,
 }: DimensionsTooltipProps) {
-  // Calcul de la position Y initiale
-  const initialY = position.y + yOffset * zoomLevel;
+  const { state, gridSize } = useCanvasContext();
 
-  // Si le tooltip est au-dessus de la viewBox, on le place en dessous du point
+  const normalizedWidth = rectangle.width / gridSize / 2;
+  const normalizedHeight = rectangle.height / gridSize / 2;
+
+  const initialY = rectangle.y + yOffset * state.zoomLevel;
+
   const adjustedY =
-    initialY + yOffset < viewBoxPosition.y
-      ? position.y + height * 40 + yOffset * -1.5 * zoomLevel
+    initialY + yOffset < state.viewBox.y
+      ? rectangle.y + normalizedHeight * 40 + yOffset * -1.5 * state.zoomLevel
       : initialY;
 
   return (
     <text
-      x={position.x + xOffset * zoomLevel}
+      x={rectangle.x + xOffset * state.zoomLevel}
       y={adjustedY}
-      fontSize={fontSize * zoomLevel}
+      fontSize={fontSize * state.zoomLevel}
       className="font-mono"
     >
-      {`${width.toFixed(1)}m x ${height.toFixed(1)}m`}
+      {`${normalizedWidth.toFixed(1)}m x ${normalizedHeight.toFixed(1)}m`}
     </text>
   );
 }

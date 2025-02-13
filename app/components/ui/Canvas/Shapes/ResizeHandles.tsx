@@ -1,17 +1,10 @@
-import {
-  LEFT_CLICK_BUTTON_CODE,
-  RESIZE_HANDLE_FILL,
-} from "@/app/lib/utils/canvas";
+import { LEFT_CLICK_BUTTON_CODE } from "@/app/lib/utils/keys";
 import { RectangleType, Vector2Type } from "@/types/canvas";
+import { CanvasMode, useCanvasContext } from "../context";
 
 interface ResizeHandlesProps {
+  shapeIndex: number;
   rectangle: RectangleType;
-  zoomLevel: number;
-  size?: number;
-  onMouseDown: (
-    e: React.MouseEvent<SVGSVGElement, MouseEvent>,
-    direction: Vector2Type
-  ) => void;
 }
 
 type ResizeHandler = {
@@ -31,13 +24,17 @@ type ResizeCornerHandler = ResizeHandler & {
   cy: number;
 };
 
+const RESIZE_HANDLE_FILL = "rgb(92, 105, 128)";
+
 export default function ResizeHandles({
+  shapeIndex,
   rectangle,
-  zoomLevel,
-  size = 4,
-  onMouseDown,
 }: ResizeHandlesProps) {
   // left: -1, right: 1, top: -1, bottom: 1.
+
+  const { state, handleMouseDown, onShapeSelect, setResizeDirection } =
+    useCanvasContext();
+
   const sideHandlers: Array<ResizeSideHandler> = [
     {
       x1: rectangle.x,
@@ -111,11 +108,13 @@ export default function ResizeHandles({
           y2={handler.y2}
           fill={RESIZE_HANDLE_FILL}
           stroke={RESIZE_HANDLE_FILL}
-          strokeWidth={5 * zoomLevel}
+          strokeWidth={5 * state.zoomLevel}
           onMouseDown={(e) => {
             if (e.button === LEFT_CLICK_BUTTON_CODE) {
               e.stopPropagation();
-              onMouseDown(e, handler.direction);
+              onShapeSelect(shapeIndex);
+              setResizeDirection(handler.direction);
+              handleMouseDown(e, CanvasMode.RESIZING);
             }
           }}
           style={{ cursor: handler.cursor }}
@@ -126,15 +125,17 @@ export default function ResizeHandles({
           key={index}
           cx={handler.cx}
           cy={handler.cy}
-          r={5 * zoomLevel}
+          r={5 * state.zoomLevel}
           onMouseDown={(e) => {
             if (e.button === LEFT_CLICK_BUTTON_CODE) {
               e.stopPropagation();
-              onMouseDown(e, handler.direction);
+              onShapeSelect(shapeIndex);
+              setResizeDirection(handler.direction);
+              handleMouseDown(e, CanvasMode.RESIZING);
             }
           }}
           fill={RESIZE_HANDLE_FILL}
-          strokeWidth={3 * zoomLevel}
+          strokeWidth={3 * state.zoomLevel}
           stroke="white"
           style={{ cursor: handler.cursor }}
         />

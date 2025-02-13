@@ -1,18 +1,26 @@
 import React from "react";
 import ResizeHandles from "./ResizeHandles";
 import ShapeInfos from "./ShapeInfos";
-import { RectangleType, Vector2Type } from "@/types/canvas";
-import { CanvasMode } from "@/app/lib/hooks/use-canvas/use-canvas";
+import { RectangleType } from "@/types/canvas";
 import DimensionsTooltip from "./DimensionsTooltip";
-import { useCanvasContext } from "../context";
-import { LEFT_CLICK_BUTTON_CODE } from "@/app/lib/utils/canvas";
+import { CanvasMode, useCanvasContext } from "../context";
+import { LEFT_CLICK_BUTTON_CODE } from "@/app/lib/utils/keys";
 
 interface RectangleShapeProps {
   index: number;
   rectangle: RectangleType;
   isSelected: boolean;
   isHovered: boolean;
+  isTemp?: boolean;
 }
+
+const DEFAULT_RECT_FILL = "rgb(240, 240, 245)";
+const DEFAULT_RECT_STROKE = "rgb(150, 150, 170)";
+
+const SELECTED_RECT_FILL = "rgb(189,224,254)";
+
+const HOVER_RECT_FILL = "rgb(189,224,254)";
+const HOVER_RECT_STROKE = "rgb(200,200,220)";
 
 export default function RectangleShape({
   index,
@@ -28,17 +36,7 @@ export default function RectangleShape({
     onShapeSelect,
     onShapeHover,
     onShapeUnhover,
-    setResizeDirection,
   } = useCanvasContext();
-
-  const DEFAULT_RECT_FILL = "rgb(240, 240, 245)";
-  const DEFAULT_RECT_STROKE = "rgb(150, 150, 170)";
-
-  const SELECTED_RECT_FILL = "rgb(189,224,254)";
-
-  const HOVER_RECT_FILL = "rgb(189,224,254)";
-  const HOVER_RECT_STROKE = "rgb(200,200,220)";
-
   const fillColor = isSelected
     ? SELECTED_RECT_FILL
     : isHovered
@@ -92,34 +90,11 @@ export default function RectangleShape({
           />
         )}
 
-      {isSelected && (
-        <ResizeHandles
-          rectangle={rectangle}
-          zoomLevel={state.zoomLevel}
-          onMouseDown={(
-            e: React.MouseEvent<SVGRectElement | SVGSVGElement, MouseEvent>,
-            direction: Vector2Type
-          ) => {
-            e.stopPropagation();
-            onShapeSelect(index);
-            setResizeDirection(direction);
-            handleMouseDown(e, CanvasMode.RESIZING);
-          }}
-        />
-      )}
+      {isSelected && <ResizeHandles shapeIndex={index} rectangle={rectangle} />}
 
       {(isSelected || isHovered) &&
         (mode === CanvasMode.RESIZING || mode === CanvasMode.DEFAULT) && (
-          <DimensionsTooltip
-            position={{
-              x: rectangle.x,
-              y: rectangle.y,
-            }}
-            width={rectangle.width / gridSize / 2}
-            height={rectangle.height / gridSize / 2}
-            zoomLevel={state.zoomLevel}
-            viewBoxPosition={{ x: state.viewBox.x, y: state.viewBox.y }}
-          />
+          <DimensionsTooltip rectangle={rectangle} />
         )}
     </g>
   );

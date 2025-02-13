@@ -10,10 +10,24 @@ import {
   useCallback,
   RefObject,
 } from "react";
-import canvasReducer, { CanvasState } from "@/app/components/ui/Canvas/reducer";
+
 import { useMouse } from "@/app/lib/hooks/use-canvas-mouse";
-import { CanvasMode } from "@/app/lib/hooks/use-canvas/use-canvas";
 import { updateRectPosition, updateRectSize } from "./utils";
+import canvasReducer, { CanvasState } from "./reducer";
+
+export enum CanvasMode {
+  DEFAULT,
+  PANNING,
+  DRAWING,
+  MOVING,
+  RESIZING,
+}
+
+export const DEFAULT_RECT_FILL = "rgb(240, 240, 245)";
+export const DEFAULT_RECT_STROKE = "rgb(150, 150, 170)";
+export const SELECTED_RECT_FILL = "rgb(189,224,254)";
+export const HOVER_RECT_FILL = "rgb(189,224,254)";
+export const HOVER_RECT_STROKE = "rgb(200,200,220)";
 
 interface CanvasContextProps {
   state: CanvasState;

@@ -2,8 +2,8 @@
 
 import { useAssistantContext } from "../../context";
 import { RectangleType } from "@/types/canvas";
-import Canvas from "@/app/components/ui/Canvas/Canvas";
-import { CanvasProvider } from "@/app/components/ui/Canvas/context";
+import Canvas from "@/app/components/ui/canvas/Canvas";
+import { CanvasProvider } from "@/app/components/ui/canvas/context";
 
 export default function AssistantCanvas() {
   const {

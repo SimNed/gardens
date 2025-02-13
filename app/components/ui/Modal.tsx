@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import React, { ReactNode } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,42 +6,39 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "../shadcn-ui/dialog";
 
-export function RegisterDialog() {
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string | ReactNode;
+  description?: string | ReactNode;
+  children: ReactNode;
+  footer?: ReactNode;
+  className?: string;
+}
+
+const Modal = ({
+  isOpen,
+  onClose,
+  title,
+  description,
+  children,
+  footer,
+  className = "sm:max-w-[425px]",
+}: ModalProps) => {
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Register</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className={className}>
         <DialogHeader>
-          <DialogTitle>Register to tapaScript</DialogTitle>
-          <DialogDescription>
-            Register to tapaScript to get all the content FREE forever!
-          </DialogDescription>
+          {title && <DialogTitle>{title}</DialogTitle>}
+          {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Email
-            </Label>
-            <Input type="email" id="email" className="col-span-3" />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
+        {children}
+        {footer && <DialogFooter>{footer}</DialogFooter>}
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default Modal;

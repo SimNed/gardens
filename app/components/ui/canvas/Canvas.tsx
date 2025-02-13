@@ -8,7 +8,7 @@ import {
 } from "@/app/lib/utils/keys";
 
 import { RectangleType } from "@/types/canvas";
-import GridPattern from "@/app/components/ui/Canvas/GridPattern";
+import GridPattern from "@/app/components/ui/canvas/GridPattern";
 import { useKeyPress } from "@/app/lib/hooks/use-keys-press";
 import RectangleShape from "./Shapes/RectangleShape";
 import { CanvasMode, useCanvasContext } from "./context";

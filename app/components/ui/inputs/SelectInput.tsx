@@ -28,9 +28,9 @@ const SelectInput = <T,>({
   onValueChange,
 }: SelectProps<T>) => {
   return (
-    <div className="p-2">
-      {label && <Label>{label}</Label>}
-      <div className="py-2">
+    <div className="my-1">
+      {label && <Label className="py-1 ">{label}</Label>}
+      <div>
         <Select
           value={selectValue}
           onValueChange={(e: string) => {

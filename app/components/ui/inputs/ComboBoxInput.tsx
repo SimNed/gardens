@@ -51,7 +51,7 @@ const ComboBox = <T,>(
   );
 
   return (
-    <div className="w-full p-2">
+    <div className="w-full py-1">
       <Popover open={open} onOpenChange={setOpen}>
         {label && <Label>{label}</Label>}
         <PopoverTrigger asChild>

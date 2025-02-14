@@ -8,8 +8,10 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/app/components/shadcn-ui/collapsible";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, CircleAlert } from "lucide-react";
 import { cn } from "@/app/lib/utils/style";
+import { Separator } from "@radix-ui/react-separator";
+import { getSoilLabel, getSunExposureLabel } from "@/app/lib/utils/plant";
 
 interface AssistantSideBarProps {
   cellSize: number;
@@ -40,8 +42,28 @@ export function AssistantSideBar({ cellSize }: AssistantSideBarProps) {
                 />
               </div>
               <CollapsibleContent>
-                Yes. Free to use for personal and commercial projects. No
-                attribution required.
+                <div className=" flex justify-around text-xs gap-4">
+                  {element.soil ? (
+                    <p>{`sol: ${getSoilLabel(element.soil).toLowerCase()}`}</p>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <CircleAlert className="w-4 h-4 stroke-white fill-yellow-400" />
+                      <p className="text-yellow-600">{"pas de sol"}</p>
+                    </div>
+                  )}
+                  {element.sunExposure ? (
+                    <p>
+                      {`exposition: ${getSunExposureLabel(
+                        element.sunExposure
+                      ).toLowerCase()}`}
+                    </p>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <CircleAlert className="w-4 h-4 stroke-white fill-yellow-400" />
+                      <p className="text-yellow-600">{"pas d'exposition"}</p>
+                    </div>
+                  )}
+                </div>
               </CollapsibleContent>
             </Collapsible>
           </li>

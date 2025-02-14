@@ -3,7 +3,7 @@ import { cn } from "@/app/lib/utils/style";
 import { AssistantElementType } from "@/types/assistant";
 import { useAssistantContext } from "../../context";
 import { Button } from "@/app/components/shadcn-ui/button";
-import { Trash2 } from "lucide-react";
+import { CircleAlert, Trash2 } from "lucide-react";
 import { getSoilLabel } from "@/app/lib/utils/plant";
 
 interface SideBarElementProps {
@@ -33,17 +33,17 @@ export default function SideBarElement({
       onMouseLeave={() => unhoverElement()}
     >
       <div className="flex justify-between items-center gap-3">
-        <div className="w-full grid grid-cols-[5fr_5fr_3fr] justify-between items-cente px-1">
-          {element.crop ? (
-            <p className="text-xs">{element.crop.commonName}</p>
-          ) : (
-            <p className="text-zinc-500 text-xs">Pas de culture</p>
-          )}
-          {element.soil && (
-            <p className="text-xs">
-              {getSoilLabel(element.soil).toLowerCase()}
-            </p>
-          )}
+        <div className="w-full flex  justify-between items-cente px-1">
+          <div className="flex items-center gap-2">
+            {element.rectangle.infos && element.rectangle.infos.length > 0 && (
+              <CircleAlert className="w-5 h-5 fill-yellow-400 stroke-white" />
+            )}
+            {element.crop ? (
+              <p className="text-xs">{element.crop.commonName}</p>
+            ) : (
+              <p className="text-zinc-500 text-xs">Pas de culture</p>
+            )}
+          </div>
           <p className="text-xs">{`${(
             element.rectangle.width /
             cellSize /

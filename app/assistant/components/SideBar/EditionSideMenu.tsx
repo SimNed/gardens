@@ -7,8 +7,11 @@ import React, { useEffect, useState } from "react";
 import { useAssistantContext } from "../../context";
 import PlantSelect from "@/app/components/ui/options/PlantSelect";
 import SheetBlock from "@/app/components/ui/SheetBlock";
+import useSWR from "swr";
+import { fetcher } from "@/app/lib/fetcher";
+import Loader from "@/app/components/ui/Loader";
 
-interface EditionModalProps {
+interface EditionSideMenuProps {
   isOpen: boolean;
   element?: AssistantElementType;
   onClose: () => void;
@@ -20,11 +23,11 @@ interface EditionState {
   sunExposure?: SunExposure;
 }
 
-export default function EditionModal({
+export default function EditionSideMenu({
   isOpen,
   element,
   onClose,
-}: EditionModalProps) {
+}: EditionSideMenuProps) {
   const [state, setState] = useState<EditionState>({
     cropId: element?.crop?.id,
     soil: element?.soil,
@@ -41,18 +44,24 @@ export default function EditionModal({
 
   const { updateElement } = useAssistantContext();
 
-  const getCrop = async (id: string) => {
-    return await fetch(
-      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/plants/${id}`
-    ).then((response) => response.json());
-  };
+  const {
+    data: crop,
+    error,
+    isLoading,
+  } = useSWR(
+    state.cropId
+      ? `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/plants/${state.cropId}`
+      : null, // Générer l'URL avec `id`
+    fetcher, // Utilisation de ton fetcher
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   const handleChanges = async () => {
     const updatedElement = element;
     if (!updatedElement) return;
-    updatedElement.crop = state.cropId
-      ? await getCrop(state.cropId)
-      : updatedElement.crop;
+    updatedElement.crop = state.cropId ? await crop : updatedElement.crop;
     updatedElement.soil = state.soil ?? updatedElement.soil;
     updatedElement.sunExposure =
       state.sunExposure ?? updatedElement.sunExposure;
@@ -60,11 +69,18 @@ export default function EditionModal({
     onClose();
   };
 
+  const footer = (
+    <div className="flex gap-6">
+      <Button onClick={handleChanges}>sauvegarder</Button>
+      {isLoading && <Loader />}
+    </div>
+  );
+
   return (
     <SheetBlock
       title="Edition"
       description={element?.crop?.commonName ?? "Pas de culture."}
-      footer={<Button onClick={handleChanges}>sauvegarder</Button>}
+      footer={footer}
       isOpen={isOpen}
       isModal={false}
       onClose={onClose}

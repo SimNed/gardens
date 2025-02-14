@@ -8,7 +8,7 @@ import {
   SheetTitle,
 } from "../shadcn-ui/sheet";
 
-interface SheetBlockProps {
+interface SideMenuProps {
   isOpen: boolean;
   isModal: boolean;
   title?: string | ReactNode;
@@ -18,7 +18,7 @@ interface SheetBlockProps {
   onClose: () => void;
 }
 
-export default function SheetBlock({
+export default function SideMenu({
   isOpen,
   isModal,
   title,
@@ -26,7 +26,7 @@ export default function SheetBlock({
   children,
   footer,
   onClose,
-}: SheetBlockProps) {
+}: SideMenuProps) {
   return (
     <Sheet open={isOpen} modal={isModal} onOpenChange={onClose}>
       <SheetContent className="w-full h-full" side={"rightContained"}>

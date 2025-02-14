@@ -33,14 +33,14 @@ export default function SideBarElement({
       onMouseLeave={() => unhoverElement()}
     >
       <div className="flex justify-between items-center gap-3">
-        <div className="w-full flex justify-between items-center">
+        <div className="w-full grid grid-cols-[5fr_5fr_3fr] justify-between items-cente px-1">
           {element.crop ? (
-            <p className="text-sm">{element.crop.commonName}</p>
+            <p className="text-xs">{element.crop.commonName}</p>
           ) : (
-            <p className="text-zinc-500 text-sm">Pas de culture</p>
+            <p className="text-zinc-500 text-xs">Pas de culture</p>
           )}
           {element.soil && (
-            <p className="text-sm">
+            <p className="text-xs">
               {getSoilLabel(element.soil).toLowerCase()}
             </p>
           )}

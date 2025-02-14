@@ -7,6 +7,7 @@ import { Soil, SunExposure } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import { useAssistantContext } from "../../context";
 import PlantSelect from "@/app/components/ui/options/PlantSelect";
+import SheetBlock from "@/app/components/ui/SheetBlock";
 
 interface EditionModalProps {
   isOpen: boolean;
@@ -60,11 +61,12 @@ export default function EditionModal({
   };
 
   return (
-    <Modal
+    <SheetBlock
       title="Edition"
       description={element.crop?.commonName ?? "Pas de culture."}
       footer={<Button onClick={handleChanges}>sauvegarder</Button>}
       isOpen={isOpen}
+      isModal={false}
       onClose={onClose}
     >
       <PlantSelect
@@ -88,6 +90,6 @@ export default function EditionModal({
           })
         }
       />
-    </Modal>
+    </SheetBlock>
   );
 }

@@ -51,7 +51,7 @@ const ComboBox = <T,>(
   );
 
   return (
-    <div className="w-full py-1">
+    <div className="w-full">
       <Popover open={open} onOpenChange={setOpen}>
         {label && <Label>{label}</Label>}
         <PopoverTrigger asChild>
@@ -60,7 +60,7 @@ const ComboBox = <T,>(
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className={cn("w-full justify-between", className)}
+            className={cn("w-full justify-between px-3", className)}
             {...props}
           >
             {selectedItem ? selectedItem.key : placeholder}

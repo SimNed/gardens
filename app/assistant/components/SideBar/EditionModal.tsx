@@ -1,5 +1,4 @@
 import { Button } from "@/app/components/shadcn-ui/button";
-import Modal from "@/app/components/ui/Modal";
 import SoilSelect from "@/app/components/ui/options/SoilSelect";
 import SunExposureSelect from "@/app/components/ui/options/SunExposureSelect";
 import { AssistantElementType } from "@/types/assistant";
@@ -11,7 +10,7 @@ import SheetBlock from "@/app/components/ui/SheetBlock";
 
 interface EditionModalProps {
   isOpen: boolean;
-  element: AssistantElementType;
+  element?: AssistantElementType;
   onClose: () => void;
 }
 
@@ -27,16 +26,16 @@ export default function EditionModal({
   onClose,
 }: EditionModalProps) {
   const [state, setState] = useState<EditionState>({
-    cropId: element.crop?.id,
-    soil: element.soil,
-    sunExposure: element.sunExposure,
+    cropId: element?.crop?.id,
+    soil: element?.soil,
+    sunExposure: element?.sunExposure,
   });
 
   useEffect(() => {
     setState({
-      cropId: element.crop?.id,
-      soil: element.soil,
-      sunExposure: element.sunExposure,
+      cropId: element?.crop?.id,
+      soil: element?.soil,
+      sunExposure: element?.sunExposure,
     });
   }, [element]);
 
@@ -50,6 +49,7 @@ export default function EditionModal({
 
   const handleChanges = async () => {
     const updatedElement = element;
+    if (!updatedElement) return;
     updatedElement.crop = state.cropId
       ? await getCrop(state.cropId)
       : updatedElement.crop;
@@ -63,18 +63,22 @@ export default function EditionModal({
   return (
     <SheetBlock
       title="Edition"
-      description={element.crop?.commonName ?? "Pas de culture."}
+      description={element?.crop?.commonName ?? "Pas de culture."}
       footer={<Button onClick={handleChanges}>sauvegarder</Button>}
       isOpen={isOpen}
       isModal={false}
       onClose={onClose}
     >
-      <PlantSelect
-        value={state.cropId ?? ""}
-        onValueChange={(option) =>
-          setState((prev) => ({ ...prev, cropId: option }))
-        }
-      />
+      <div className="grid grid-cols-[3fr_1fr] items-end gap-4">
+        <PlantSelect
+          value={state.cropId ?? ""}
+          onValueChange={(option) =>
+            setState((prev) => ({ ...prev, cropId: option }))
+          }
+          className="my-0"
+        />
+        <Button variant="secondary">interroger</Button>
+      </div>
       <SoilSelect
         value={state.soil ?? ""}
         onValueChange={(option) =>

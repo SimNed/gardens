@@ -5,11 +5,13 @@ import ComboBoxInput from "../inputs/ComboBoxInput";
 interface PlantSelectProps {
   value: string;
   onValueChange: (data: string) => void;
+  className?: string;
 }
 
 export default function PlantSelect({
   value,
   onValueChange,
+  className,
 }: PlantSelectProps) {
   const { data, error, isLoading } = useSWR("/api/plants/list", fetcher, {
     revalidateOnFocus: false,
@@ -23,6 +25,7 @@ export default function PlantSelect({
         data={data}
         selectValue={value}
         onSelectChange={(option) => onValueChange(option.value)}
+        className={className}
       />
     )
   );

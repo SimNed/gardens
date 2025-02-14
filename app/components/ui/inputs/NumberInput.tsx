@@ -22,9 +22,9 @@ const NumberInput = ({
   onValueChange,
 }: NumberInputProps) => {
   return (
-    <div className="p-2">
-      {label && <Label>{label}</Label>}
-      <div className="flex items-center gap-4 my-2">
+    <div className="my-3">
+      {label && <Label className="block py-3">{label}</Label>}
+      <div className="flex items-center gap-4">
         <Input
           type="number"
           className="focus-visible:ring-0 w-18"

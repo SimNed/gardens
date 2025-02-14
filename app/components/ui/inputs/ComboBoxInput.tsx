@@ -51,9 +51,9 @@ const ComboBox = <T,>(
   );
 
   return (
-    <div className="w-full">
+    <div className={cn("w-full justify-between my-3", className)}>
       <Popover open={open} onOpenChange={setOpen}>
-        {label && <Label>{label}</Label>}
+        {label && <Label className="block py-3">{label}</Label>}
         <PopoverTrigger asChild>
           <Button
             ref={ref}

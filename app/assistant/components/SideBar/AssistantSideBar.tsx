@@ -28,13 +28,12 @@ export function AssistantSideBar({ cellSize }: AssistantSideBarProps) {
           </li>
         ))}
       </ul>
-      {state.selectedElement && (
-        <EditionModal
-          isOpen={isModalOpen}
-          element={state.selectedElement}
-          onClose={() => handleModalOpen(false)}
-        />
-      )}
+
+      <EditionModal
+        isOpen={isModalOpen && state.selectedElement !== undefined}
+        element={state.selectedElement}
+        onClose={() => handleModalOpen(false)}
+      />
     </>
   );
 }

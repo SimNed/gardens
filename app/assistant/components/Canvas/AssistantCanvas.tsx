@@ -55,6 +55,7 @@ export default function AssistantCanvas() {
             ? getElementIndex(state.hoveredElement.id)
             : undefined
         }
+        isKeyPressActive={!state.isEditorOpen}
       />
     </CanvasProvider>
   );

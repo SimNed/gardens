@@ -1,20 +1,15 @@
 "use client";
 
-import { PlantType } from "@/types/plant";
-import { AssistantSideBar } from "./SideBar/AssistantSideBar";
+import { AssistantSideBar } from "./AssistantSideBar/SideBar";
 import { AssistantProvider } from "../context";
 import AssistantCanvas from "./Canvas/AssistantCanvas";
 
-interface AssistantProps {
-  plants: Array<PlantType>;
-}
-
-export default function Assistant({ plants }: AssistantProps) {
+export default function Assistant() {
   return (
     <div className="flex h-full">
       <AssistantProvider>
         <div className="grid grid-cols-[3fr_1fr] w-full">
-          <AssistantCanvas gridSize={20} />
+          <AssistantCanvas />
           <AssistantSideBar cellSize={20} />
         </div>
       </AssistantProvider>

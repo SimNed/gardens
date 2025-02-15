@@ -13,6 +13,8 @@ interface AssistantContextProps {
   unhoverElement: () => void;
   updateElement: (element: AssistantElementType) => void;
   deleteElement: (element: AssistantElementType) => void;
+  openEditor: () => void;
+  closeEditor: () => void;
 }
 
 const AssistantContext = createContext<AssistantContextProps | null>(null);
@@ -26,6 +28,7 @@ export function AssistantProvider({ children }: AssistantProviderProps) {
     elements: [],
     selectedElement: undefined,
     hoveredElement: undefined,
+    isEditorOpen: false,
   };
 
   const [state, dispatch] = useReducer(assistantReducer, initialState);
@@ -44,6 +47,8 @@ export function AssistantProvider({ children }: AssistantProviderProps) {
       dispatch({ type: "udpate_element", element }),
     deleteElement: (element: AssistantElementType) =>
       dispatch({ type: "delete_element", element }),
+    openEditor: () => dispatch({ type: "set_editor_opening", value: true }),
+    closeEditor: () => dispatch({ type: "set_editor_opening", value: false }),
   };
 
   return (

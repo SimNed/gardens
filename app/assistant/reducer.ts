@@ -5,6 +5,7 @@ export interface AssistantState {
   elements: Array<AssistantElementType>;
   selectedElement?: AssistantElementType;
   hoveredElement?: AssistantElementType;
+  isEditorOpen: boolean;
 }
 
 type AssistantActions =
@@ -14,7 +15,8 @@ type AssistantActions =
   | { type: "hover_element"; element: AssistantElementType }
   | { type: "unhover_element" }
   | { type: "udpate_element"; element: AssistantElementType }
-  | { type: "delete_element"; element: AssistantElementType };
+  | { type: "delete_element"; element: AssistantElementType }
+  | { type: "set_editor_opening"; value: boolean };
 
 export default function assistantReducer(
   state: AssistantState,
@@ -90,6 +92,13 @@ export default function assistantReducer(
         selectedElement: undefined,
         hoveredElement: undefined,
         elements: updatedElements,
+      };
+    }
+
+    case "set_editor_opening": {
+      return {
+        ...state,
+        isEditorOpen: action.value,
       };
     }
 

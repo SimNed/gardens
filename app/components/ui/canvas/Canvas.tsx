@@ -18,12 +18,14 @@ interface CanvasProps {
   rectangles: Array<RectangleType>;
   selectedIndex?: number;
   hoveredIndex?: number;
+  isKeyPressActive?: boolean;
 }
 
 export default function Canvas({
   rectangles,
   selectedIndex,
   hoveredIndex,
+  isKeyPressActive = true,
 }: CanvasProps) {
   const {
     state,
@@ -38,7 +40,8 @@ export default function Canvas({
   } = useCanvasContext();
 
   useKeyPress(() => {
-    if (selectedIndex !== undefined) onShapeDelete(selectedIndex);
+    if (isKeyPressActive && selectedIndex !== undefined)
+      onShapeDelete(selectedIndex);
   }, ["Delete", "Backspace"]);
 
   useEffect(() => {

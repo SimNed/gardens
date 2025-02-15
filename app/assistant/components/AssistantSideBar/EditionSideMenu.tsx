@@ -44,15 +44,11 @@ export default function EditionSideMenu({
 
   const { updateElement } = useAssistantContext();
 
-  const {
-    data: crop,
-    error,
-    isLoading,
-  } = useSWR(
+  const { data: crop, isLoading } = useSWR(
     state.cropId
       ? `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/plants/${state.cropId}`
-      : null, // Générer l'URL avec `id`
-    fetcher, // Utilisation de ton fetcher
+      : null,
+    fetcher,
     {
       revalidateOnFocus: false,
     }

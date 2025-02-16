@@ -1,11 +1,11 @@
 import Warning from "@/app/components/ui/Warning";
 import React from "react";
 
-interface EditorWarningProps {
+interface WarningMessageProps {
   message: string;
 }
 
-export default function EditorWarning({ message }: EditorWarningProps) {
+export default function WarningMessage({ message }: WarningMessageProps) {
   return (
     <div className="flex items-center gap-1">
       <Warning />

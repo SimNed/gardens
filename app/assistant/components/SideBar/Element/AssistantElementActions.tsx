@@ -4,35 +4,31 @@ import { Crosshair, Pencil, Trash2 } from "lucide-react";
 import React from "react";
 import { useAssistantContext } from "../../../context";
 
-interface ButtonGroupProps {
+interface AssistantElementActionsProps {
   element: AssistantElementType;
 }
 
-export default function ButtonGroup({ element }: ButtonGroupProps) {
-  const { openEditor, deleteElement, focusOnFirst } = useAssistantContext();
+export default function AssistantElementActions({
+  element,
+}: AssistantElementActionsProps) {
+  const { openEditor, deleteElement } = useAssistantContext();
 
   return (
-    <div className="flex gap-2 [& > button]:rounded-full">
-      <Button
+    <div className="flex gap-2 [&>button]:rounded-full [&>button:hover]:bg-zinc-400 items-center">
+      {/* <Button
         variant="secondary"
         className="rounded-full w-8 h-8"
         size={"icon"}
-        onClick={focusOnFirst}
+        onClick={}
       >
         <Crosshair />
-      </Button>
-      <Button
-        variant="secondary"
-        className="rounded-full w-8 h-8"
-        size={"icon"}
-        onClick={openEditor}
-      >
+      </Button> */}
+      <Button variant="secondary" size="icon-sm" onClick={openEditor}>
         <Pencil />
       </Button>
       <Button
         variant="secondary"
-        className="rounded-full w-8 h-8"
-        size={"icon"}
+        size="icon-sm"
         onClick={() => deleteElement(element)}
       >
         <Trash2 />

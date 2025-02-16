@@ -1,8 +1,8 @@
 "use client";
 
-import { AssistantSideBar } from "./AssistantSideBar/SideBar";
+import { AssistantSideBar } from "./SideBar/AssistantSideBar";
 import { AssistantProvider } from "../context";
-import AssistantCanvas from "./Canvas/AssistantCanvas";
+import AssistantCanvas from "./AssistantCanvas";
 
 export default function Assistant() {
   return (

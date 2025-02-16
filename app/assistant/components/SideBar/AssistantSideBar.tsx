@@ -1,6 +1,6 @@
 import { useAssistantContext } from "../../context";
-import EditionSideMenu from "./Editor/EditionSideMenu";
-import SideBarElement from "./Element/SideBarElement";
+import EditionSideMenu from "./AssistantElementEditor";
+import AssistantElement from "./Element/AssistantElement";
 
 interface AssistantSideBarProps {
   cellSize: number;
@@ -14,7 +14,7 @@ export function AssistantSideBar({ cellSize }: AssistantSideBarProps) {
       <ul className="border-l  border-zinc-300 p-2">
         {state.elements.map((element) => (
           <li key={element.id}>
-            <SideBarElement element={element} cellSize={cellSize} />
+            <AssistantElement element={element} cellSize={cellSize} />
           </li>
         ))}
       </ul>

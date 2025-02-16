@@ -2,15 +2,18 @@ import Warning from "@/app/components/ui/Warning";
 import { AssistantElementType } from "@/types/assistant";
 import React from "react";
 
-interface HeaderProps {
+interface AssistantElementItemProps {
   element: AssistantElementType;
   cellSize: number;
 }
 
-export default function ElementHeader({ element, cellSize }: HeaderProps) {
+export default function AssistantElementItem({
+  element,
+  cellSize,
+}: AssistantElementItemProps) {
   return (
     <div className="w-full flex  justify-between items-cente px-1">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 [&>p]:cursor-default">
         {element.rectangle.infos && element.rectangle.infos.length > 0 && (
           <Warning />
         )}
@@ -20,7 +23,7 @@ export default function ElementHeader({ element, cellSize }: HeaderProps) {
           <p className="text-zinc-500 text-xs">Pas de culture</p>
         )}
       </div>
-      <p className="text-xs">{`${(
+      <p className="text-xs cursor-default">{`${(
         element.rectangle.width /
         cellSize /
         2

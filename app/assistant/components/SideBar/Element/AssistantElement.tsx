@@ -8,19 +8,19 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/app/components/shadcn-ui/collapsible";
-import ButtonGroup from "./ButtonGroup";
-import ElementInfos from "./ElementInfos";
-import ElementHeader from "./ElementHeader";
+import AssistantElementActions from "./AssistantElementActions";
+import AssistantElementItem from "./AssistantElementItem";
+import AssistantElementInfos from "./AssistantElementInfos";
 
-interface SideBarElementProps {
+interface AssistantElementProps {
   element: AssistantElementType;
   cellSize: number;
 }
 
-export default function SideBarElement({
+export default function AssistantElement({
   element,
   cellSize,
-}: SideBarElementProps) {
+}: AssistantElementProps) {
   const { state, hoverElement, unhoverElement, selectElement } =
     useAssistantContext();
 
@@ -31,10 +31,10 @@ export default function SideBarElement({
           <ChevronDown className="h-4 w-4" />
         </CollapsibleTrigger>
         <div
-          className={cn("cursor-pointer border-2 border-transparent", {
-            " border-[rgba(0,100,255,0.1)]":
+          className={cn({
+            " bg-[rgba(0,100,255,0.1)]":
               state.hoveredElement?.id === element.id,
-            "border-[rgba(0,100,255,0.3)]":
+            "bg-[rgba(0,100,255,0.3)]":
               state.selectedElement?.id === element.id,
           })}
           onClick={() => {
@@ -44,14 +44,14 @@ export default function SideBarElement({
           onMouseLeave={() => unhoverElement()}
         >
           <div className="flex justify-between items-center gap-3">
-            <ElementHeader element={element} cellSize={cellSize} />
-            <ButtonGroup element={element} />
+            <AssistantElementItem element={element} cellSize={cellSize} />
+            <AssistantElementActions element={element} />
           </div>
           <Separator />
         </div>
       </div>
       <CollapsibleContent>
-        <ElementInfos element={element} />
+        <AssistantElementInfos element={element} />
       </CollapsibleContent>
     </Collapsible>
   );

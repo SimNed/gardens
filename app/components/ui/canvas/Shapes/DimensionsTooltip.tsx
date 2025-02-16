@@ -22,7 +22,7 @@ export default function DimensionsTooltip({
   const initialY = rectangle.y + yOffset * state.zoomLevel;
 
   const adjustedY =
-    initialY + yOffset < state.viewBox.y
+    initialY < state.viewBox.y
       ? rectangle.y + normalizedHeight * 40 + yOffset * -1.5 * state.zoomLevel
       : initialY;
 

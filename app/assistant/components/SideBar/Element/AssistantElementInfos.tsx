@@ -3,11 +3,13 @@ import { getSoilLabel, getSunExposureLabel } from "@/app/lib/utils/plant";
 import { AssistantElementType } from "@/types/assistant";
 import React from "react";
 
-interface ElementInfosProps {
+interface AssistantElementInfosProps {
   element: AssistantElementType;
 }
 
-export default function ElementInfos({ element }: ElementInfosProps) {
+export default function AssistantElementInfos({
+  element,
+}: AssistantElementInfosProps) {
   return (
     <div className=" flex justify-around text-xs gap-4">
       {element.soil ? (

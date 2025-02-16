@@ -4,32 +4,32 @@ import SunExposureSelect from "@/app/components/ui/options/SunExposureSelect";
 import { AssistantElementType } from "@/types/assistant";
 import { Soil, SunExposure } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-import { useAssistantContext } from "../../../context";
+import { useAssistantContext } from "../../context";
 import PlantSelect from "@/app/components/ui/options/PlantSelect";
 import SheetBlock from "@/app/components/ui/SheetBlock";
 import useSWR from "swr";
 import { fetcher } from "@/app/lib/fetcher";
 import Loader from "@/app/components/ui/Loader";
-import EditorWarning from "./EditorWarning";
+import EditorWarning from "../../../components/ui/canvas/WarningMessage";
 
-interface EditionSideMenuProps {
+interface AssistantElementEditorProps {
   isOpen: boolean;
   element?: AssistantElementType;
   onClose: () => void;
 }
 
-interface EditionState {
+interface AssistantElementEditorState {
   cropId?: string;
   soil?: Soil;
   sunExposure?: SunExposure;
 }
 
-export default function EditionSideMenu({
+export default function AssistantElementEditor({
   isOpen,
   element,
   onClose,
-}: EditionSideMenuProps) {
-  const [state, setState] = useState<EditionState>({
+}: AssistantElementEditorProps) {
+  const [state, setState] = useState<AssistantElementEditorState>({
     cropId: element?.crop?.id,
     soil: element?.soil,
     sunExposure: element?.sunExposure,

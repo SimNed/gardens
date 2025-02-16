@@ -2,7 +2,7 @@
 
 import { AssistantSideBar } from "./SideBar/AssistantSideBar";
 import { AssistantProvider } from "../context";
-import AssistantCanvas from "./AssistantCanvas";
+import AssistantCanvas from "./Canvas/AssistantCanvas";
 
 export default function Assistant() {
   return (

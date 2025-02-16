@@ -137,10 +137,12 @@ export function CanvasProvider({
       e: React.MouseEvent<SVGSVGElement, MouseEvent>,
       rectangle?: RectangleType
     ) => {
-      console.log("mode", modeRef.current);
       if (modeRef.current === CanvasMode.DEFAULT) return;
 
-      const mousePosition = getMousePosition(e);
+      const mousePosition = getMousePosition(
+        e,
+        modeRef.current !== CanvasMode.PANNING
+      );
 
       if (!mousePosition || !isOnDifferentGridCell(mousePosition)) return;
 
@@ -231,8 +233,9 @@ export function CanvasProvider({
     onShapeUnselect,
     onShapeHover,
     onShapeUnhover,
-    focusOnShape: (shape: RectangleType) =>
-      dispatch({ type: "focus_on_shape", shape }),
+    focusOnShape: (shape: RectangleType) => {
+      dispatch({ type: "focus_on_shape", shape });
+    },
     setResizeDirection: (direction: Vector2Type) =>
       (resizeDirectionRef.current = direction),
   };

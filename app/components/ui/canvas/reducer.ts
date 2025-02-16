@@ -81,23 +81,23 @@ export default function canvasReducer(
         zoomLevel: nextZoomLevel,
       };
     }
-    // case "focus_on_shape": {
-    //   const shapeCenter = {
-    //     x: action.shape.x + action.shape.width / 2,
-    //     y: action.shape.y + action.shape.height / 2,
-    //   };
+    case "focus_on_shape": {
+      const shapeCenter = {
+        x: action.shape.x + action.shape.width / 2,
+        y: action.shape.y + action.shape.height / 2,
+      };
 
-    //   const viewBox = {
-    //     ...state.viewBox,
-    //     x: shapeCenter.x - state.viewBox.width / 2,
-    //     y: shapeCenter.y - state.viewBox.height / 2,
-    //   };
+      const viewBox = {
+        ...state.viewBox,
+        x: shapeCenter.x - state.viewBox.width / 2,
+        y: shapeCenter.y - state.viewBox.height / 2,
+      };
 
-    //   return {
-    //     ...state,
-    //     viewBox,
-    //   };
-    // }
+      return {
+        ...state,
+        viewBox,
+      };
+    }
     default: {
       throw Error("Unknown action");
     }

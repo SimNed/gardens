@@ -20,7 +20,10 @@ export function useMouse({ ref, gridSize }: UseGridMouseProps) {
   );
 
   const getMousePosition = useCallback(
-    (e: React.MouseEvent<SVGSVGElement | SVGRectElement, MouseEvent>) => {
+    (
+      e: React.MouseEvent<SVGSVGElement | SVGRectElement, MouseEvent>,
+      withSnap: boolean = true
+    ) => {
       if (!ref.current) return;
 
       const point = ref.current.createSVGPoint();
@@ -34,8 +37,8 @@ export function useMouse({ ref, gridSize }: UseGridMouseProps) {
       const transformedPoint = point.matrixTransform(ctm.inverse());
 
       return {
-        x: snapToGrid(transformedPoint.x),
-        y: snapToGrid(transformedPoint.y),
+        x: withSnap ? snapToGrid(transformedPoint.x) : transformedPoint.x,
+        y: withSnap ? snapToGrid(transformedPoint.y) : transformedPoint.y,
       };
     },
     [ref, snapToGrid]

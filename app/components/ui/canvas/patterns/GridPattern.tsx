@@ -1,17 +1,7 @@
-import { useCanvasContext } from "./context";
+import { useCanvasContext } from "../context";
 
 export default function GridPattern() {
   const { state, gridSize } = useCanvasContext();
-
-  const COIN_STROKE_WIDTH = 1;
-  const MAIN_STROKE_WIDTH = 1.5 * state.zoomLevel;
-  const SECONDARY_STROKE_WIDTH = 1 * state.zoomLevel;
-
-  const COIN_STROKE_COLOR = "#6c757d";
-  const MAIN_STROKE_COLOR = "#C7CDD2";
-  const SECONDARY_STROKE_COLOR = "#E3E6E9";
-
-  const OFFSET = 0.45;
 
   return (
     <>

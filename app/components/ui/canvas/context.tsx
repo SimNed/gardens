@@ -84,7 +84,7 @@ export function CanvasProvider({
   const initialState: CanvasState = {
     viewBox: {
       x: 0,
-      y: 0,
+      y: 3, // offset for grid pattern initial positioning
       width: 0,
       height: 0,
     } as RectangleType,

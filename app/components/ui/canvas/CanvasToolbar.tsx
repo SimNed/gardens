@@ -34,7 +34,7 @@ export default function CanvasToolbar({
   ];
 
   return (
-    <div className="flex justify-end items-center p-2 bg-red-white border-t border-zinc-300">
+    <div className="flex justify-end items-center p-2 bg-red-white border-y border-zinc-300">
       {[...defaultToolbarActions, ...actions].map((action, index) => (
         <Button
           key={index}

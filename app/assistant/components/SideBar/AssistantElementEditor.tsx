@@ -68,7 +68,7 @@ export default function AssistantElementEditor({
 
   const footer = (
     <div className="flex gap-6">
-      <Button onClick={handleChanges}>
+      <Button onClick={handleChanges} disabled={isLoading}>
         {isLoading && <Loader />}
         sauvegarder
       </Button>

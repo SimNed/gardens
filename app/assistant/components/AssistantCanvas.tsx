@@ -1,6 +1,6 @@
 "use client";
 
-import { useAssistantContext } from "../../context";
+import { useAssistantContext } from "../context";
 import { RectangleType } from "@/types/canvas";
 import Canvas from "@/app/components/ui/canvas/Canvas";
 import { CanvasProvider } from "@/app/components/ui/canvas/context";

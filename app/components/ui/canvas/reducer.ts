@@ -51,8 +51,8 @@ export default function canvasReducer(
       return { ...state, viewBox };
     }
     case "update_zoom_factor": {
-      const zoomRange = { min: 0.25, max: 1.5 };
-      const normalizedZoomFactor = action.factor > 0 ? 1.1 : 0.9;
+      const zoomRange = { min: 0.25, max: 2.5 };
+      const normalizedZoomFactor = action.factor > 0 ? 1.04 : 0.96;
 
       const nextZoomLevel = state.zoomLevel * normalizedZoomFactor;
 

@@ -11,7 +11,8 @@ export type CanvasActions =
   | { type: "reset_temp_rectangle" }
   | { type: "init_view_box"; canvas: SVGSVGElement }
   | { type: "update_panning"; dragDeltas: Vector2Type }
-  | { type: "update_zoom_factor"; factor: number; position: Vector2Type };
+  | { type: "update_zoom_factor"; factor: number; position: Vector2Type }
+  | { type: "focus_on_shape"; shape: RectangleType };
 
 export default function canvasReducer(
   state: CanvasState,
@@ -80,6 +81,23 @@ export default function canvasReducer(
         zoomLevel: nextZoomLevel,
       };
     }
+    // case "focus_on_shape": {
+    //   const shapeCenter = {
+    //     x: action.shape.x + action.shape.width / 2,
+    //     y: action.shape.y + action.shape.height / 2,
+    //   };
+
+    //   const viewBox = {
+    //     ...state.viewBox,
+    //     x: shapeCenter.x - state.viewBox.width / 2,
+    //     y: shapeCenter.y - state.viewBox.height / 2,
+    //   };
+
+    //   return {
+    //     ...state,
+    //     viewBox,
+    //   };
+    // }
     default: {
       throw Error("Unknown action");
     }

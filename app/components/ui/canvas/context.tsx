@@ -52,6 +52,7 @@ interface CanvasContextProps {
   onShapeUnselect: () => void;
   onShapeHover: (index: number) => void;
   onShapeUnhover: () => void;
+  focusOnShape: (shape: RectangleType) => void;
   setResizeDirection: (direction: Vector2Type) => void;
 }
 
@@ -230,6 +231,8 @@ export function CanvasProvider({
     onShapeUnselect,
     onShapeHover,
     onShapeUnhover,
+    focusOnShape: (shape: RectangleType) =>
+      dispatch({ type: "focus_on_shape", shape }),
     setResizeDirection: (direction: Vector2Type) =>
       (resizeDirectionRef.current = direction),
   };

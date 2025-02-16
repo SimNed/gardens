@@ -1,5 +1,5 @@
 import { useAssistantContext } from "../../context";
-import EditionSideMenu from "./EditionSideMenu";
+import EditionSideMenu from "./Editor/EditionSideMenu";
 import SideBarElement from "./Element/SideBarElement";
 
 interface AssistantSideBarProps {

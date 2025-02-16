@@ -1,6 +1,6 @@
+import Warning from "@/app/components/ui/Warning";
 import { getSoilLabel, getSunExposureLabel } from "@/app/lib/utils/plant";
 import { AssistantElementType } from "@/types/assistant";
-import { CircleAlert } from "lucide-react";
 import React from "react";
 
 interface ElementInfosProps {
@@ -14,7 +14,7 @@ export default function ElementInfos({ element }: ElementInfosProps) {
         <p>{`sol: ${getSoilLabel(element.soil).toLowerCase()}`}</p>
       ) : (
         <div className="flex items-center gap-1">
-          <CircleAlert className="w-4 h-4 stroke-white fill-yellow-400" />
+          <Warning />
           <p className="text-yellow-600">{"pas de sol"}</p>
         </div>
       )}
@@ -26,7 +26,7 @@ export default function ElementInfos({ element }: ElementInfosProps) {
         </p>
       ) : (
         <div className="flex items-center gap-1">
-          <CircleAlert className="w-4 h-4 stroke-white fill-yellow-400" />
+          <Warning />
           <p className="text-yellow-600">{"pas d'exposition"}</p>
         </div>
       )}

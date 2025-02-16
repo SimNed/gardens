@@ -8,157 +8,53 @@ export default function GridPattern() {
   const SECONDARY_STROKE_WIDTH = 1 * state.zoomLevel;
 
   const COIN_STROKE_COLOR = "#6c757d";
-  const MAIN_STROKE_COLOR = "#ADB5BD";
-  const SECONDARY_STROKE_COLOR = "#C7CDD2";
+  const MAIN_STROKE_COLOR = "#C7CDD2";
+  const SECONDARY_STROKE_COLOR = "#E3E6E9";
 
-  const OFFSET = 0.4;
+  const OFFSET = 0.45;
 
   return (
     <>
       <defs>
         <pattern
-          id="gridPattern"
+          id="smallGrid"
+          width={gridSize}
+          height={gridSize}
           patternUnits="userSpaceOnUse"
-          width={gridSize * 2}
-          height={gridSize * 2}
           x={0}
           y={0}
         >
-          {/* MAIN LINES */}
-          <line //left
-            x1={0}
-            y1="0"
-            x2={0}
-            y2={gridSize * 2}
-            stroke={MAIN_STROKE_COLOR}
-            strokeWidth={MAIN_STROKE_WIDTH}
+          <path
+            d="M 40 0 L 0 0 0 40"
+            fill="none"
+            stroke="#ddd"
+            strokeWidth={1 * state.zoomLevel}
           />
-          <line //right
-            x1={gridSize * 2 - OFFSET}
-            y1={0 - OFFSET}
-            x2={gridSize * 2 - OFFSET}
-            y2={0 - OFFSET}
-            stroke={MAIN_STROKE_COLOR}
-            strokeWidth={MAIN_STROKE_WIDTH}
-          />
-          <line //top
-            x1={0}
-            y1={0}
-            x2={gridSize * 2 - OFFSET}
-            y2={0}
-            stroke={MAIN_STROKE_COLOR}
-            strokeWidth={MAIN_STROKE_WIDTH}
-          />
-          <line //bottom
-            x1={0}
-            y1={gridSize * 2 + OFFSET}
-            x2={gridSize * 2 - OFFSET}
-            y2={gridSize * 2 + OFFSET}
-            stroke={MAIN_STROKE_COLOR}
-            strokeWidth={MAIN_STROKE_WIDTH}
-          />
-
-          {/* SECONDARY LINES */}
-
-          <line //vertical
-            x1={gridSize}
-            y1="0"
-            x2={gridSize}
-            y2={gridSize * 2}
-            stroke={SECONDARY_STROKE_COLOR}
-            strokeWidth={SECONDARY_STROKE_WIDTH}
-          />
-          <line //horizontal
-            x1="0"
-            y1={gridSize}
-            x2={gridSize * 2}
-            y2={gridSize}
-            stroke={SECONDARY_STROKE_COLOR}
-            strokeWidth={SECONDARY_STROKE_WIDTH}
-          />
-
-          {/* COINS */}
-
-          {/* left-up */}
-          <line
-            x1={-OFFSET}
-            y1={-OFFSET}
-            x2={gridSize / 5 - OFFSET}
-            y2={-OFFSET}
-            stroke={COIN_STROKE_COLOR}
-            strokeWidth={COIN_STROKE_WIDTH}
-          />
-          <line
-            x1={-OFFSET}
-            y1={-OFFSET}
-            x2={-OFFSET}
-            y2={gridSize / 5 - OFFSET}
-            stroke={COIN_STROKE_COLOR}
-            strokeWidth={COIN_STROKE_WIDTH}
-          />
-
-          {/* right-up */}
-          <line
-            x1={gridSize * 2 - gridSize / 5 + OFFSET}
-            y1={-OFFSET}
-            x2={gridSize * 2 + OFFSET}
-            y2={-OFFSET}
-            stroke={COIN_STROKE_COLOR}
-            strokeWidth={COIN_STROKE_WIDTH}
-          />
-          <line
-            x1={gridSize * 2 + OFFSET}
-            y1={-OFFSET}
-            x2={gridSize * 2 + OFFSET}
-            y2={gridSize / 5 - OFFSET}
-            stroke={COIN_STROKE_COLOR}
-            strokeWidth={COIN_STROKE_WIDTH}
-          />
-
-          {/* left-down */}
-          <line
-            x1={-OFFSET}
-            y1={gridSize * 2 + OFFSET}
-            x2={gridSize / 5 - OFFSET}
-            y2={gridSize * 2 + OFFSET}
-            stroke={COIN_STROKE_COLOR}
-            strokeWidth={COIN_STROKE_WIDTH}
-          />
-          <line
-            x1={-OFFSET}
-            y1={gridSize * 2 - gridSize / 5 + OFFSET}
-            x2={-OFFSET}
-            y2={gridSize * 2 + OFFSET}
-            stroke={COIN_STROKE_COLOR}
-            strokeWidth={COIN_STROKE_WIDTH}
-          />
-
-          {/* right-down */}
-          <line
-            x1={gridSize * 2 - gridSize / 5 + OFFSET}
-            y1={gridSize * 2 + OFFSET}
-            x2={gridSize * 2 + OFFSET}
-            y2={gridSize * 2 + OFFSET}
-            stroke={COIN_STROKE_COLOR}
-            strokeWidth={COIN_STROKE_WIDTH}
-          />
-          <line
-            x1={gridSize * 2 + OFFSET}
-            y1={gridSize * 2 - gridSize / 5 + OFFSET}
-            x2={gridSize * 2 + OFFSET}
-            y2={gridSize * 2 + OFFSET}
-            stroke={COIN_STROKE_COLOR}
-            strokeWidth={COIN_STROKE_WIDTH}
+        </pattern>
+        <pattern
+          id="mainGrid"
+          width={gridSize * 2}
+          height={gridSize * 2}
+          patternUnits="userSpaceOnUse"
+          x={0}
+          y={0}
+        >
+          <rect width="40" height="40" fill="url(#smallGrid)" />
+          <path
+            d="M 80 0 L 0 0 0 80"
+            fill="none"
+            stroke="#ccc"
+            strokeWidth={2 * state.zoomLevel}
           />
         </pattern>
       </defs>
+
       <rect
-        x={state.viewBox.x}
-        y={state.viewBox.y}
         width={state.viewBox.width}
         height={state.viewBox.height}
-        fill="url(#gridPattern)"
-        style={{ pointerEvents: "none" }}
+        x={state.viewBox.x}
+        y={state.viewBox.y}
+        fill="url(#mainGrid)"
       />
     </>
   );

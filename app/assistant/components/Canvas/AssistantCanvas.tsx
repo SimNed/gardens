@@ -4,6 +4,7 @@ import { useAssistantContext } from "../../context";
 import { RectangleType } from "@/types/canvas";
 import Canvas from "@/app/components/ui/canvas/Canvas";
 import { CanvasProvider } from "@/app/components/ui/canvas/context";
+// import { useState } from "react";
 
 export default function AssistantCanvas() {
   const {
@@ -16,6 +17,8 @@ export default function AssistantCanvas() {
     updateElement,
     deleteElement,
   } = useAssistantContext();
+
+  // const [isFocusOnSelect, setIsFocusOnSelect] = useState(false);
 
   const getElementIndex = (id: number) => {
     return state.elements.map((element) => element.id).indexOf(id);
@@ -56,6 +59,7 @@ export default function AssistantCanvas() {
             : undefined
         }
         isKeyPressActive={!state.isEditorOpen}
+        // isFocusOnSelect={isFocusOnSelect}
       />
     </CanvasProvider>
   );

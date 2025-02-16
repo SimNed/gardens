@@ -31,9 +31,10 @@ export default function SideBarElement({
           <ChevronDown className="h-4 w-4" />
         </CollapsibleTrigger>
         <div
-          className={cn("cursor-pointer", {
-            "bg-[rgba(0,100,255,0.1)]": state.hoveredElement?.id === element.id,
-            "bg-[rgba(0,100,255,0.3)]":
+          className={cn("cursor-pointer border-2 border-transparent", {
+            " border-[rgba(0,100,255,0.1)]":
+              state.hoveredElement?.id === element.id,
+            "border-[rgba(0,100,255,0.3)]":
               state.selectedElement?.id === element.id,
           })}
           onClick={() => {

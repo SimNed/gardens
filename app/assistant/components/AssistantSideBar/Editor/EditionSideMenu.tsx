@@ -4,12 +4,13 @@ import SunExposureSelect from "@/app/components/ui/options/SunExposureSelect";
 import { AssistantElementType } from "@/types/assistant";
 import { Soil, SunExposure } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-import { useAssistantContext } from "../../context";
+import { useAssistantContext } from "../../../context";
 import PlantSelect from "@/app/components/ui/options/PlantSelect";
 import SheetBlock from "@/app/components/ui/SheetBlock";
 import useSWR from "swr";
 import { fetcher } from "@/app/lib/fetcher";
 import Loader from "@/app/components/ui/Loader";
+import EditorWarning from "./EditorWarning";
 
 interface EditionSideMenuProps {
   isOpen: boolean;
@@ -75,21 +76,17 @@ export default function EditionSideMenu({
   return (
     <SheetBlock
       title="Edition"
-      description={element?.crop?.commonName ?? "Pas de culture."}
+      description={"paramétrer votre planche de culture."}
       footer={footer}
       isOpen={isOpen}
       isModal={false}
       onClose={onClose}
     >
-      <div className="grid grid-cols-[3fr_1fr] items-end gap-4">
-        <PlantSelect
-          value={state.cropId ?? ""}
-          onValueChange={(option) =>
-            setState((prev) => ({ ...prev, cropId: option }))
-          }
-          className="my-0"
-        />
-        <Button variant="secondary">interroger</Button>
+      <div>
+        {!element?.soil && <EditorWarning message={"ajouter un sol"} />}
+        {!element?.sunExposure && (
+          <EditorWarning message="ajouter une expostion" />
+        )}
       </div>
       <SoilSelect
         value={state.soil ?? ""}
@@ -106,6 +103,16 @@ export default function EditionSideMenu({
           })
         }
       />
+      <div className="grid grid-cols-[3fr_1fr] items-end gap-4">
+        <PlantSelect
+          value={state.cropId ?? ""}
+          onValueChange={(option) =>
+            setState((prev) => ({ ...prev, cropId: option }))
+          }
+          className="my-0"
+        />
+        <Button variant="secondary">interroger</Button>
+      </div>
     </SheetBlock>
   );
 }

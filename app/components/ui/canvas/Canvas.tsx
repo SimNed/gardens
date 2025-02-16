@@ -19,6 +19,7 @@ interface CanvasProps {
   selectedIndex?: number;
   hoveredIndex?: number;
   isKeyPressActive?: boolean;
+  isFocusOnSelect?: boolean;
 }
 
 export default function Canvas({
@@ -26,7 +27,8 @@ export default function Canvas({
   selectedIndex,
   hoveredIndex,
   isKeyPressActive = true,
-}: CanvasProps) {
+}: // isFocusOnSelect = true,
+CanvasProps) {
   const {
     state,
     mode,
@@ -37,6 +39,7 @@ export default function Canvas({
     handleMouseWheel,
     onShapeUnselect,
     onShapeDelete,
+    // focusOnShape,
   } = useCanvasContext();
 
   useKeyPress(() => {
@@ -44,9 +47,14 @@ export default function Canvas({
       onShapeDelete(selectedIndex);
   }, ["Delete", "Backspace"]);
 
-  useEffect(() => {
-    console.log("mode in canvas", mode);
-  }, [mode]);
+  // useEffect(() => {
+  //   if (
+  //     selectedIndex !== undefined &&
+  //     rectangles[selectedIndex] &&
+  //     isFocusOnSelect
+  //   )
+  //     focusOnShape(rectangles[selectedIndex]);
+  // }, [selectedIndex]);
 
   return (
     <>

@@ -13,6 +13,7 @@ interface AssistantContextProps {
   unhoverElement: () => void;
   updateElement: (element: AssistantElementType) => void;
   deleteElement: (element: AssistantElementType) => void;
+  // onSelectedFocused: () => void;
   openEditor: () => void;
   closeEditor: () => void;
 }
@@ -20,10 +21,14 @@ interface AssistantContextProps {
 const AssistantContext = createContext<AssistantContextProps | null>(null);
 
 interface AssistantProviderProps {
+  // onSelectedFocused: () => void;
   children: ReactNode;
 }
 
-export function AssistantProvider({ children }: AssistantProviderProps) {
+export function AssistantProvider({
+  // onSelectedFocused,
+  children,
+}: AssistantProviderProps) {
   const initialState: AssistantState = {
     elements: [],
     selectedElement: undefined,
@@ -47,6 +52,7 @@ export function AssistantProvider({ children }: AssistantProviderProps) {
       dispatch({ type: "udpate_element", element }),
     deleteElement: (element: AssistantElementType) =>
       dispatch({ type: "delete_element", element }),
+    // onSelectedFocused,
     openEditor: () => dispatch({ type: "set_editor_opening", value: true }),
     closeEditor: () => dispatch({ type: "set_editor_opening", value: false }),
   };

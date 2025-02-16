@@ -1,5 +1,5 @@
+import Warning from "@/app/components/ui/Warning";
 import { AssistantElementType } from "@/types/assistant";
-import { CircleAlert } from "lucide-react";
 import React from "react";
 
 interface HeaderProps {
@@ -12,7 +12,7 @@ export default function ElementHeader({ element, cellSize }: HeaderProps) {
     <div className="w-full flex  justify-between items-cente px-1">
       <div className="flex items-center gap-2">
         {element.rectangle.infos && element.rectangle.infos.length > 0 && (
-          <CircleAlert className="w-5 h-5 fill-yellow-400 stroke-white" />
+          <Warning />
         )}
         {element.crop ? (
           <p className="text-xs">{element.crop.commonName}</p>
